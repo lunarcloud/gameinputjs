@@ -3,6 +3,9 @@ Library specifically geared towards game input for HTML5, both keyboard and game
 
 The main file is 'js/gamepad.js'
 
-it depends on **jquery**, 'js/keycodes.js', and the debounce jquery plugin at 'js/jquery.ba-throttle-debounce.min.js'
+it depends on
+  * **jquery**
+  * 'js/keycodes.js'
+  * the debounce jquery plugin at 'js/jquery.ba-throttle-debounce.min.js'
 
 Simply launch 'tester.html' to see it in action.
