@@ -1,0 +1,23 @@
+
+.gameinput-button.gameinput-player3-button0 .text:before {
+	content: "A";
+}
+
+.gameinput-button.gameinput-player3-button1 .text:before {
+	content: "S";
+}
+
+.gameinput-button.gameinput-player3-button2 .text:before {
+	content: "D";
+}
+
+.gameinput-button.gameinput-player3-button3 .text:before {
+	content: "F";
+}
+
+.gameinput-button.gameinput-player3-button
+{
+	color: black;
+	text-shadow: 0 0 4px white;
+	background-color: white;
+}
