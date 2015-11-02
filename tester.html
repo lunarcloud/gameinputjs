@@ -112,6 +112,14 @@
 				<td>
 					<div class='gameinput-player-template-right gameinput-player-template-a_right gameinput-button'><span class='text'></span></div>
 				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
 			</tr>
 		</table>
       </div>
@@ -174,12 +182,18 @@
 					.removeClass("gameinput-player-template-right")
 				;
 
-				if (typeof(GameInput.Players[i].schema[j]) === "undefined") continue;
-
-				row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
-					.addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
-					.removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
-				;
+				if (typeof(GameInput.Players[i].schema[j]) === "undefined")
+				{
+					row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
+						.remove();
+				}
+				else
+				{
+					row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
+						.addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
+						.removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
+					;
+				}
 			}
 
 			$("#players").append(row);
