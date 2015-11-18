@@ -4,6 +4,11 @@
  */
 "use strict";
 
+String.prototype.toASCII = function()
+{
+	return this.replace(/[^\x00-\x7F]/g, "");
+}
+
 /**
  * GameInput
  * @brief   HTML5 Game Input System
@@ -40,7 +45,7 @@ GameInput.OS.clientStrings = [
 	{s:'UNIX', r:/UNIX/},
 	{s:'BeOS', r:/BeOS/},
 	{s:'OS/2', r:/OS\/2/},
-	{s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
+	{s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|il_archiver)/}
 ];
 
 GameInput.Schema = {};
@@ -55,14 +60,20 @@ GameInput.Schema.Names = {
 	button1	: 	"button1",
 	button2	: 	"button2",
 	button3	: 	"button3",
-	a_up	: 	"a_up",
-	a_down	: 	"a_down",
-	a_left	:	"a_left",
-	a_right	:	"a_right"
+	l_up	: 	"l_up",
+	l_down	: 	"l_down",
+	l_left	:	"l_left",
+	l_right	:	"l_right",
+	r_up	: 	"r_up",
+	r_down	: 	"r_down",
+	r_left	:	"r_left",
+	r_right	:	"r_right"
 };
 
 
 GameInput.debug = true;
+
+GameInput.handleKeyboard = true;
 
 GameInput.canUseGamepadAPI = function()
 {
@@ -186,13 +197,14 @@ GameInput.Schema.AxisButton = function(indexAndDirection, threshold)
 {
 	this.index = Math.abs(indexAndDirection);
 	this.direction = indexAndDirection < 0 ? "negative" : "positive";
-	if ( typeof(threshold) === "undefined" ) threshold = 0.7;
+	if ( typeof(threshold) === "undefined" ) threshold = 0.5;
 	this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
 };
 
 GameInput.Schema.Generic = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
-                            a_up, a_down, a_left, a_right)
+                            l_up, l_down, l_left, l_right,
+                            r_up, r_down, r_left, r_right)
 {
 	this.d_up = d_up;
 	this.d_down = d_down;
@@ -203,10 +215,14 @@ GameInput.Schema.Generic = function(d_up, d_down, d_left, d_right,
 	this.button1 = button1;
 	this.button2 = button2;
 	this.button3 = button3;
-	this.a_up = a_up;
-	this.a_down = a_down;
-	this.a_left = a_left;
-	this.a_right = a_right;
+	this.l_up = l_up;
+	this.l_down = l_down;
+	this.l_left = l_left;
+	this.l_right = l_right;
+	this.r_up = r_up;
+	this.r_down = r_down;
+	this.r_left = r_left;
+	this.r_right = r_right;
 };
 
 GameInput.Schema.Generic.prototype.lookup = function(key)
@@ -224,24 +240,27 @@ GameInput.Schema.Generic.prototype.lookup = function(key)
 
 GameInput.Schema.GamePadAPI = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
-                            a_up, a_down, a_left, a_right)
+                            l_up, l_down, l_left, l_right,
+                            r_up, r_down, r_left, r_right)
 {
 	for (var i in arguments)
 	{
 		if (typeof(arguments[i]) === "number") arguments[i] = new GameInput.Schema.Button(arguments[i]);
 	}
-	if (typeof(d_up) === "number") d_up = new GameInput.Schema.Button(d_up);
+	// if (typeof(d_up) === "number") d_up = new GameInput.Schema.Button(d_up); // TODO find out what I was doing here... it breaks things if uncommented
 
 	GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
-                            a_up, a_down, a_left, a_right);
+                            l_up, l_down, l_left, l_right,
+                            r_up, r_down, r_left, r_right);
 };
 GameInput.Schema.GamePadAPI.prototype = new GameInput.Schema.Generic();
 GameInput.Schema.GamePadAPI.prototype.constructor = GameInput.Schema.GamePadAPI;
 
 GameInput.Schema.KeyboardAPI = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
-                            a_up, a_down, a_left, a_right)
+                            l_up, l_down, l_left, l_right,
+                            r_up, r_down, r_left, r_right)
 {
 	for (var i in arguments)
 	{
@@ -249,7 +268,8 @@ GameInput.Schema.KeyboardAPI = function(d_up, d_down, d_left, d_right,
 	}
 	GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
-                            a_up, a_down, a_left, a_right);
+                            l_up, l_down, l_left, l_right,
+                            r_up, r_down, r_left, r_right);
 };
 GameInput.Schema.KeyboardAPI.prototype = new GameInput.Schema.Generic();
 GameInput.Schema.KeyboardAPI.prototype.constructor = GameInput.Schema.KeyboardAPI;
@@ -264,6 +284,16 @@ GameInput.Schema.KeyboardAPI.Keys = {
       UP_ARROW: new GameInput.Schema.Key(38, "↑"),
       RIGHT_ARROW: new GameInput.Schema.Key(39, "→"),
       DOWN_ARROW: new GameInput.Schema.Key(40, "↓"),
+      NUM_0: new GameInput.Schema.Key(96, "NUM 0"),
+      NUM_1: new GameInput.Schema.Key(97, "NUM 1"),
+      NUM_2: new GameInput.Schema.Key(98, "NUM 2"),
+      NUM_3: new GameInput.Schema.Key(99, "NUM 3"),
+      NUM_4: new GameInput.Schema.Key(100, "NUM 4"),
+      NUM_5: new GameInput.Schema.Key(101, "NUM 5"),
+      NUM_6: new GameInput.Schema.Key(102, "NUM 6"),
+      NUM_7: new GameInput.Schema.Key(103, "NUM 7"),
+      NUM_8: new GameInput.Schema.Key(104, "NUM 8"),
+      NUM_9: new GameInput.Schema.Key(105, "NUM 9"),
       KEY_0: new GameInput.Schema.Key(48, "0"),
       KEY_1: new GameInput.Schema.Key(49, "1"),
       KEY_2: new GameInput.Schema.Key(50, "2"),
@@ -433,7 +463,11 @@ GameInput.Models.Generic = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Hedgehog,
@@ -447,7 +481,11 @@ GameInput.Models.Generic = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Ragdoll,
@@ -461,7 +499,11 @@ GameInput.Models.Generic = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Hedgehog,
@@ -475,7 +517,11 @@ GameInput.Models.Generic = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Hedgehog,
@@ -486,6 +532,24 @@ GameInput.Models.Generic = [
 			12,13,14,15,
 			10,
 			2,3,1,4,
+			new GameInput.Schema.AxisButton(-2),
+			new GameInput.Schema.AxisButton(2),
+			new GameInput.Schema.AxisButton(-1),
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
+	)),
+	new GameInput.Model(
+		GameInput.Type.Hedgehog,
+		"generic",
+		"STANDARD GAMEPAD",
+		undefined,
+		new GameInput.Schema.GamePadAPI(
+			13, 14, 15, 16,
+			10,
+			1,2,3,4,
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
@@ -506,7 +570,29 @@ GameInput.Models.Specific = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
+	)),
+	new GameInput.Model(
+		GameInput.Type.Hedgehog,
+		"xbox360",
+		"©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
+		"Linux",
+		new GameInput.Schema.GamePadAPI(
+			13,14,15,16,
+			10,
+			1,2,3,4,
+			new GameInput.Schema.AxisButton(-2),
+			new GameInput.Schema.AxisButton(2),
+			new GameInput.Schema.AxisButton(-1),
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Hedgehog,
@@ -523,7 +609,11 @@ GameInput.Models.Specific = [
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-5),
+			new GameInput.Schema.AxisButton(5),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4)
 	)),
 	new GameInput.Model(
 		GameInput.Type.Hedgehog,
@@ -549,26 +639,16 @@ GameInput.Models.Specific = [
 			new GameInput.Schema.AxisButton(11),
 			new GameInput.Schema.AxisButton(-10),
 			new GameInput.Schema.AxisButton(10),
-			4,
-			15,14,16,13,
+			10,
+			1,2,3,4,
 			new GameInput.Schema.AxisButton(-2),
 			new GameInput.Schema.AxisButton(2),
 			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Ragdoll,
-		"ds3",
-		"Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
-		"Linux",
-		new GameInput.Schema.GamePadAPI(
-			5,7,8,6,
-			4,
-			15,14,16,13,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
+			new GameInput.Schema.AxisButton(1),
+			new GameInput.Schema.AxisButton(-4),
+			new GameInput.Schema.AxisButton(4),
+			new GameInput.Schema.AxisButton(-3),
+			new GameInput.Schema.AxisButton(3)
 	))
 ];
 
@@ -580,6 +660,8 @@ GameInput.KeyboardWatcher = new function()
 	//setup keydown/keyup events
 
 	$(document).keyup(function(e) {
+		if (!GameInput.handleKeyboard) return;
+
 		var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
 		if (typeof(player.schema) !== "undefined" )
 		{
@@ -592,6 +674,8 @@ GameInput.KeyboardWatcher = new function()
 		}
 	})
 	$(document).keydown(function(e) {
+		if (!GameInput.handleKeyboard) return;
+
 		var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
 		if (typeof(player.schema) !== "undefined" )
 		{
@@ -622,8 +706,8 @@ GameInput.nextUpdateLoop = function()
 {
 	if (GameInput.loopingUpdate === false) return;
 	GameInput.update();
-// 	requestAnimationFrame(GameInput.update); // way too slow!
-	setTimeout($.throttle(10, GameInput.nextUpdateLoop), 1);
+ 	requestAnimationFrame(GameInput.nextUpdateLoop); // way too slow!
+// 	setTimeout($.throttle(10, GameInput.nextUpdateLoop), 1);
 }
 
 GameInput.update = function()
@@ -748,7 +832,7 @@ GameInput.initialGamePadSetup = function()
 				//Translate into Type -  Players order is gamepad order
 				for (var j = 0; j < GameInput.Models.Specific.length; j++)
 				{
-					if ( GameInput.Models.Specific[j].id === GameInput.Connection.Gamepads[i].id
+					if ( GameInput.Models.Specific[j].id.toASCII() === GameInput.Connection.Gamepads[i].id.toASCII()
 						&& GameInput.OS.Detected === GameInput.Models.Specific[j].os )
 					{
 						GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Specific[j].type;
@@ -758,11 +842,11 @@ GameInput.initialGamePadSetup = function()
 					}
 				}
 
-				if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]]) === "undefined")
+				if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
 				{
 					for (var j = 0; j < GameInput.Models.Generic.length; j++)
 					{
-						if (GameInput.Models.Generic[j].id.seach(GameInput.Connection.Gamepads[i].id) > 0)
+						if (GameInput.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null)
 						{
 							GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Generic[j].type;
 							GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Generic[j];
@@ -791,20 +875,28 @@ GameInput.initialGamePadSetup = function()
 	}
 
 	//Setup Keyboard player
-	GameInput.KeyboardWatcher.PlayerToWatch = undefined;
-	for (var i = 0; i < GameInput.Players.length; i++)
+	if (GameInput.handleKeyboard)
 	{
-		// last player is keyboard
-		if (GameInput.Players[i].type === undefined)
+		GameInput.KeyboardWatcher.PlayerToWatch = undefined;
+		for (var i = 0; i < GameInput.Players.length; i++)
 		{
-			GameInput.Players[i].type = GameInput.Type.Keyboard;
-			GameInput.Players[i].model = GameInput.Type.Keyboard.model;
-			GameInput.Players[i].schema = GameInput.Type.Keyboard.schema;
-			GameInput.Players[i].theme = GameInput.Type.Keyboard.theme;
+			// last player is keyboard
+			if (GameInput.Players[i].type === undefined)
+			{
+				GameInput.Players[i].type = GameInput.Type.Keyboard;
+				GameInput.Players[i].model = GameInput.Type.Keyboard.model;
+				GameInput.Players[i].schema = GameInput.Type.Keyboard.schema;
+				GameInput.Players[i].theme = GameInput.Type.Keyboard.theme;
 
-			GameInput.KeyboardWatcher.PlayerToWatch = i;
-			break;
+				GameInput.KeyboardWatcher.PlayerToWatch = i;
+				break;
+			}
 		}
+	}
+	else
+	{
+				GameInput.KeyboardWatcher.PlayerToWatch = undefined;
+
 	}
 
 	for (var i = 0; i < GameInput.Players.length; i++)

@@ -58,7 +58,18 @@
 	opacity: 0.3;
 }
 
-.gameinput-button-active:not(.disabled):not([disabled])
+.gameinput-button.text-only
+{
+	border: 0!important;
+    border-radius: 0;
+    height: auto;
+    width: auto;
+    background-color: transparent!important;
+    margin: 0px 4px;
+
+}
+
+.gameinput-button-active:not(.disabled):not(.dont-activate):not([disabled])
 {
 	color: white !important;
 	background: black !important;

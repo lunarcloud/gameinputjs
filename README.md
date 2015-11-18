@@ -5,7 +5,6 @@ The main file is 'js/gamepad.js'
 
 it depends on
   * **jquery**
-  * 'js/keycodes.js'
   * the debounce jquery plugin at 'js/jquery.ba-throttle-debounce.min.js'
 
 Simply launch 'tester.html' to see it in action.
