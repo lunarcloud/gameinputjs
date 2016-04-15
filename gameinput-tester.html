@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>GameInput Testing</title>
+  <meta name="description" content="">
+  <meta name="author" content="Samuel Sarette">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <style>
+        .template
+        {
+            display: none !important;
+        }
+
+        .player:not(:last-child)
+        {
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .player table
+        {
+            margin: 0;
+        }
+
+    </style>
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 5%">
+        <h1>Game Input Tester</h1>
+      </div>
+    </div>
+
+    <div id="players" style="padding: 0; margin: 0;">
+    </div>
+
+    <div id="player-template" class="row template player">
+      <div class="one column"><h2 class="player-number">1</div>
+      <div class="two columns">
+        <img class="gameinput-icon gameinput-icon-player-template" src="" style="">
+      </div>
+      <div class="nine columns">
+        <table>
+            <tr>
+                <td>digital</td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-d_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-d_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-d_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-d_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td rowspan="2">
+                    <div class='gameinput-player-template-menu gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-button0 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-button1 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-button2 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-button3 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-l_button gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-r_button gameinput-button'><span class='text'></span></div>
+                </td>
+            </tr>
+            <tr>
+                <td>analog</td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-l_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-l_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-l_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-l_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-r_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-r_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-r_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-r_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-l_trigger gameinput-button'><span class='text'></span></div>
+                </td>
+                <td>
+                    <div class='gameinput-player-template-r_trigger gameinput-button'><span class='text'></span></div>
+                </td>
+            </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery.ba-throttle-debounce.min.js"></script>
+<script src="js/gameinput.js"></script>
+<script>
+    "use strict";
+
+    $(function()
+    {
+        //GameInput.Type.Keyboard.setDvorak();
+        GameInput.onReshufflePlayers(setupPlayers);
+        setupPlayers();
+        GameInput.initialGamePadSetup();
+    });
+
+    function setupPlayers()
+    {
+        $("#players").empty();
+        for (var i = 0; i < GameInput.Players.length; i++)
+        {
+            if (typeof(GameInput.Players[i].type) === "undefined") continue;
+
+            var row = $("#player-template").clone();
+            row.attr("id", "").removeClass("template");
+
+            row.find(".player-number").text(i+1);
+
+            row.find(".gameinput-icon-player-template")
+                .addClass("gameinput-icon-player" + i)
+                .removeClass("gameinput-icon-player-template")
+            ;
+
+            for (var j in GameInput.Schema.Names)
+            {
+                row.find(".gameinput-player-template-up")
+                    .addClass("gameinput-player" + i + "-up")
+                    .removeClass("gameinput-player-template-up")
+                ;
+
+                row.find(".gameinput-player-template-down")
+                    .addClass("gameinput-player" + i + "-down")
+                    .removeClass("gameinput-player-template-down")
+                ;
+
+                row.find(".gameinput-player-template-left")
+                    .addClass("gameinput-player" + i + "-left")
+                    .removeClass("gameinput-player-template-left")
+                ;
+
+                row.find(".gameinput-player-template-right")
+                    .addClass("gameinput-player" + i + "-right")
+                    .removeClass("gameinput-player-template-right")
+                ;
+
+                if (typeof(GameInput.Players[i].schema[j]) === "undefined")
+                {
+                    row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
+                        .remove();
+                }
+                else
+                {
+                    row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
+                        .addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
+                        .removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
+                    ;
+                }
+            }
+
+            $("#players").append(row);
+        }
+
+    }
+
+</script>
+</body>
+</html>

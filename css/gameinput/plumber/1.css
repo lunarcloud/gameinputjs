@@ -1,34 +1,50 @@
 .gameinput-button.gameinput-player1-button0
 {
-	color: black;
-	text-shadow: 0 0 4px white;
-	background-color: yellow;
+    color: black;
+    text-shadow: 0 0 4px white;
+    background-color: yellow;
 }
 
 .gameinput-button.gameinput-player1-button1 {
-	background-color: red;
+    background-color: red;
 }
 
 .gameinput-button.gameinput-player1-button2 {
-	background-color: green;
+    background-color: green;
 }
 
 .gameinput-button.gameinput-player1-button3 {
-	background-color: blue;
+    background-color: blue;
 }
 
 .gameinput-button.gameinput-player1-button0 .text:before {
-	content: "B";
+    content: "B";
 }
 
 .gameinput-button.gameinput-player1-button1 .text:before {
-	content: "A";
+    content: "A";
 }
 
 .gameinput-button.gameinput-player1-button2 .text:before {
-	content: "Y";
+    content: "Y";
 }
 
 .gameinput-button.gameinput-player1-button3 .text:before {
-	content: "X";
+    content: "X";
+}
+
+.gameinput-button.gameinput-player1-l_button .text:before {
+    content: "LB";
+}
+
+.gameinput-button.gameinput-player1-r_button .text:before {
+    content: "RB";
+}
+
+.gameinput-button.gameinput-player1-l_trigger .text:before {
+    content: "LT";
+}
+
+.gameinput-button.gameinput-player1-r_trigger .text:before {
+    content: "RT";
 }

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>GameInput Mapping Creator</title>
+  <meta name="description" content="">
+  <meta name="author" content="Samuel Sarette">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <style>
+        .container {
+            max-width: 1920px;
+        }
+
+        .template
+        {
+            display: none !important;
+        }
+
+        .player:not(:last-child)
+        {
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .player table
+        {
+            margin: 0;
+        }
+
+        .player th,
+        .player td {
+            padding: 6px 7px;
+        }
+
+        .player th:first-child,
+        .player td:first-child,
+        .player th:last-child,
+        .player td:last-child {
+            padding-left: 7px !important;
+        }
+
+        pre > code {
+            white-space: pre-wrap;
+        }
+
+    </style>
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 5%">
+        <h1>GameInput Mapping Creator</h1>
+      </div>
+    </div>
+
+    <div id="players" style="padding: 0; margin: 0;">
+    </div>
+
+    <div id="player-template" class="row template player">
+      <div class="six columns">
+        <table>
+            <tr>
+                <td rowspan="2">Basic</td>
+                <td class="gamepad-id" colspan="2"></td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="detected-icon gameinput-icon gameinput-icon-player-template" src="">
+                </td>
+                <td>
+                    <select class="icon" onchange="updateIcon(this);">
+                        <option value="generic">Generic</option>
+                        <option value="joystick">Joystick</option>
+                        <option value="ds3">DualShock 3</option>
+                        <option value="ds4">DualShock 4</option>
+                        <option value="dc">Dreamcast</option>
+                        <option value="xbox360">Xbox 360</option>
+                        <option value="xboxone">Xbox One</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="4">D-Pad</td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-d_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="d_up" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-d_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="d_down" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-d_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="d_left" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-d_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="d_right" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td rowspan="9">
+                    Buttons
+                </td>
+                <td>
+                    <div class='gameinput-player-template-menu gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="menu" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-button0 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="button0" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-button1 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="button1" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-button2 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="button2" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-button3 gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="button3" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-l_button gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_button" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-r_button gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_button" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-l_trigger gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_trigger" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-r_trigger gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_trigger" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td rowspan="4">Left Analog</td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-l_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_up" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-l_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_down" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-l_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_left" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-l_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="l_right" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td rowspan="4">Right Analog</td>
+                <td>
+                    <div class='gameinput-player-template-up gameinput-player-template-r_up gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_up" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-down gameinput-player-template-r_down gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_down" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-left gameinput-player-template-r_left gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_left" class="possible-mappings"></select> </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class='gameinput-player-template-right gameinput-player-template-r_right gameinput-button'><span class='text'></span></div>
+                </td>
+                <td> <select onchange="updateMapping(this);" button="r_right" class="possible-mappings"></select> </td>
+            </tr>
+        </table>
+      </div>
+      <div class="six columns"><pre><code></code></pre></div>
+   </div>
+
+  </div>
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="js/jquery.ba-throttle-debounce.min.js"></script>
+<script src="js/gameinput.js"></script>
+<script>
+    "use strict";
+
+    $(function()
+    {
+        GameInput.onReshufflePlayers(setupPlayers);
+        setupPlayers();
+        GameInput.initialGamePadSetup();
+    });
+
+    function setupPlayers()
+    {
+        $("#players").empty();
+
+        for (var i = 0; i < GameInput.Players.length; i++)
+        {
+            if ( typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]]) === "undefined"
+            ||   typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].type) === "undefined"
+            ||   typeof(GameInput.Connection.Gamepads[i]) === "undefined"
+            ||   GameInput.Players[GameInput.Connection.GamePadMapping[i]].type === GameInput.Type.Keyboard) continue;
+
+            var row = $("#player-template").clone();
+            row.attr("id", "").attr("number", (i+1)).removeClass("template");
+
+            row.find(".gameinput-icon-player-template")
+                .addClass("gameinput-icon-player" + i)
+                .removeClass("gameinput-icon-player-template")
+            ;
+
+            row.find(".gamepad-id").text( GameInput.Connection.Gamepads[i].id );
+            row.find("select.icon").val( GameInput.Players[GameInput.Connection.GamePadMapping[i]].model.iconName );
+
+            for (var j in GameInput.Schema.Names)
+            {
+                row.find(".gameinput-player-template-up")
+                    .addClass("gameinput-player" + i + "-up")
+                    .removeClass("gameinput-player-template-up")
+                ;
+
+                row.find(".gameinput-player-template-down")
+                    .addClass("gameinput-player" + i + "-down")
+                    .removeClass("gameinput-player-template-down")
+                ;
+
+                row.find(".gameinput-player-template-left")
+                    .addClass("gameinput-player" + i + "-left")
+                    .removeClass("gameinput-player-template-left")
+                ;
+
+                row.find(".gameinput-player-template-right")
+                    .addClass("gameinput-player" + i + "-right")
+                    .removeClass("gameinput-player-template-right")
+                ;
+
+                row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
+                    .addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
+                    .removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
+                ;
+
+                updateSelection(row, i, j);
+            }
+
+            $("#players").append(row);
+            updateCode(i+1);
+        }
+    }
+
+    function updateSelection(row, playerIndex, schemaName)
+    {
+        var optionsHTML = "";
+        var index = playerIndex;
+        var player = playerIndex +1;
+
+        var isUndefined = false;
+        var currentAxis;
+        var currentButton = GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName];
+
+        if (typeof(currentButton) === "undefined")
+        {
+            isUndefined = true;
+        }
+        else if (isNaN(currentButton))
+        {
+            currentAxis = currentButton.index * (currentButton.direction === "positive" ? 1 : -1 );
+            currentButton = undefined;
+        }
+
+        optionsHTML += "<option value='undefined' " + (isUndefined ? "selected" : "") + " type='undefined'>Not Mapped</option>";
+
+        for (var i = 1; i <= GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[index]].axes.length; i++)
+        {
+            optionsHTML += "<option value='" + i + "' " + (currentAxis == i ? "selected" : "" ) + " type='axis'>+ " + i  + " axis</option>";
+            optionsHTML += "<option value='-" + i + "' " + (currentAxis == -1*i ? "selected" : "") + " type='axis'>- " + i  + " axis</option>";
+        }
+
+        for (var i = 1; i <= GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[index]].buttons.length; i++)
+        {
+            optionsHTML += "<option value='" + i + "' " + (currentButton == i ? "selected" : "") + " type='button'>" + i  + " button</option>";
+        }
+
+        row.find(".possible-mappings[button=" + schemaName + "]").empty().append(optionsHTML);
+    }
+
+    function updateMapping(element) {
+        var player = parseInt($(element).closest(".player").attr("number"));
+        var index = parseInt($(element).closest(".player").attr("number")) -1;
+
+        var type = $(element).find(":selected").attr("type");
+        var schemaName = $(element).attr("button");
+        var value = parseInt($(element).val());
+
+        if (type == "button")
+        {
+            GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.schema[schemaName] = value;
+            GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName] = value;
+        }
+        else //if (type == "axis")
+        {
+            GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.schema[schemaName] = new GameInput.Schema.AxisButton(value);
+            GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName] = new GameInput.Schema.AxisButton(value);
+        }
+        updateCode(player);
+    }
+
+    function updateIcon(element) {
+        var player = parseInt($(element).closest(".player").attr("number"));
+
+        $(".player[number=" + player + "]")
+            .find(".detected-icon")
+            .attr(
+                "src",
+                "css/gameinput/img/models/"
+                + $(".player[number=" + player + "]").find("select.icon").val()
+                + ".png"
+            );
+        updateCode(player);
+    }
+
+    function updateCode(player)
+    {
+        var index = player - 1;
+        if (GameInput.Players[GameInput.Connection.GamePadMapping[index]].type == GameInput.Type.Keyboard)
+        {
+            console.warn("Player is Keyboard user.");
+            return;
+        }
+        var icon = $(".player[number=" + player + "]").find("select.icon").val();
+        var theme = "";
+
+        switch (icon) {
+            case "ds3":
+            case "ds4":
+                GameInput.Type.Ragdoll.theme.enable(index);
+                theme = "GameInput.Type.Ragdoll";
+                break;
+            case "snes":
+                GameInput.Type.Plumber.theme.enable(index);
+                theme = "GameInput.Type.Plumber";
+                break;
+            case "xbox360":
+            case "xboxone":
+            default:
+                GameInput.Type.Hedgehog.theme.enable(index);
+                theme = "GameInput.Type.Hedgehog";
+                break;
+        }
+
+        var newCode = 'new GameInput.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.id + '",\n\t"' + GameInput.OS.Detected + '",\n\tnew GameInput.Schema.GamePadAPI(\n';
+
+        for (var schemaName in GameInput.Schema.Names)
+        {
+            var item = GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName];
+
+            if (item !== undefined && isNaN(item)) item = "new GameInput.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
+
+            newCode += "\t\t/* " + schemaName + " */  " + item + ",\n";
+        }
+        newCode = newCode.slice(0, newCode.length - 2); // take off the last comma and newline
+
+        newCode += '\n\t)\n),';
+
+        $(".player[number=" + player + "] code").text(newCode);
+    }
+
+</script>
+</body>
+</html>

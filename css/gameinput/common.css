@@ -1,15 +1,15 @@
 .gameinput-button
 {
-	display: inline-block;
-	border-radius: 45%;
-	width: 30px;
-	line-height: 24px;
-	border: 2px solid black;
-	text-align: center;
+    display: inline-block;
+    border-radius: 45%;
+    width: 30px;
+    line-height: 24px;
+    border: 2px solid black;
+    text-align: center;
 
-	/* Default text colors */
-	color: black;
-	text-shadow: 0 0 4px white;
+    /* Default text colors */
+    color: black;
+    text-shadow: 0 0 4px white;
 }
 
 .gameinput-button.gameinput-player0-menu .text:before,
@@ -17,7 +17,7 @@
 .gameinput-button.gameinput-player2-menu .text:before,
 .gameinput-button.gameinput-player3-menu .text:before
 {
-	content: "▶";
+    content: "▶";
 }
 
 .gameinput-button.gameinput-player0-left .text:before,
@@ -25,7 +25,7 @@
 .gameinput-button.gameinput-player2-left .text:before,
 .gameinput-button.gameinput-player3-left .text:before
 {
-	content: "←";
+    content: "←";
 }
 
 .gameinput-button.gameinput-player0-right .text:before,
@@ -33,7 +33,7 @@
 .gameinput-button.gameinput-player2-right .text:before,
 .gameinput-button.gameinput-player3-right .text:before
 {
-	content: "→";
+    content: "→";
 }
 
 .gameinput-button.gameinput-player0-up .text:before,
@@ -41,7 +41,7 @@
 .gameinput-button.gameinput-player2-up .text:before,
 .gameinput-button.gameinput-player3-up .text:before
 {
-	content: "↑";
+    content: "↑";
 }
 
 .gameinput-button.gameinput-player0-down .text:before,
@@ -49,39 +49,40 @@
 .gameinput-button.gameinput-player2-down .text:before,
 .gameinput-button.gameinput-player3-down .text:before
 {
-	content: "↓";
+    content: "↓";
 }
 
 .gameinput-button.disabled,
 .gameinput-button[disabled]
 {
-	opacity: 0.3;
+    opacity: 0.3;
 }
 
 .gameinput-button.text-only
 {
-	border: 0!important;
+    border: 0!important;
     border-radius: 0;
     height: auto;
     width: auto;
     background-color: transparent!important;
     margin: 0px 4px;
+    text-shadow: 0;
 
 }
 
 .gameinput-button-active:not(.disabled):not(.dont-activate):not([disabled])
 {
-	color: white !important;
-	background: black !important;
-	background-color: black !important;
-	text-shadow: 0 0 4px #333 !important;
+    color: white !important;
+    background: black !important;
+    background-color: black !important;
+    text-shadow: 0 0 4px #333 !important;
 
 }
 
 img.gameinput-icon
 {
-	border-color: transparent;
-	border: 0;
-	height: 50px;
-	min-width: 1px;
+    border-color: transparent;
+    border: 0;
+    height: 50px;
+    min-width: 1px;
 }

@@ -6,7 +6,7 @@
 
 String.prototype.toASCII = function()
 {
-	return this.replace(/[^\x00-\x7F]/g, "");
+    return this.replace(/[^\x00-\x7F]/g, "");
 }
 
 /**
@@ -20,239 +20,252 @@ var GameInput = {};
 GameInput.OS = {};
 GameInput.OS.Detected = "unknown OS";
 GameInput.OS.clientStrings = [
-	{s:'Windows 10', r:/(Windows 10.0|Windows NT 10.0)/},
-	{s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
-	{s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
-	{s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
-	{s:'Windows Vista', r:/Windows NT 6.0/},
-	{s:'Windows Server 2003', r:/Windows NT 5.2/},
-	{s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
-	{s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
-	{s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
-	{s:'Windows 98', r:/(Windows 98|Win98)/},
-	{s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
-	{s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-	{s:'Windows CE', r:/Windows CE/},
-	{s:'Windows 3.11', r:/Win16/},
-	{s:'Android', r:/Android/},
-	{s:'Open BSD', r:/OpenBSD/},
-	{s:'Sun OS', r:/SunOS/},
-	{s:'Linux', r:/(Linux|X11)/},
-	{s:'iOS', r:/(iPhone|iPad|iPod)/},
-	{s:'Mac OS X', r:/Mac OS X/},
-	{s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-	{s:'QNX', r:/QNX/},
-	{s:'UNIX', r:/UNIX/},
-	{s:'BeOS', r:/BeOS/},
-	{s:'OS/2', r:/OS\/2/},
-	{s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|il_archiver)/}
+    {s:'Windows 10', r:/(Windows 10.0|Windows NT 10.0)/},
+    {s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
+    {s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
+    {s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
+    {s:'Windows Vista', r:/Windows NT 6.0/},
+    {s:'Windows Server 2003', r:/Windows NT 5.2/},
+    {s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
+    {s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
+    {s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
+    {s:'Windows 98', r:/(Windows 98|Win98)/},
+    {s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
+    {s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
+    {s:'Windows CE', r:/Windows CE/},
+    {s:'Windows 3.11', r:/Win16/},
+    {s:'Android', r:/Android/},
+    {s:'Open BSD', r:/OpenBSD/},
+    {s:'Sun OS', r:/SunOS/},
+    {s:'Linux', r:/(Linux|X11)/},
+    {s:'iOS', r:/(iPhone|iPad|iPod)/},
+    {s:'Mac OS X', r:/Mac OS X/},
+    {s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
+    {s:'QNX', r:/QNX/},
+    {s:'UNIX', r:/UNIX/},
+    {s:'BeOS', r:/BeOS/},
+    {s:'OS/2', r:/OS\/2/},
+    {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|il_archiver)/}
 ];
 
 GameInput.Schema = {};
 
 GameInput.Schema.Names = {
-	d_up	: 	"d_up",
-	d_down	: 	"d_down",
-	d_left	: 	"d_left",
-	d_right	: 	"d_right",
-	menu	: 	"menu",
-	button0	: 	"button0",
-	button1	: 	"button1",
-	button2	: 	"button2",
-	button3	: 	"button3",
-	l_up	: 	"l_up",
-	l_down	: 	"l_down",
-	l_left	:	"l_left",
-	l_right	:	"l_right",
-	r_up	: 	"r_up",
-	r_down	: 	"r_down",
-	r_left	:	"r_left",
-	r_right	:	"r_right"
+    d_up        :   "d_up",
+    d_down      :   "d_down",
+    d_left      :   "d_left",
+    d_right     :   "d_right",
+    menu        :   "menu",
+    button0     :   "button0",
+    button1     :   "button1",
+    button2     :   "button2",
+    button3     :   "button3",
+    l_up        :   "l_up",
+    l_down      :   "l_down",
+    l_left      :   "l_left",
+    l_right     :   "l_right",
+    r_up        :   "r_up",
+    r_down      :   "r_down",
+    r_left      :   "r_left",
+    r_right     :   "r_right",
+    l_button    :   "l_button",
+    r_button    :   "r_button",
+    l_trigger   :   "l_trigger",
+    r_trigger   :   "r_trigger"
 };
-
 
 GameInput.debug = true;
 
 GameInput.handleKeyboard = true;
 
+GameInput.firstPress = false;
+
 GameInput.canUseGamepadAPI = function()
 {
-	return "getGamepads" in navigator;
+    return "getGamepads" in navigator;
 }
 
 GameInput.Player = function(number)
 {
-	this.number = number;
-	this.index = number - 1;
+    this.number = number;
+    this.index = number - 1;
 
-	this.type;
-	this.model;
-	this.schema;
-	this.theme;
-	this.state;
+    this.type;
+    this.model;
+    this.schema;
+    this.theme;
+    this.state;
 
-	this.previous = {
-		type: undefined,
-		model: undefined,
-		schema: undefined,
-		state: undefined,
-	};
+    this.previous = {
+        type: undefined,
+        model: undefined,
+        schema: undefined,
+        state: undefined,
+    };
 
-	this.buttonDownActions = {};
-	this.buttonUpActions = {};
+    this.buttonDownActions = {};
+    this.buttonUpActions = {};
 
-	for (var i in GameInput.Schema.Names)
-	{
-		this.buttonDownActions[ GameInput.Schema.Names[i] ] = [];
-		this.buttonUpActions[ GameInput.Schema.Names[i] ] = [];
-	}
+    for (var i in GameInput.Schema.Names)
+    {
+        this.buttonDownActions[ GameInput.Schema.Names[i] ] = [];
+        this.buttonUpActions[ GameInput.Schema.Names[i] ] = [];
+    }
 
 }
 
 GameInput.Player.prototype.buttonDown = function(schemaName)
 {
-	for ( var action in this.buttonDownActions[schemaName])
-		this.buttonDownActions[schemaName][action]();
+    for ( var action in this.buttonDownActions[schemaName])
+        this.buttonDownActions[schemaName][action]();
 }
 
 GameInput.Player.prototype.buttonUp = function(schemaName)
 {
-	for ( var action in this.buttonUpActions[schemaName])
-		this.buttonUpActions[schemaName][action]();
+    for ( var action in this.buttonUpActions[schemaName])
+        this.buttonUpActions[schemaName][action]();
 }
 
 GameInput.Player.prototype.onButtonDown = function(schemaName, action)
 {
-	if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
-	if (typeof(action) !== "function") throw "Action must be a function";
+    if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
+    if (typeof(action) !== "function") throw "Action must be a function";
 
-	this.buttonDownActions[schemaName].push(action);
+    this.buttonDownActions[schemaName].push(action);
 };
 
 GameInput.Player.prototype.onButtonUp = function(schemaName, action)
 {
-	if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
-	if (typeof(action) !== "function") throw "Action must be a function";
+    if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
+    if (typeof(action) !== "function") throw "Action must be a function";
 
-	this.buttonUpActions[schemaName].push(action);
+    this.buttonUpActions[schemaName].push(action);
 };
 
 GameInput.Players = [
-	new GameInput.Player(1),
-	new GameInput.Player(2),
-	new GameInput.Player(3),
-	new GameInput.Player(4)
+    new GameInput.Player(1),
+    new GameInput.Player(2),
+    new GameInput.Player(3),
+    new GameInput.Player(4)
 ];
 
 GameInput.Connection = {};
 
 GameInput.Connection.GamePadMapping = {
-	0 : 0,
-	1 : 1,
-	2 : 2,
-	3 : 3
+    0 : 0,
+    1 : 1,
+    2 : 2,
+    3 : 3
 }
 
 GameInput.Connection.Gamepads = [undefined, undefined, undefined, undefined];
 
 GameInput.Connection.gained = function(gamepad)
 {
-	GameInput.initialGamePadSetup();
+    GameInput.initialGamePadSetup();
 };
 
 GameInput.Connection.lost = function(gamepad)
 {
-	GameInput.initialGamePadSetup();
+    GameInput.initialGamePadSetup();
 };
 
 GameInput.Theme = function(name)
 {
-	this.name = name;
+    this.name = name;
 };
 
 GameInput.Theme.prototype.getStyleSheet = function(playerIndex)
 {
-	if (isNaN(playerIndex)) playerIndex = 0;
-	return "css/gameinput/" + this.name.toLowerCase() + "/" + playerIndex + ".css";
+    if (isNaN(playerIndex)) playerIndex = 0;
+    return "css/gameinput/" + this.name.toLowerCase() + "/" + playerIndex + ".css";
 }
+
 GameInput.Theme.prototype.enable = function(playerIndex)
 {
-	if (isNaN(playerIndex)) playerIndex = 0;
-	$('.gameinput-player' + playerIndex).remove();
-	$("head").append('<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">');
+    if (isNaN(playerIndex)) playerIndex = 0;
+    $('.gameinput-player' + playerIndex).remove();
+    $("head").append('<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">');
 }
 
 GameInput.Schema.Key = function(code, text)
 {
-	this.index = code;
-	this.text = text;
+    this.index = code;
+    this.text = text;
 };
 
 GameInput.Schema.Button = function(index)
 {
-	this.index = index;
+    this.index = index;
 };
 
 GameInput.Schema.AxisButton = function(indexAndDirection, threshold)
 {
-	this.index = Math.abs(indexAndDirection);
-	this.direction = indexAndDirection < 0 ? "negative" : "positive";
-	if ( typeof(threshold) === "undefined" ) threshold = 0.5;
-	this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
+    this.index = Math.abs(indexAndDirection);
+    this.direction = indexAndDirection < 0 ? "negative" : "positive";
+    if ( typeof(threshold) === "undefined" ) threshold = 0.5;
+    this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
 };
 
 GameInput.Schema.Generic = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
                             l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right)
+                            r_up, r_down, r_left, r_right,
+                            l_button, r_button, l_trigger, r_trigger)
 {
-	this.d_up = d_up;
-	this.d_down = d_down;
-	this.d_left = d_left;
-	this.d_right = d_right;
-	this.menu = menu;
-	this.button0 = button0;
-	this.button1 = button1;
-	this.button2 = button2;
-	this.button3 = button3;
-	this.l_up = l_up;
-	this.l_down = l_down;
-	this.l_left = l_left;
-	this.l_right = l_right;
-	this.r_up = r_up;
-	this.r_down = r_down;
-	this.r_left = r_left;
-	this.r_right = r_right;
+    this.d_up = d_up;
+    this.d_down = d_down;
+    this.d_left = d_left;
+    this.d_right = d_right;
+    this.menu = menu;
+    this.button0 = button0;
+    this.button1 = button1;
+    this.button2 = button2;
+    this.button3 = button3;
+    this.l_up = l_up;
+    this.l_down = l_down;
+    this.l_left = l_left;
+    this.l_right = l_right;
+    this.r_up = r_up;
+    this.r_down = r_down;
+    this.r_left = r_left;
+    this.r_right = r_right;
+    this.l_button = l_button;
+    this.r_button = r_button;
+    this.l_trigger = l_trigger;
+    this.r_trigger = r_trigger;
 };
 
 GameInput.Schema.Generic.prototype.lookup = function(key)
 {
-	var schema = this;
-	for (var i in schema)
-	{
-		if (schema[i] instanceof GameInput.Schema.Key)
-		{
-			if (key == schema[i].index) return i;
-		}
-		else if (schema[i] == key) return i;
-	}
+    var schema = this;
+    for (var i in schema)
+    {
+        if (schema[i] instanceof GameInput.Schema.Key)
+        {
+            if (key == schema[i].index) return i;
+        }
+        else if (schema[i] == key) return i;
+    }
 }
 
 GameInput.Schema.GamePadAPI = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
                             l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right)
+                            r_up, r_down, r_left, r_right,
+                            l_button, r_button, l_trigger, r_trigger)
 {
-	for (var i in arguments)
-	{
-		if (typeof(arguments[i]) === "number") arguments[i] = new GameInput.Schema.Button(arguments[i]);
-	}
-	// if (typeof(d_up) === "number") d_up = new GameInput.Schema.Button(d_up); // TODO find out what I was doing here... it breaks things if uncommented
+    for (var i in arguments)
+    {
+        if (typeof(arguments[i]) === "number") arguments[i] = new GameInput.Schema.Button(arguments[i]);
+    }
+    // if (typeof(d_up) === "number") d_up = new GameInput.Schema.Button(d_up); // TODO find out what I was doing here... it breaks things if uncommented
 
-	GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
+    GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
                             l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right);
+                            r_up, r_down, r_left, r_right,
+                            l_button, r_button, l_trigger, r_trigger);
 };
 GameInput.Schema.GamePadAPI.prototype = new GameInput.Schema.Generic();
 GameInput.Schema.GamePadAPI.prototype.constructor = GameInput.Schema.GamePadAPI;
@@ -260,16 +273,18 @@ GameInput.Schema.GamePadAPI.prototype.constructor = GameInput.Schema.GamePadAPI;
 GameInput.Schema.KeyboardAPI = function(d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
                             l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right)
+                            r_up, r_down, r_left, r_right,
+                            l_button, r_button, l_trigger, r_trigger)
 {
-	for (var i in arguments)
-	{
-		if (typeof(arguments[i]) !== "undefined" && (arguments[i] instanceof GameInput.Schema.Key) === false) throw "Must be undefined or GameInput.Schema.Key";
-	}
-	GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
+    for (var i in arguments)
+    {
+        if (typeof(arguments[i]) !== "undefined" && (arguments[i] instanceof GameInput.Schema.Key) === false) throw "Must be undefined or GameInput.Schema.Key";
+    }
+    GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
                             menu, button0, button1, button2, button3,
                             l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right);
+                            r_up, r_down, r_left, r_right,
+                            l_button, r_button, l_trigger, r_trigger);
 };
 GameInput.Schema.KeyboardAPI.prototype = new GameInput.Schema.Generic();
 GameInput.Schema.KeyboardAPI.prototype.constructor = GameInput.Schema.KeyboardAPI;
@@ -346,34 +361,34 @@ GameInput.Schema.KeyboardAPI.Keys = {
 GameInput.Schema.KeyboardAPI.Standard = {};
 
 GameInput.Schema.KeyboardAPI.Standard.QWERTY = new GameInput.Schema.KeyboardAPI(
-	GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.ENTER,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_A,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_S,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_D,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_F
+    GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.ENTER,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_A,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_S,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_D,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_F
 );
 
 GameInput.Schema.KeyboardAPI.Standard.Dvorak = new GameInput.Schema.KeyboardAPI(
-	GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
-	GameInput.Schema.KeyboardAPI.Keys.ENTER,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_A,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_O,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_E,
-	GameInput.Schema.KeyboardAPI.Keys.KEY_U
+    GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
+    GameInput.Schema.KeyboardAPI.Keys.ENTER,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_A,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_O,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_E,
+    GameInput.Schema.KeyboardAPI.Keys.KEY_U
 );
 
 GameInput.Type = function(name, theme, defaultSchema)
 {
-	this.name = name;
-	this.theme = theme;
-	this.schema = defaultSchema;
+    this.name = name;
+    this.theme = theme;
+    this.schema = defaultSchema;
 };
 GameInput.Type.prototype.enable = function(){};
 
@@ -385,37 +400,37 @@ GameInput.Type.Ragdoll = new GameInput.Type("Ragdoll", new GameInput.Theme("Ragd
 
 GameInput.Type.Keyboard = new GameInput.Type("Keyboard", new GameInput.Theme("Blank"));
 GameInput.Type.Keyboard.StandardThemes = {
-	Blank: new GameInput.Theme("Blank"),
-	Dvorak: new GameInput.Theme("Dvorak"),
-	QWERTY: new GameInput.Theme("QWERTY")
+    Blank: new GameInput.Theme("Blank"),
+    Dvorak: new GameInput.Theme("Dvorak"),
+    QWERTY: new GameInput.Theme("QWERTY")
 };
 
 
 GameInput.Type.Keyboard.setQWERTY = function()
 {
-	GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
-	GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
+    GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
+    GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
 
-	if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
-	{
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
-	}
+    if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+    {
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
+    }
 };
 
 GameInput.Type.Keyboard.setDvorak = function()
 {
-	GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
-	GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
+    GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
+    GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
 
-	if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
-	{
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
-		GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
+    if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+    {
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
+        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
 
-	}
+    }
 };
 
 /**
@@ -423,506 +438,705 @@ GameInput.Type.Keyboard.setDvorak = function()
  */
 GameInput.Model = function(type, iconName, id, os, schema)
 {
-	this.type = type;
-	this.iconName = iconName;
-	this.id = id;
-	this.os = os;
-	this.schema = schema;
+    this.type = type;
+    this.iconName = iconName;
+    this.id = id;
+    this.os = os;
+    this.schema = schema;
 };
 
 GameInput.Model.prototype.getIcon = function()
 {
-	return "css/gameinput/img/models/" + this.iconName + ".png";
+    return "css/gameinput/img/models/" + this.iconName + ".png";
 }
 
 GameInput.Model.prototype.setIcon = function(playerIndex)
 {
-	if (isNaN(playerIndex)) playerIndex = 0;
-	$("img.gameinput-icon-player" + playerIndex).attr("src", this.getIcon());
-	$(".gameinput-icon-background-player" + playerIndex).attr("background-image", "url('" + this.getIcon() + "')");
+    if (isNaN(playerIndex)) playerIndex = 0;
+    $("img.gameinput-icon-player" + playerIndex).attr("src", this.getIcon());
+    $(".gameinput-icon-background-player" + playerIndex).attr("background-image", "url('" + this.getIcon() + "')");
 }
 
 GameInput.Type.Keyboard.model = new GameInput.Model(
-		GameInput.Type.Keyboard,
-		"keyboard",
-		"keyboard",
-		undefined,
-		GameInput.Schema.KeyboardAPI.Standard.QWERTY);
+        GameInput.Type.Keyboard,
+        "keyboard",
+        "keyboard",
+        undefined,
+        GameInput.Schema.KeyboardAPI.Standard.QWERTY);
 
 GameInput.Models = {};
 GameInput.Models.Generic = [
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"xbox360",
-		"XInput",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			13, 14, 15, 16,
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"xbox360",
-		"XBox 360",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			13, 14, 15, 16,
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Ragdoll,
-		"ds3",
-		"PLAYSTATION",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			5,7,8,6,
-			8,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"generic",
-		"Logitech Rumblepad 2",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			12,13,14,15,
-			10,
-			2,3,1,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"generic",
-		"Logitech Dual Action",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			12,13,14,15,
-			10,
-			2,3,1,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"generic",
-		"STANDARD GAMEPAD",
-		undefined,
-		new GameInput.Schema.GamePadAPI(
-			13, 14, 15, 16,
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
-	))
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "XInput",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            13, 14, 15, 16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "XBox 360",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            13, 14, 15, 16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "ds3",
+        "PLAYSTATION",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            5,7,8,6,
+            8,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "generic",
+        "Logitech Rumblepad 2",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            12,13,14,15,
+            10,
+            2,3,1,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "generic",
+        "Logitech Dual Action",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            12,13,14,15,
+            10,
+            2,3,1,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "generic",
+        "STANDARD GAMEPAD",
+        undefined,
+        new GameInput.Schema.GamePadAPI(
+            13, 14, 15, 16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            undefined,
+            undefined,
+            undefined,
+            undefined//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    ))
 ];
 
 GameInput.Models.Specific = [
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"xbox360",
-		"Xbox 360 Controller (XInput STANDARD GAMEPAD)",
-		"Windows",
-		new GameInput.Schema.GamePadAPI(
-			13,14,15,16,
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"xbox360",
-		"©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
-		"Linux",
-		new GameInput.Schema.GamePadAPI(
-			13,14,15,16,
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"xbox360",
-		"Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)",
-		"Linux",
-		new GameInput.Schema.GamePadAPI(
-			new GameInput.Schema.AxisButton(-8),
-			new GameInput.Schema.AxisButton(8),
-			new GameInput.Schema.AxisButton(-7),
-			new GameInput.Schema.AxisButton(7),
-			8,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-5),
-			new GameInput.Schema.AxisButton(5),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Hedgehog,
-		"dc",
-		"HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
-		"Linux",
-		new GameInput.Schema.GamePadAPI(
-			13, 15, 16, 14,
-			4,
-			15,14,16,13,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1)
-	)),
-	new GameInput.Model(
-		GameInput.Type.Ragdoll,
-		"ds4",
-		"Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
-		"Linux",
-		new GameInput.Schema.GamePadAPI(
-			new GameInput.Schema.AxisButton(-11),
-			new GameInput.Schema.AxisButton(11),
-			new GameInput.Schema.AxisButton(-10),
-			new GameInput.Schema.AxisButton(10),
-			10,
-			1,2,3,4,
-			new GameInput.Schema.AxisButton(-2),
-			new GameInput.Schema.AxisButton(2),
-			new GameInput.Schema.AxisButton(-1),
-			new GameInput.Schema.AxisButton(1),
-			new GameInput.Schema.AxisButton(-4),
-			new GameInput.Schema.AxisButton(4),
-			new GameInput.Schema.AxisButton(-3),
-			new GameInput.Schema.AxisButton(3)
-	))
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
+        "Windows",
+        new GameInput.Schema.GamePadAPI(
+            13,14,15,16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            13,14,15,16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3)//,
+            // TODO l_button,
+            // TODO r_button,
+            // TODO l_trigger,
+            // TODO r_trigger
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            new GameInput.Schema.AxisButton(-8),
+            new GameInput.Schema.AxisButton(8),
+            new GameInput.Schema.AxisButton(-7),
+            new GameInput.Schema.AxisButton(7),
+            8,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-5),
+            new GameInput.Schema.AxisButton(5),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            5,
+            6,
+            new GameInput.Schema.AxisButton(3),
+            new GameInput.Schema.AxisButton(6)
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "xbox360",
+        "0e6f-0213-Afterglow Gamepad for Xbox 360",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            new GameInput.Schema.AxisButton(-8),
+            new GameInput.Schema.AxisButton(8),
+            new GameInput.Schema.AxisButton(-7),
+            new GameInput.Schema.AxisButton(7),
+            8,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-5),
+            new GameInput.Schema.AxisButton(5),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            5,
+            6,
+            new GameInput.Schema.AxisButton(3),
+            new GameInput.Schema.AxisButton(6)
+    )),
+    new GameInput.Model(
+        GameInput.Type.Hedgehog,
+        "dc",
+        "HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            13, 15, 16, 14,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            5, 6
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "ds3",
+        "Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            13, 14, 15, 16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3),
+            5,6,7,8
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "ds3",
+        "054c-0268-Sony PLAYSTATION(R)3 Controller",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            5,7,8,6,
+            4,
+            15, 14, 16, 13,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3),
+            11,12,9,10
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "ds4",
+        "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            13,14,15,16,
+            10,
+            1,2,3,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3),
+            5,
+            6,
+            7,
+            8
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "ds4",
+        "054c-05c4-Sony Computer Entertainment Wireless Controller",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            new GameInput.Schema.AxisButton(-8),
+            new GameInput.Schema.AxisButton(8),
+            new GameInput.Schema.AxisButton(-7),
+            new GameInput.Schema.AxisButton(7),
+            10,
+            2,3,1,4,
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            new GameInput.Schema.AxisButton(-6),
+            new GameInput.Schema.AxisButton(6),
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3),
+            5,
+            6,
+            7,
+            8
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "joystick",
+        "MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            new GameInput.Schema.AxisButton(-3),
+            new GameInput.Schema.AxisButton(3),
+            new GameInput.Schema.AxisButton(-4),
+            new GameInput.Schema.AxisButton(4),
+            10,
+            4,2,1,3,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            7,8,5,6
+    )),
+    new GameInput.Model(
+        GameInput.Type.Ragdoll,
+        "joystick",
+        "0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick",
+        "Linux",
+        new GameInput.Schema.GamePadAPI(
+            new GameInput.Schema.AxisButton(-2),
+            new GameInput.Schema.AxisButton(2),
+            new GameInput.Schema.AxisButton(-1),
+            new GameInput.Schema.AxisButton(1),
+            10,
+            1,2,3,4,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            5,6,7,8
+    ))
 ];
 
 GameInput.KeyboardWatcher = new function()
 {
-	var watcher = this;
-	this.PlayerToWatch = undefined;
+    var watcher = this;
+    this.PlayerToWatch = undefined;
 
-	//setup keydown/keyup events
+    //setup keydown/keyup events
 
-	$(document).keyup(function(e) {
-		if (!GameInput.handleKeyboard) return;
+    $(document).keyup(function(e) {
+        if (!GameInput.handleKeyboard) return;
 
-		var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
-		if (typeof(player.schema) !== "undefined" )
-		{
-			var schemaButtonName = player.schema.lookup(e.which);
-			if (typeof(schemaButtonName) !== "undefined" )
-			{
-				$(".gameinput-player" + player.index + "-" + schemaButtonName).removeClass("gameinput-button-active");
-				player.buttonUp(schemaButtonName);
-			}
-		}
-	})
-	$(document).keydown(function(e) {
-		if (!GameInput.handleKeyboard) return;
+        var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
+        if (typeof(player.schema) !== "undefined" )
+        {
+            var schemaButtonName = player.schema.lookup(e.which);
+            if (typeof(schemaButtonName) !== "undefined" )
+            {
+                $(".gameinput-player" + player.index + "-" + schemaButtonName).removeClass("gameinput-button-active");
+                player.buttonUp(schemaButtonName);
+            }
+        }
+    })
+    $(document).keydown(function(e) {
+        if (!GameInput.handleKeyboard) return;
 
-		var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
-		if (typeof(player.schema) !== "undefined" )
-		{
-			var schemaButtonName = player.schema.lookup(e.which);
-			if (typeof(schemaButtonName) !== "undefined" )
-			{
-				$(".gameinput-player" + player.index + "-" + schemaButtonName).addClass("gameinput-button-active");
-				player.buttonDown(schemaButtonName);
-			}
-		}
-	})
+        var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
+        if (typeof(player.schema) !== "undefined" )
+        {
+            var schemaButtonName = player.schema.lookup(e.which);
+            if (typeof(schemaButtonName) !== "undefined" )
+            {
+                $(".gameinput-player" + player.index + "-" + schemaButtonName).addClass("gameinput-button-active");
+                player.buttonDown(schemaButtonName);
+            }
+        }
+    })
 };
 
 GameInput.loopingUpdate = true;
 
 GameInput.startUpdateLoop = function()
 {
-	GameInput.loopingUpdate = true;
-	GameInput.nextUpdateLoop();
+    GameInput.loopingUpdate = true;
+    GameInput.nextUpdateLoop();
 }
 
 GameInput.stopUpdateLoop = function()
 {
-	GameInput.loopingUpdate = false;
+    GameInput.loopingUpdate = false;
 }
 
 GameInput.nextUpdateLoop = function()
 {
-	if (GameInput.loopingUpdate === false) return;
-	GameInput.update();
- 	requestAnimationFrame(GameInput.nextUpdateLoop); // way too slow!
-// 	setTimeout($.throttle(10, GameInput.nextUpdateLoop), 1);
+    if (GameInput.loopingUpdate === false) return;
+    GameInput.update();
+     requestAnimationFrame(GameInput.nextUpdateLoop); // way too slow!
+//     setTimeout($.throttle(10, GameInput.nextUpdateLoop), 1);
 }
 
 GameInput.update = function()
 {
-	if (GameInput.canUseGamepadAPI())
-	{
-		GameInput.Connection.Gamepads = navigator.getGamepads();
+    if (GameInput.canUseGamepadAPI())
+    {
+        GameInput.Connection.Gamepads = navigator.getGamepads();
 
-		for (var i = 0; i < GameInput.Connection.Gamepads.length; i++)
-		{
-			GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
-			GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
+        for (var i = 0; i < GameInput.Connection.Gamepads.length; i++)
+        {
+            GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
+            GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
 
-			var currentGamepad = GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]];
-			var currentSchema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
-			if (typeof(currentGamepad) === "undefined") continue;
+            var currentGamepad = GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]];
+            var currentSchema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
+            if (typeof(currentGamepad) === "undefined") continue;
 
-			for (var schemaIndex in currentSchema)
-			{
-				if (typeof(currentSchema[schemaIndex]) === "undefined")
-				{
-					//skip
-				}
-				else if ( typeof(currentGamepad.buttons[currentSchema[schemaIndex] - 1]
-						   ) === "undefined")
-				{
-					var negativeAxis = false;
-					if (currentSchema[schemaIndex].threshold < 0) negativeAxis = true;
+            for (var schemaIndex in currentSchema)
+            {
+                if (typeof(currentSchema[schemaIndex]) === "undefined")
+                {
+                    //skip
+                }
+                else if ( typeof(currentGamepad.buttons[currentSchema[schemaIndex] - 1]
+                           ) === "undefined")
+                {
+                    var negativeAxis = false;
+                    if (currentSchema[schemaIndex].threshold < 0) negativeAxis = true;
 
-					var axisValue = GameInput.Connection.Gamepads[i].axes[currentSchema[schemaIndex].index - 1];
-					var threshold = currentSchema[schemaIndex].threshold;
+                    var axisValue = GameInput.Connection.Gamepads[i].axes[currentSchema[schemaIndex].index - 1];
+                    var threshold = currentSchema[schemaIndex].threshold;
 
-					if ( (negativeAxis && axisValue < threshold)
-						|| (!negativeAxis && axisValue > threshold))
-					{
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-						$(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
-					}
-					else
-					{
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-						$(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
-					}
-				}
-				else
-				{
-					if (GameInput.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
-					{
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-						$(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
-					}
-					else
-					{
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-						$(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
-					}
-				}
-			}
-		}
+                    if ( (negativeAxis && axisValue < threshold)
+                        || (!negativeAxis && axisValue > threshold))
+                    {
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
+                        $(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
+                    }
+                    else
+                    {
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
+                        $(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
+                    }
+                }
+                else
+                {
+                    if (GameInput.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
+                    {
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
+                        $(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
+                    }
+                    else
+                    {
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
+                        $(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
+                    }
+                }
+            }
+        }
 
-		// Keydown / Keyup
-		for (var i = 0; i < GameInput.Players.length; i++)
-		{
-			for (var j in GameInput.Players[i].state)
-			{
-				if ( GameInput.Players[i].previous.state[j] === false
-					&& GameInput.Players[i].state[j] === true )
-				{
-					GameInput.Players[i].buttonDown(j);
-				}
-				else if ( GameInput.Players[i].previous.state[j] === true
-					&& GameInput.Players[i].state[j] === false )
-				{
-					GameInput.Players[i].buttonUp(j);
-				}
-			}
-		}
-	}
+        // Keydown / Keyup
+        for (var i = 0; i < GameInput.Players.length; i++)
+        {
+            for (var j in GameInput.Players[i].state)
+            {
+                if (GameInput.firstPress !== true)
+                {
+                    GameInput.firstPress = true;
+                    return;
+                }
+
+                if ( GameInput.Players[i].previous.state[j] === false
+                    && GameInput.Players[i].state[j] === true )
+                {
+                    GameInput.Players[i].buttonDown(j);
+                }
+                else if ( GameInput.Players[i].previous.state[j] === true
+                    && GameInput.Players[i].state[j] === false )
+                {
+                    GameInput.Players[i].buttonUp(j);
+                }
+            }
+        }
+    }
 };
 
 GameInput.initialGamePadSetup = function()
 {
-	// Pause Game or similar
-	for (var i = 0; i < GameInput.reshufflePlayersActions.length; i++)
-	{
-		if (typeof(GameInput.reshufflePlayersActions[i]) === "function") GameInput.reshufflePlayersActions[i]();
-	}
+    // Pause Game or similar
+    for (var i = 0; i < GameInput.reshufflePlayersActions.length; i++)
+    {
+        if (typeof(GameInput.reshufflePlayersActions[i]) === "function") GameInput.reshufflePlayersActions[i]();
+    }
 
-	//clear gamepad information
-	for (var i = 0; i < GameInput.Players.length; i++)
-	{
-		GameInput.Players[i].type = undefined;
-		GameInput.Players[i].model = undefined;
-		GameInput.Players[i].schema = undefined;
-		GameInput.Players[i].theme = undefined;
-	}
-	$("img.gameinput-icon").attr("src", "");
+    //clear gamepad information
+    for (var i = 0; i < GameInput.Players.length; i++)
+    {
+        GameInput.Players[i].type = undefined;
+        GameInput.Players[i].model = undefined;
+        GameInput.Players[i].schema = undefined;
+        GameInput.Players[i].theme = undefined;
+    }
+    $("img.gameinput-icon").attr("src", "");
 
-	if (GameInput.canUseGamepadAPI())
-	{
-		window.addEventListener("gamepadconnected", function(e) {
-			if (GameInput.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-				e.gamepad.index, e.gamepad.id,
-				e.gamepad.buttons.length, e.gamepad.axes.length);
-			GameInput.Connection.gained(e.gamepad);
-			GameInput.initialGamePadSetup();
-		}, false);
+    if (GameInput.canUseGamepadAPI())
+    {
+        window.addEventListener("gamepadconnected", function(e) {
+            if (GameInput.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                e.gamepad.index, e.gamepad.id,
+                e.gamepad.buttons.length, e.gamepad.axes.length);
+            GameInput.Connection.gained(e.gamepad);
+            GameInput.initialGamePadSetup();
+        }, false);
 
-		window.addEventListener("gamepaddisconnected", function(e) {
-			if (GameInput.debug) console.debug("Gamepad disconnected from index %d: %s",
-				e.gamepad.index, e.gamepad.id);
-			GameInput.Connection.lost(e.gamepad);
-			GameInput.initialGamePadSetup();
-		}, false);
+        window.addEventListener("gamepaddisconnected", function(e) {
+            if (GameInput.debug) console.debug("Gamepad disconnected from index %d: %s",
+                e.gamepad.index, e.gamepad.id);
+            GameInput.Connection.lost(e.gamepad);
+            GameInput.initialGamePadSetup();
+        }, false);
 
-		GameInput.Connection.Gamepads = navigator.getGamepads();
+        GameInput.Connection.Gamepads = navigator.getGamepads();
 
-		for (var i in GameInput.Connection.Gamepads)
-		{
-			if (GameInput.Connection.Gamepads[i] instanceof Gamepad)
-			{
-				//Translate into Type -  Players order is gamepad order
-				for (var j = 0; j < GameInput.Models.Specific.length; j++)
-				{
-					if ( GameInput.Models.Specific[j].id.toASCII() === GameInput.Connection.Gamepads[i].id.toASCII()
-						&& GameInput.OS.Detected === GameInput.Models.Specific[j].os )
-					{
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Specific[j].type;
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Specific[j];
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Specific[j].schema;
-						GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Specific[j].type.theme;
-					}
-				}
+        if (   GameInput.Connection.Gamepads[0] === undefined
+            && GameInput.Connection.Gamepads[1] === undefined
+            && GameInput.Connection.Gamepads[2] === undefined
+            && GameInput.Connection.Gamepads[3] === undefined )
+        {
+            GameInput.firstPress = false;
+        }
 
-				if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
-				{
-					for (var j = 0; j < GameInput.Models.Generic.length; j++)
-					{
-						if (GameInput.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null)
-						{
-							GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Generic[j].type;
-							GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Generic[j];
-							GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Generic[j].schema;
-							GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Generic[j].type.theme;
-						}
-					}
-				}
+        for (var i in GameInput.Connection.Gamepads)
+        {
+            if (GameInput.Connection.Gamepads[i] instanceof Gamepad)
+            {
+                //Translate into Type -  Players order is gamepad order
+                for (var j = 0; j < GameInput.Models.Specific.length; j++)
+                {
+                    if ( GameInput.Models.Specific[j].id.toASCII() === GameInput.Connection.Gamepads[i].id.toASCII()
+                        && GameInput.OS.Detected === GameInput.Models.Specific[j].os )
+                    {
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Specific[j].type;
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Specific[j];
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Specific[j].schema;
+                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Specific[j].type.theme;
+                    }
+                }
 
-				// blank state to start
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
+                if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
+                {
+                    for (var j = 0; j < GameInput.Models.Generic.length; j++)
+                    {
+                        if (GameInput.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null)
+                        {
+                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Generic[j].type;
+                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Generic[j];
+                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Generic[j].schema;
+                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Generic[j].type.theme;
+                        }
+                    }
 
-				// setup Previous as current
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.type = GameInput.Players[GameInput.Connection.GamePadMapping[i]].type;
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.model = GameInput.Players[GameInput.Connection.GamePadMapping[i]].model;
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.schema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.theme = GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme;
-				GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
+                    if (GameInput.Connection.Gamepads[i] instanceof Gamepad && typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
+                    {
+                        console.warn("Gamepad not mapped: \"" + GameInput.Connection.Gamepads[i].id + "\"");
+                    }
+                }
 
-			}
-		}
-	}
-	else if (GameInput.debug)
-	{
-		console.debug("This browser does not support the Gamepad API");
-	}
+                // blank state to start
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
 
-	//Setup Keyboard player
-	if (GameInput.handleKeyboard)
-	{
-		GameInput.KeyboardWatcher.PlayerToWatch = undefined;
-		for (var i = 0; i < GameInput.Players.length; i++)
-		{
-			// last player is keyboard
-			if (GameInput.Players[i].type === undefined)
-			{
-				GameInput.Players[i].type = GameInput.Type.Keyboard;
-				GameInput.Players[i].model = GameInput.Type.Keyboard.model;
-				GameInput.Players[i].schema = GameInput.Type.Keyboard.schema;
-				GameInput.Players[i].theme = GameInput.Type.Keyboard.theme;
+                // setup Previous as current
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.type = GameInput.Players[GameInput.Connection.GamePadMapping[i]].type;
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.model = GameInput.Players[GameInput.Connection.GamePadMapping[i]].model;
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.schema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.theme = GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme;
+                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
 
-				GameInput.KeyboardWatcher.PlayerToWatch = i;
-				break;
-			}
-		}
-	}
-	else
-	{
-				GameInput.KeyboardWatcher.PlayerToWatch = undefined;
+            }
+        }
+    }
+    else if (GameInput.debug)
+    {
+        console.debug("This browser does not support the Gamepad API");
+    }
 
-	}
+    //Setup Keyboard player
+    if (GameInput.handleKeyboard)
+    {
+        GameInput.KeyboardWatcher.PlayerToWatch = undefined;
+        for (var i = 0; i < GameInput.Players.length; i++)
+        {
+            // last player is keyboard
+            if (GameInput.Players[i].type === undefined)
+            {
+                GameInput.Players[i].type = GameInput.Type.Keyboard;
+                GameInput.Players[i].model = GameInput.Type.Keyboard.model;
+                GameInput.Players[i].schema = GameInput.Type.Keyboard.schema;
+                GameInput.Players[i].theme = GameInput.Type.Keyboard.theme;
 
-	for (var i = 0; i < GameInput.Players.length; i++)
-	{
-		if (GameInput.Players[i].type instanceof GameInput.Type)
-		{
-			GameInput.Players[i].type.theme.enable(i);
-			if (typeof(GameInput.Players[i].model) !== "undefined" && GameInput.Players[i].model instanceof GameInput.Model) GameInput.Players[i].model.setIcon(i);
-		}
-	}
+                GameInput.KeyboardWatcher.PlayerToWatch = i;
+                break;
+            }
+        }
+    }
+    else
+    {
+                GameInput.KeyboardWatcher.PlayerToWatch = undefined;
+
+    }
+
+    for (var i = 0; i < GameInput.Players.length; i++)
+    {
+        if (GameInput.Players[i].type instanceof GameInput.Type)
+        {
+            GameInput.Players[i].type.theme.enable(i);
+            if (typeof(GameInput.Players[i].model) !== "undefined" && GameInput.Players[i].model instanceof GameInput.Model) GameInput.Players[i].model.setIcon(i);
+        }
+    }
 }
 
 GameInput.reshufflePlayersActions = [];
 
 GameInput.onReshufflePlayers = function(action)
 {
-	GameInput.reshufflePlayersActions.push(action);
+    GameInput.reshufflePlayersActions.push(action);
 }
 
 /* Initial Configuration */
 
 for (var id in GameInput.OS.clientStrings) {
-	if (GameInput.OS.clientStrings[id].r.test(navigator.userAgent)) {
-		GameInput.OS.Detected = GameInput.OS.clientStrings[id].s;
-		break;
-	}
+    if (GameInput.OS.clientStrings[id].r.test(navigator.userAgent)) {
+        GameInput.OS.Detected = GameInput.OS.clientStrings[id].s;
+        break;
+    }
 }
 
 GameInput.initialGamePadSetup();
