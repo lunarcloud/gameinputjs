@@ -222,12 +222,8 @@
 <script>
     "use strict";
 
-    document.body.onload = function()
-    {
-        //GameInput.Type.Keyboard.setDvorak();
-        GameInput.onReshufflePlayers(setupPlayers);
-        GameInput.initialGamePadSetup();
-    };
+    GameInput.onReshufflePlayers(setupPlayers);
+    GameInput.initialGamePadSetup();
 
     function setupPlayers()
     {
