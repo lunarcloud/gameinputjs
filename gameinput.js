@@ -4,1166 +4,1162 @@
  */
 "use strict";
 
-String.prototype.toASCII = function()
-{
-    return this.replace(/[^\x00-\x7F]/g, "");
-}
-
 /**
  * GameInput
  * @brief   HTML5 Game Input System
  * @desc    System for using a gamepad or keyboard control scheme for games
  *
  */
-var GameInput = {};
+var GameInput = gi = {};
 
-GameInput.OS = {};
-GameInput.OS.Detected = "unknown OS";
-GameInput.OS.clientStrings = [
-    {s:'Windows 10', r:/(Windows 10.0|Windows NT 10.0)/},
-    {s:'Windows 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
-    {s:'Windows 8', r:/(Windows 8|Windows NT 6.2)/},
-    {s:'Windows 7', r:/(Windows 7|Windows NT 6.1)/},
-    {s:'Windows Vista', r:/Windows NT 6.0/},
-    {s:'Windows Server 2003', r:/Windows NT 5.2/},
-    {s:'Windows XP', r:/(Windows NT 5.1|Windows XP)/},
-    {s:'Windows 2000', r:/(Windows NT 5.0|Windows 2000)/},
-    {s:'Windows ME', r:/(Win 9x 4.90|Windows ME)/},
-    {s:'Windows 98', r:/(Windows 98|Win98)/},
-    {s:'Windows 95', r:/(Windows 95|Win95|Windows_95)/},
-    {s:'Windows NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
-    {s:'Windows CE', r:/Windows CE/},
-    {s:'Windows 3.11', r:/Win16/},
-    {s:'Android', r:/Android/},
-    {s:'Open BSD', r:/OpenBSD/},
-    {s:'Sun OS', r:/SunOS/},
-    {s:'Linux', r:/(Linux|X11)/},
-    {s:'iOS', r:/(iPhone|iPad|iPod)/},
-    {s:'Mac OS X', r:/Mac OS X/},
-    {s:'Mac OS', r:/(MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
-    {s:'QNX', r:/QNX/},
-    {s:'UNIX', r:/UNIX/},
-    {s:'BeOS', r:/BeOS/},
-    {s:'OS/2', r:/OS\/2/},
-    {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|il_archiver)/}
-];
+// encapsulate
+(function(){
 
-GameInput.Schema = {};
+    /* Helper function */
+    function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
 
-GameInput.Schema.Names = {
-    d_up        :   "d_up",
-    d_down      :   "d_down",
-    d_left      :   "d_left",
-    d_right     :   "d_right",
-    menu        :   "menu",
-    button0     :   "button0",
-    button1     :   "button1",
-    button2     :   "button2",
-    button3     :   "button3",
-    l_up        :   "l_up",
-    l_down      :   "l_down",
-    l_left      :   "l_left",
-    l_right     :   "l_right",
-    r_up        :   "r_up",
-    r_down      :   "r_down",
-    r_left      :   "r_left",
-    r_right     :   "r_right",
-    l_button    :   "l_button",
-    r_button    :   "r_button",
-    l_trigger   :   "l_trigger",
-    r_trigger   :   "r_trigger"
-};
+    gi.OS = {};
+    gi.OS.Detected = "Other OS";
+    gi.OS.clientStrings = [
+        {s:'Windows', r:/Windows/},
+        {s:'Android', r:/Android/},
+        {s:'Linux', r:/(Linux|X11)/},
+        {s:'iOS', r:/(iPhone|iPad|iPod)/},
+        {s:'Mac OS X', r:/(Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh)/}
+    ];
 
-GameInput.debug = true;
+    gi.Schema = {};
 
-GameInput.handleKeyboard = true;
-
-GameInput.firstPress = false;
-
-GameInput.canUseGamepadAPI = function()
-{
-    return "getGamepads" in navigator;
-}
-
-GameInput.Player = function(number)
-{
-    this.number = number;
-    this.index = number - 1;
-
-    this.type;
-    this.model;
-    this.schema;
-    this.theme;
-    this.state;
-
-    this.previous = {
-        type: undefined,
-        model: undefined,
-        schema: undefined,
-        state: undefined,
+    gi.Schema.Names = {
+        d_up        :   "d_up",
+        d_down      :   "d_down",
+        d_left      :   "d_left",
+        d_right     :   "d_right",
+        menu        :   "menu",
+        button0     :   "button0",
+        button1     :   "button1",
+        button2     :   "button2",
+        button3     :   "button3",
+        l_up        :   "l_up",
+        l_down      :   "l_down",
+        l_left      :   "l_left",
+        l_right     :   "l_right",
+        r_up        :   "r_up",
+        r_down      :   "r_down",
+        r_left      :   "r_left",
+        r_right     :   "r_right",
+        l_button    :   "l_button",
+        r_button    :   "r_button",
+        l_trigger   :   "l_trigger",
+        r_trigger   :   "r_trigger"
     };
 
-    this.buttonDownActions = {};
-    this.buttonUpActions = {};
+    gi.debug = true;
 
-    for (var i in GameInput.Schema.Names)
+    gi.handleKeyboard = true;
+
+    gi.firstPress = false;
+
+    gi.canUseGamepadAPI = function()
     {
-        this.buttonDownActions[ GameInput.Schema.Names[i] ] = [];
-        this.buttonUpActions[ GameInput.Schema.Names[i] ] = [];
+        return "getGamepads" in navigator;
     }
 
-}
-
-GameInput.Player.prototype.buttonDown = function(schemaName)
-{
-    for ( var action in this.buttonDownActions[schemaName])
-        this.buttonDownActions[schemaName][action]();
-}
-
-GameInput.Player.prototype.buttonUp = function(schemaName)
-{
-    for ( var action in this.buttonUpActions[schemaName])
-        this.buttonUpActions[schemaName][action]();
-}
-
-GameInput.Player.prototype.onButtonDown = function(schemaName, action)
-{
-    if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
-    if (typeof(action) !== "function") throw "Action must be a function";
-
-    this.buttonDownActions[schemaName].push(action);
-};
-
-GameInput.Player.prototype.onButtonUp = function(schemaName, action)
-{
-    if (schemaName in GameInput.Schema.Names === false) throw "Must be GameInput.Schema.Names";
-    if (typeof(action) !== "function") throw "Action must be a function";
-
-    this.buttonUpActions[schemaName].push(action);
-};
-
-GameInput.Players = [
-    new GameInput.Player(1),
-    new GameInput.Player(2),
-    new GameInput.Player(3),
-    new GameInput.Player(4)
-];
-
-GameInput.Connection = {};
-
-GameInput.Connection.GamePadMapping = {
-    0 : 0,
-    1 : 1,
-    2 : 2,
-    3 : 3
-}
-
-GameInput.Connection.Gamepads = [undefined, undefined, undefined, undefined];
-
-GameInput.Connection.gained = function(gamepad)
-{
-    GameInput.initialGamePadSetup();
-};
-
-GameInput.Connection.lost = function(gamepad)
-{
-    GameInput.initialGamePadSetup();
-};
-
-GameInput.Theme = function(name)
-{
-    this.name = name;
-};
-
-GameInput.Theme.prototype.getStyleSheet = function(playerIndex)
-{
-    if (isNaN(playerIndex)) playerIndex = 0;
-    return "css/gameinput/" + this.name.toLowerCase() + "/" + playerIndex + ".css";
-}
-
-GameInput.Theme.prototype.enable = function(playerIndex)
-{
-    if (isNaN(playerIndex)) playerIndex = 0;
-
-    var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + playerIndex);
-    for (var i = 0; i < previousThemeStyleElements.length; i++) document.head.removeChild(previousThemeStyleElements[i]);
-
-    var themeStyleElement = document.createElement('link');
-    themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">';
-    document.head.appendChild(themeStyleElement);
-}
-
-GameInput.Schema.Key = function(code, text)
-{
-    this.index = code;
-    this.text = text;
-};
-
-GameInput.Schema.Button = function(index)
-{
-    this.index = index;
-};
-
-GameInput.Schema.AxisButton = function(indexAndDirection, threshold)
-{
-    this.index = Math.abs(indexAndDirection);
-    this.direction = indexAndDirection < 0 ? "negative" : "positive";
-    if ( typeof(threshold) === "undefined" ) threshold = 0.5;
-    this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
-};
-
-GameInput.Schema.Generic = function(d_up, d_down, d_left, d_right,
-                            menu, button0, button1, button2, button3,
-                            l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right,
-                            l_button, r_button, l_trigger, r_trigger)
-{
-    this.d_up = d_up;
-    this.d_down = d_down;
-    this.d_left = d_left;
-    this.d_right = d_right;
-    this.menu = menu;
-    this.button0 = button0;
-    this.button1 = button1;
-    this.button2 = button2;
-    this.button3 = button3;
-    this.l_up = l_up;
-    this.l_down = l_down;
-    this.l_left = l_left;
-    this.l_right = l_right;
-    this.r_up = r_up;
-    this.r_down = r_down;
-    this.r_left = r_left;
-    this.r_right = r_right;
-    this.l_button = l_button;
-    this.r_button = r_button;
-    this.l_trigger = l_trigger;
-    this.r_trigger = r_trigger;
-};
-
-GameInput.Schema.Generic.prototype.lookup = function(key)
-{
-    var schema = this;
-    for (var i in schema)
+    gi.Player = function(number)
     {
-        if (schema[i] instanceof GameInput.Schema.Key)
+        this.number = number;
+        this.index = number - 1;
+
+        this.type;
+        this.model;
+        this.schema;
+        this.theme;
+        this.state;
+
+        this.previous = {
+            type: undefined,
+            model: undefined,
+            schema: undefined,
+            state: undefined,
+        };
+
+        this.buttonDownActions = {};
+        this.buttonUpActions = {};
+
+        for (var i in gi.Schema.Names)
         {
-            if (key == schema[i].index) return i;
+            this.buttonDownActions[ gi.Schema.Names[i] ] = [];
+            this.buttonUpActions[ gi.Schema.Names[i] ] = [];
         }
-        else if (schema[i] == key) return i;
     }
-}
 
-GameInput.Schema.GamePadAPI = function(d_up, d_down, d_left, d_right,
-                            menu, button0, button1, button2, button3,
-                            l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right,
-                            l_button, r_button, l_trigger, r_trigger)
-{
-    for (var i in arguments)
+    gi.Player.prototype.buttonDown = function(schemaName)
     {
-        if (typeof(arguments[i]) === "number") arguments[i] = new GameInput.Schema.Button(arguments[i]);
+        for ( var action in this.buttonDownActions[schemaName])
+            this.buttonDownActions[schemaName][action]();
     }
-    // if (typeof(d_up) === "number") d_up = new GameInput.Schema.Button(d_up); // TODO find out what I was doing here... it breaks things if uncommented
 
-    GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
-                            menu, button0, button1, button2, button3,
-                            l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right,
-                            l_button, r_button, l_trigger, r_trigger);
-};
-GameInput.Schema.GamePadAPI.prototype = new GameInput.Schema.Generic();
-GameInput.Schema.GamePadAPI.prototype.constructor = GameInput.Schema.GamePadAPI;
-
-GameInput.Schema.KeyboardAPI = function(d_up, d_down, d_left, d_right,
-                            menu, button0, button1, button2, button3,
-                            l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right,
-                            l_button, r_button, l_trigger, r_trigger)
-{
-    for (var i in arguments)
+    gi.Player.prototype.buttonUp = function(schemaName)
     {
-        if (typeof(arguments[i]) !== "undefined" && (arguments[i] instanceof GameInput.Schema.Key) === false) throw "Must be undefined or GameInput.Schema.Key";
+        for ( var action in this.buttonUpActions[schemaName])
+            this.buttonUpActions[schemaName][action]();
     }
-    GameInput.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
-                            menu, button0, button1, button2, button3,
-                            l_up, l_down, l_left, l_right,
-                            r_up, r_down, r_left, r_right,
-                            l_button, r_button, l_trigger, r_trigger);
-};
-GameInput.Schema.KeyboardAPI.prototype = new GameInput.Schema.Generic();
-GameInput.Schema.KeyboardAPI.prototype.constructor = GameInput.Schema.KeyboardAPI;
 
-/**
- * @desc    Valid keycode integer
- */
-GameInput.Schema.KeyboardAPI.Keys = {
-      ENTER: new GameInput.Schema.Key(13, "Return"),
-      ESCAPE: new GameInput.Schema.Key(27, "Esc"),
-      LEFT_ARROW: new GameInput.Schema.Key(37, "←"),
-      UP_ARROW: new GameInput.Schema.Key(38, "↑"),
-      RIGHT_ARROW: new GameInput.Schema.Key(39, "→"),
-      DOWN_ARROW: new GameInput.Schema.Key(40, "↓"),
-      NUM_0: new GameInput.Schema.Key(96, "NUM 0"),
-      NUM_1: new GameInput.Schema.Key(97, "NUM 1"),
-      NUM_2: new GameInput.Schema.Key(98, "NUM 2"),
-      NUM_3: new GameInput.Schema.Key(99, "NUM 3"),
-      NUM_4: new GameInput.Schema.Key(100, "NUM 4"),
-      NUM_5: new GameInput.Schema.Key(101, "NUM 5"),
-      NUM_6: new GameInput.Schema.Key(102, "NUM 6"),
-      NUM_7: new GameInput.Schema.Key(103, "NUM 7"),
-      NUM_8: new GameInput.Schema.Key(104, "NUM 8"),
-      NUM_9: new GameInput.Schema.Key(105, "NUM 9"),
-      KEY_0: new GameInput.Schema.Key(48, "0"),
-      KEY_1: new GameInput.Schema.Key(49, "1"),
-      KEY_2: new GameInput.Schema.Key(50, "2"),
-      KEY_3: new GameInput.Schema.Key(51, "3"),
-      KEY_4: new GameInput.Schema.Key(52, "4"),
-      KEY_5: new GameInput.Schema.Key(53, "5"),
-      KEY_6: new GameInput.Schema.Key(54, "6"),
-      KEY_7: new GameInput.Schema.Key(55, "7"),
-      KEY_8: new GameInput.Schema.Key(56, "8"),
-      KEY_9: new GameInput.Schema.Key(57, "9"),
-      KEY_A: new GameInput.Schema.Key(65, "A"),
-      KEY_B: new GameInput.Schema.Key(66, "B"),
-      KEY_C: new GameInput.Schema.Key(67, "C"),
-      KEY_D: new GameInput.Schema.Key(68, "D"),
-      KEY_E: new GameInput.Schema.Key(69, "E"),
-      KEY_F: new GameInput.Schema.Key(70, "F"),
-      KEY_G: new GameInput.Schema.Key(71, "G"),
-      KEY_H: new GameInput.Schema.Key(72, "H"),
-      KEY_I: new GameInput.Schema.Key(73, "I"),
-      KEY_J: new GameInput.Schema.Key(74, "J"),
-      KEY_K: new GameInput.Schema.Key(75, "K"),
-      KEY_L: new GameInput.Schema.Key(76, "L"),
-      KEY_M: new GameInput.Schema.Key(77, "M"),
-      KEY_N: new GameInput.Schema.Key(78, "N"),
-      KEY_O: new GameInput.Schema.Key(79, "O"),
-      KEY_P: new GameInput.Schema.Key(80, "P"),
-      KEY_Q: new GameInput.Schema.Key(81, "Q"),
-      KEY_R: new GameInput.Schema.Key(82, "R"),
-      KEY_S: new GameInput.Schema.Key(83, "S"),
-      KEY_T: new GameInput.Schema.Key(84, "T"),
-      KEY_U: new GameInput.Schema.Key(85, "U"),
-      KEY_V: new GameInput.Schema.Key(86, "V"),
-      KEY_W: new GameInput.Schema.Key(87, "W"),
-      KEY_X: new GameInput.Schema.Key(88, "X"),
-      KEY_Y: new GameInput.Schema.Key(89, "Y"),
-      KEY_Z: new GameInput.Schema.Key(90, "Z"),
-      OPEN_BRACKET: new GameInput.Schema.Key(91, "["),
-      CLOSE_BRACKET: new GameInput.Schema.Key(93, "]"),
-      SEMICOLON: new GameInput.Schema.Key(186, ";"),
-      EQUALS: new GameInput.Schema.Key(187, "="),
-      COMMA: new GameInput.Schema.Key(188, ","),
-      DASH: new GameInput.Schema.Key(189, "-"),
-      PERIOD: new GameInput.Schema.Key(190, "."),
-      FORWARD_SLASH: new GameInput.Schema.Key(191, "/"),
-      GRAVE_ACCENT: new GameInput.Schema.Key(192, "`"),
-      BACK_SLASH: new GameInput.Schema.Key(220, "\\"),
-      SINGLE_QUOTE: new GameInput.Schema.Key(222, "'")
+    gi.Player.prototype.onButtonDown = function(schemaName, action)
+    {
+        if (schemaName in gi.Schema.Names === false) throw "Must be gi.Schema.Names";
+        if (typeof(action) !== "function") throw "Action must be a function";
+
+        this.buttonDownActions[schemaName].push(action);
     };
 
-GameInput.Schema.KeyboardAPI.Standard = {};
-
-GameInput.Schema.KeyboardAPI.Standard.QWERTY = new GameInput.Schema.KeyboardAPI(
-    GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.ENTER,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_A,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_S,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_D,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_F
-);
-
-GameInput.Schema.KeyboardAPI.Standard.Dvorak = new GameInput.Schema.KeyboardAPI(
-    GameInput.Schema.KeyboardAPI.Keys.UP_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.DOWN_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.LEFT_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
-    GameInput.Schema.KeyboardAPI.Keys.ENTER,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_A,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_O,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_E,
-    GameInput.Schema.KeyboardAPI.Keys.KEY_U
-);
-
-GameInput.Type = function(name, theme, defaultSchema)
-{
-    this.name = name;
-    this.theme = theme;
-    this.schema = defaultSchema;
-};
-GameInput.Type.prototype.enable = function(){};
-
-GameInput.Type.Hedgehog = new GameInput.Type("Hedgehog", new GameInput.Theme("HedgeHog"));
-
-GameInput.Type.Plumber = new GameInput.Type("Plumber", new GameInput.Theme("Plumber"));
-
-GameInput.Type.Ragdoll = new GameInput.Type("Ragdoll", new GameInput.Theme("Ragdoll"));
-
-GameInput.Type.Keyboard = new GameInput.Type("Keyboard", new GameInput.Theme("Blank"));
-GameInput.Type.Keyboard.StandardThemes = {
-    Blank: new GameInput.Theme("Blank"),
-    Dvorak: new GameInput.Theme("Dvorak"),
-    QWERTY: new GameInput.Theme("QWERTY")
-};
-
-
-GameInput.Type.Keyboard.setQWERTY = function()
-{
-    GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
-    GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
-
-    if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+    gi.Player.prototype.onButtonUp = function(schemaName, action)
     {
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.QWERTY;
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.QWERTY;
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
-    }
-};
+        if (schemaName in gi.Schema.Names === false) throw "Must be gi.Schema.Names";
+        if (typeof(action) !== "function") throw "Action must be a function";
 
-GameInput.Type.Keyboard.setDvorak = function()
-{
-    GameInput.Type.Keyboard.schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
-    GameInput.Type.Keyboard.theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
+        this.buttonUpActions[schemaName].push(action);
+    };
 
-    if (typeof(GameInput.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+    gi.Player.prototype.hasGamePad = function()
     {
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].schema = GameInput.Schema.KeyboardAPI.Standard.Dvorak;
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme = GameInput.Type.Keyboard.StandardThemes.Dvorak;
-        GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch].theme.enable(GameInput.KeyboardWatcher.PlayerToWatch);
+        return typeof(this.type) !== "undefined" && this.type !== GameInput.Type.Keyboard;
+    };
 
+    gi.Player.prototype.hasKeyboard = function()
+    {
+        return typeof(this.type) !== "undefined" && this.type === GameInput.Type.Keyboard;
+    };
+
+    gi.Players = [
+        new gi.Player(1),
+        new gi.Player(2),
+        new gi.Player(3),
+        new gi.Player(4)
+    ];
+
+    gi.Connection = {};
+
+    gi.Connection.GamePadMapping = {
+        0 : 0,
+        1 : 1,
+        2 : 2,
+        3 : 3
     }
-};
 
-/**
- * @param   schema  GameInput.Schema
- */
-GameInput.Model = function(type, iconName, id, os, schema)
-{
-    this.type = type;
-    this.iconName = iconName;
-    this.id = id;
-    this.os = os;
-    this.schema = schema;
-};
+    gi.getPlayer = function(index) {
+        return gi.Players[gi.Connection.GamePadMapping[index]];
+    }
 
-GameInput.Model.prototype.getIcon = function()
-{
-    return "css/gameinput/img/models/" + this.iconName + ".png";
-}
+    gi.Connection.Gamepads = [undefined, undefined, undefined, undefined];
 
-GameInput.Model.prototype.setIcon = function(playerIndex)
-{
-    if (isNaN(playerIndex)) playerIndex = 0;
-    var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex)
-    for (var i = 0; i < playerIcons.length; i++ ) playerIcons[i].src = this.getIcon();
+    gi.Connection.gained = function(gamepad)
+    {
+        gi.initialGamePadSetup();
+    };
 
-    var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex)
-    for (var i = 0; i < backgroundIcons.length; i++ ) backgroundIcons[i].style.backgroundImage = "url('" + this.getIcon() + "')";
-}
+    gi.Connection.lost = function(gamepad)
+    {
+        gi.initialGamePadSetup();
+    };
 
-GameInput.Type.Keyboard.model = new GameInput.Model(
-        GameInput.Type.Keyboard,
-        "keyboard",
-        "keyboard",
-        undefined,
-        GameInput.Schema.KeyboardAPI.Standard.QWERTY);
+    gi.Theme = function(name)
+    {
+        this.name = name;
+    };
 
-GameInput.Models = {};
-GameInput.Models.Generic = [
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "XInput",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            13, 14, 15, 16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "XBox 360",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            13, 14, 15, 16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "ds3",
-        "PLAYSTATION",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            5,7,8,6,
-            8,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "generic",
-        "Logitech Rumblepad 2",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            12,13,14,15,
-            10,
-            2,3,1,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "generic",
-        "Logitech Dual Action",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            12,13,14,15,
-            10,
-            2,3,1,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "generic",
-        "STANDARD GAMEPAD",
-        undefined,
-        new GameInput.Schema.GamePadAPI(
-            13, 14, 15, 16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            undefined,
-            undefined,
-            undefined,
-            undefined//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    ))
-];
+    gi.Theme.prototype.getStyleSheet = function(playerIndex)
+    {
+        if (isNaN(playerIndex)) playerIndex = 0;
+        return "css/gameinput/" + this.name.toLowerCase() + "/" + playerIndex + ".css";
+    }
 
-GameInput.Models.Specific = [
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
-        "Windows",
-        new GameInput.Schema.GamePadAPI(
-            13,14,15,16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            13,14,15,16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3)//,
-            // TODO l_button,
-            // TODO r_button,
-            // TODO l_trigger,
-            // TODO r_trigger
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            new GameInput.Schema.AxisButton(-8),
-            new GameInput.Schema.AxisButton(8),
-            new GameInput.Schema.AxisButton(-7),
-            new GameInput.Schema.AxisButton(7),
-            8,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-5),
-            new GameInput.Schema.AxisButton(5),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            5,
-            6,
-            new GameInput.Schema.AxisButton(3),
-            new GameInput.Schema.AxisButton(6)
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "xbox360",
-        "0e6f-0213-Afterglow Gamepad for Xbox 360",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            new GameInput.Schema.AxisButton(-8),
-            new GameInput.Schema.AxisButton(8),
-            new GameInput.Schema.AxisButton(-7),
-            new GameInput.Schema.AxisButton(7),
-            8,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-5),
-            new GameInput.Schema.AxisButton(5),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            5,
-            6,
-            new GameInput.Schema.AxisButton(3),
-            new GameInput.Schema.AxisButton(6)
-    )),
-    new GameInput.Model(
-        GameInput.Type.Hedgehog,
-        "dc",
-        "HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            13, 15, 16, 14,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            5, 6
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "ds3",
-        "Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            13, 14, 15, 16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3),
-            5,6,7,8
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "ds3",
-        "054c-0268-Sony PLAYSTATION(R)3 Controller",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            5,7,8,6,
-            4,
-            15, 14, 16, 13,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3),
-            11,12,9,10
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "ds4",
-        "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            13,14,15,16,
-            10,
-            1,2,3,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3),
-            5,
-            6,
-            7,
-            8
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "ds4",
-        "054c-05c4-Sony Computer Entertainment Wireless Controller",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            new GameInput.Schema.AxisButton(-8),
-            new GameInput.Schema.AxisButton(8),
-            new GameInput.Schema.AxisButton(-7),
-            new GameInput.Schema.AxisButton(7),
-            10,
-            2,3,1,4,
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            new GameInput.Schema.AxisButton(-6),
-            new GameInput.Schema.AxisButton(6),
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3),
-            5,
-            6,
-            7,
-            8
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "joystick",
-        "MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            new GameInput.Schema.AxisButton(-3),
-            new GameInput.Schema.AxisButton(3),
-            new GameInput.Schema.AxisButton(-4),
-            new GameInput.Schema.AxisButton(4),
-            10,
-            4,2,1,3,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            7,8,5,6
-    )),
-    new GameInput.Model(
-        GameInput.Type.Ragdoll,
-        "joystick",
-        "0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick",
-        "Linux",
-        new GameInput.Schema.GamePadAPI(
-            new GameInput.Schema.AxisButton(-2),
-            new GameInput.Schema.AxisButton(2),
-            new GameInput.Schema.AxisButton(-1),
-            new GameInput.Schema.AxisButton(1),
-            10,
-            1,2,3,4,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            5,6,7,8
-    ))
-];
+    gi.Theme.prototype.enable = function(playerIndex)
+    {
+        if (isNaN(playerIndex)) playerIndex = 0;
 
-GameInput.KeyboardWatcher = new function()
-{
-    var watcher = this;
-    this.PlayerToWatch = undefined;
+        var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + playerIndex);
+        for (var i = 0; i < previousThemeStyleElements.length; i++) document.head.removeChild(previousThemeStyleElements[i]);
 
-    //setup keydown/keyup events
+        var themeStyleElement = document.createElement('link');
+        themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">';
+        document.head.appendChild(themeStyleElement);
+    }
 
-    window.addEventListener("keyup", function(e) {
-        if (!GameInput.handleKeyboard) return;
+    gi.Schema.Key = function(code, text)
+    {
+        this.index = code;
+        this.text = text;
+    };
 
-        var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
-        if (typeof(player.schema) !== "undefined" )
+    gi.Schema.Button = function(index)
+    {
+        this.index = index;
+    };
+
+    gi.Schema.AxisButton = function(indexAndDirection, threshold)
+    {
+        this.index = Math.abs(indexAndDirection);
+        this.direction = indexAndDirection < 0 ? "negative" : "positive";
+        if ( typeof(threshold) === "undefined" ) threshold = 0.5;
+        this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
+    };
+
+    gi.Schema.Generic = function(d_up, d_down, d_left, d_right,
+                                menu, button0, button1, button2, button3,
+                                l_up, l_down, l_left, l_right,
+                                r_up, r_down, r_left, r_right,
+                                l_button, r_button, l_trigger, r_trigger)
+    {
+        this.d_up = d_up;
+        this.d_down = d_down;
+        this.d_left = d_left;
+        this.d_right = d_right;
+        this.menu = menu;
+        this.button0 = button0;
+        this.button1 = button1;
+        this.button2 = button2;
+        this.button3 = button3;
+        this.l_up = l_up;
+        this.l_down = l_down;
+        this.l_left = l_left;
+        this.l_right = l_right;
+        this.r_up = r_up;
+        this.r_down = r_down;
+        this.r_left = r_left;
+        this.r_right = r_right;
+        this.l_button = l_button;
+        this.r_button = r_button;
+        this.l_trigger = l_trigger;
+        this.r_trigger = r_trigger;
+    };
+
+    gi.Schema.Generic.prototype.lookup = function(key)
+    {
+        var schema = this;
+        for (var i in schema)
         {
-            var schemaButtonName = player.schema.lookup(e.which);
-            if (typeof(schemaButtonName) !== "undefined" )
+            if (schema[i] instanceof gi.Schema.Key)
             {
-                var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
-
-                player.buttonUp(schemaButtonName);
+                if (key == schema[i].index) return i;
             }
-        }
-    });
-
-    window.addEventListener("keydown", function(e) {
-        if (!GameInput.handleKeyboard) return;
-
-        var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
-        if (typeof(player.schema) !== "undefined" )
-        {
-            var schemaButtonName = player.schema.lookup(e.which);
-            if (typeof(schemaButtonName) !== "undefined" )
-            {
-                var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
-                player.buttonDown(schemaButtonName);
-            }
-        }
-    });
-};
-
-GameInput.loopingUpdate = true;
-
-GameInput.startUpdateLoop = function()
-{
-    GameInput.loopingUpdate = true;
-    GameInput.nextUpdateLoop();
-}
-
-GameInput.stopUpdateLoop = function()
-{
-    GameInput.loopingUpdate = false;
-}
-
-GameInput.nextUpdateLoop = function()
-{
-    if (GameInput.loopingUpdate === false) return;
-    GameInput.update();
-     requestAnimationFrame(GameInput.nextUpdateLoop); // way too slow!
-}
-
-GameInput.update = function()
-{
-    if (GameInput.canUseGamepadAPI())
-    {
-        GameInput.Connection.Gamepads = navigator.getGamepads();
-
-        for (var i = 0; i < GameInput.Connection.Gamepads.length; i++)
-        {
-            GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
-            GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
-
-            var currentGamepad = GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]];
-            var currentSchema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
-            if (typeof(currentGamepad) === "undefined") continue;
-
-            for (var schemaIndex in currentSchema)
-            {
-                if (typeof(currentSchema[schemaIndex]) === "undefined")
-                {
-                    //skip
-                }
-                else if ( typeof(currentGamepad.buttons[currentSchema[schemaIndex] - 1]
-                           ) === "undefined")
-                {
-                    var negativeAxis = false;
-                    if (currentSchema[schemaIndex].threshold < 0) negativeAxis = true;
-
-                    var axisValue = GameInput.Connection.Gamepads[i].axes[currentSchema[schemaIndex].index - 1];
-                    var threshold = currentSchema[schemaIndex].threshold;
-
-                    if ( (negativeAxis && axisValue < threshold)
-                        || (!negativeAxis && axisValue > threshold))
-                    {
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
-                    }
-                    else
-                    {
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
-                    }
-                }
-                else
-                {
-                    if (GameInput.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
-                    {
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
-                    }
-                    else
-                    {
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
-                    }
-                }
-            }
-        }
-
-        // Keydown / Keyup
-        for (var i = 0; i < GameInput.Players.length; i++)
-        {
-            for (var j in GameInput.Players[i].state)
-            {
-                if (GameInput.firstPress !== true)
-                {
-                    GameInput.firstPress = true;
-                    return;
-                }
-
-                if ( GameInput.Players[i].previous.state[j] === false
-                    && GameInput.Players[i].state[j] === true )
-                {
-                    GameInput.Players[i].buttonDown(j);
-                }
-                else if ( GameInput.Players[i].previous.state[j] === true
-                    && GameInput.Players[i].state[j] === false )
-                {
-                    GameInput.Players[i].buttonUp(j);
-                }
-            }
+            else if (schema[i] == key) return i;
         }
     }
-};
 
-GameInput.initialGamePadSetup = function()
-{
-    // Pause Game or similar
-    for (var i = 0; i < GameInput.reshufflePlayersActions.length; i++)
+    gi.Schema.GamePadAPI = function(d_up, d_down, d_left, d_right,
+                                menu, button0, button1, button2, button3,
+                                l_up, l_down, l_left, l_right,
+                                r_up, r_down, r_left, r_right,
+                                l_button, r_button, l_trigger, r_trigger)
     {
-        if (typeof(GameInput.reshufflePlayersActions[i]) === "function") GameInput.reshufflePlayersActions[i]();
-    }
-
-    //clear gamepad information
-    for (var i = 0; i < GameInput.Players.length; i++)
-    {
-        GameInput.Players[i].type = undefined;
-        GameInput.Players[i].model = undefined;
-        GameInput.Players[i].schema = undefined;
-        GameInput.Players[i].theme = undefined;
-    }
-    var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
-    for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
-
-    if (GameInput.canUseGamepadAPI())
-    {
-        window.addEventListener("gamepadconnected", function(e) {
-            if (GameInput.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-                e.gamepad.index, e.gamepad.id,
-                e.gamepad.buttons.length, e.gamepad.axes.length);
-            GameInput.Connection.gained(e.gamepad);
-            GameInput.initialGamePadSetup();
-        }, false);
-
-        window.addEventListener("gamepaddisconnected", function(e) {
-            if (GameInput.debug) console.debug("Gamepad disconnected from index %d: %s",
-                e.gamepad.index, e.gamepad.id);
-            GameInput.Connection.lost(e.gamepad);
-            GameInput.initialGamePadSetup();
-        }, false);
-
-        GameInput.Connection.Gamepads = navigator.getGamepads();
-
-        if (   GameInput.Connection.Gamepads[0] === undefined
-            && GameInput.Connection.Gamepads[1] === undefined
-            && GameInput.Connection.Gamepads[2] === undefined
-            && GameInput.Connection.Gamepads[3] === undefined )
+        for (var i in arguments)
         {
-            GameInput.firstPress = false;
+            if (typeof(arguments[i]) === "number") arguments[i] = new gi.Schema.Button(arguments[i]);
         }
+        // if (typeof(d_up) === "number") d_up = new gi.Schema.Button(d_up); // TODO find out what I was doing here... it breaks things if uncommented
 
-        for (var i in GameInput.Connection.Gamepads)
+        gi.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
+                                menu, button0, button1, button2, button3,
+                                l_up, l_down, l_left, l_right,
+                                r_up, r_down, r_left, r_right,
+                                l_button, r_button, l_trigger, r_trigger);
+    };
+    gi.Schema.GamePadAPI.prototype = new gi.Schema.Generic();
+    gi.Schema.GamePadAPI.prototype.constructor = gi.Schema.GamePadAPI;
+
+    gi.Schema.KeyboardAPI = function(d_up, d_down, d_left, d_right,
+                                menu, button0, button1, button2, button3,
+                                l_up, l_down, l_left, l_right,
+                                r_up, r_down, r_left, r_right,
+                                l_button, r_button, l_trigger, r_trigger)
+    {
+        for (var i in arguments)
         {
-            if (GameInput.Connection.Gamepads[i] instanceof Gamepad)
-            {
-                //Translate into Type -  Players order is gamepad order
-                for (var j = 0; j < GameInput.Models.Specific.length; j++)
-                {
-                    if ( GameInput.Models.Specific[j].id.toASCII() === GameInput.Connection.Gamepads[i].id.toASCII()
-                        && GameInput.OS.Detected === GameInput.Models.Specific[j].os )
-                    {
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Specific[j].type;
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Specific[j];
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Specific[j].schema;
-                        GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Specific[j].type.theme;
-                    }
-                }
+            if (typeof(arguments[i]) !== "undefined" && (arguments[i] instanceof gi.Schema.Key) === false) throw "Must be undefined or gi.Schema.Key";
+        }
+        gi.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
+                                menu, button0, button1, button2, button3,
+                                l_up, l_down, l_left, l_right,
+                                r_up, r_down, r_left, r_right,
+                                l_button, r_button, l_trigger, r_trigger);
+    };
+    gi.Schema.KeyboardAPI.prototype = new gi.Schema.Generic();
+    gi.Schema.KeyboardAPI.prototype.constructor = gi.Schema.KeyboardAPI;
 
-                if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
+    /**
+     * @desc    Valid keycode integer
+     */
+    gi.Schema.KeyboardAPI.Keys = {
+          ENTER: new gi.Schema.Key(13, "Return"),
+          ESCAPE: new gi.Schema.Key(27, "Esc"),
+          LEFT_ARROW: new gi.Schema.Key(37, "←"),
+          UP_ARROW: new gi.Schema.Key(38, "↑"),
+          RIGHT_ARROW: new gi.Schema.Key(39, "→"),
+          DOWN_ARROW: new gi.Schema.Key(40, "↓"),
+          NUM_0: new gi.Schema.Key(96, "NUM 0"),
+          NUM_1: new gi.Schema.Key(97, "NUM 1"),
+          NUM_2: new gi.Schema.Key(98, "NUM 2"),
+          NUM_3: new gi.Schema.Key(99, "NUM 3"),
+          NUM_4: new gi.Schema.Key(100, "NUM 4"),
+          NUM_5: new gi.Schema.Key(101, "NUM 5"),
+          NUM_6: new gi.Schema.Key(102, "NUM 6"),
+          NUM_7: new gi.Schema.Key(103, "NUM 7"),
+          NUM_8: new gi.Schema.Key(104, "NUM 8"),
+          NUM_9: new gi.Schema.Key(105, "NUM 9"),
+          KEY_0: new gi.Schema.Key(48, "0"),
+          KEY_1: new gi.Schema.Key(49, "1"),
+          KEY_2: new gi.Schema.Key(50, "2"),
+          KEY_3: new gi.Schema.Key(51, "3"),
+          KEY_4: new gi.Schema.Key(52, "4"),
+          KEY_5: new gi.Schema.Key(53, "5"),
+          KEY_6: new gi.Schema.Key(54, "6"),
+          KEY_7: new gi.Schema.Key(55, "7"),
+          KEY_8: new gi.Schema.Key(56, "8"),
+          KEY_9: new gi.Schema.Key(57, "9"),
+          KEY_A: new gi.Schema.Key(65, "A"),
+          KEY_B: new gi.Schema.Key(66, "B"),
+          KEY_C: new gi.Schema.Key(67, "C"),
+          KEY_D: new gi.Schema.Key(68, "D"),
+          KEY_E: new gi.Schema.Key(69, "E"),
+          KEY_F: new gi.Schema.Key(70, "F"),
+          KEY_G: new gi.Schema.Key(71, "G"),
+          KEY_H: new gi.Schema.Key(72, "H"),
+          KEY_I: new gi.Schema.Key(73, "I"),
+          KEY_J: new gi.Schema.Key(74, "J"),
+          KEY_K: new gi.Schema.Key(75, "K"),
+          KEY_L: new gi.Schema.Key(76, "L"),
+          KEY_M: new gi.Schema.Key(77, "M"),
+          KEY_N: new gi.Schema.Key(78, "N"),
+          KEY_O: new gi.Schema.Key(79, "O"),
+          KEY_P: new gi.Schema.Key(80, "P"),
+          KEY_Q: new gi.Schema.Key(81, "Q"),
+          KEY_R: new gi.Schema.Key(82, "R"),
+          KEY_S: new gi.Schema.Key(83, "S"),
+          KEY_T: new gi.Schema.Key(84, "T"),
+          KEY_U: new gi.Schema.Key(85, "U"),
+          KEY_V: new gi.Schema.Key(86, "V"),
+          KEY_W: new gi.Schema.Key(87, "W"),
+          KEY_X: new gi.Schema.Key(88, "X"),
+          KEY_Y: new gi.Schema.Key(89, "Y"),
+          KEY_Z: new gi.Schema.Key(90, "Z"),
+          OPEN_BRACKET: new gi.Schema.Key(91, "["),
+          CLOSE_BRACKET: new gi.Schema.Key(93, "]"),
+          SEMICOLON: new gi.Schema.Key(186, ";"),
+          EQUALS: new gi.Schema.Key(187, "="),
+          COMMA: new gi.Schema.Key(188, ","),
+          DASH: new gi.Schema.Key(189, "-"),
+          PERIOD: new gi.Schema.Key(190, "."),
+          FORWARD_SLASH: new gi.Schema.Key(191, "/"),
+          GRAVE_ACCENT: new gi.Schema.Key(192, "`"),
+          BACK_SLASH: new gi.Schema.Key(220, "\\"),
+          SINGLE_QUOTE: new gi.Schema.Key(222, "'")
+        };
+
+    gi.Schema.KeyboardAPI.Standard = {};
+
+    gi.Schema.KeyboardAPI.Standard.QWERTY = new gi.Schema.KeyboardAPI(
+        gi.Schema.KeyboardAPI.Keys.UP_ARROW,
+        gi.Schema.KeyboardAPI.Keys.DOWN_ARROW,
+        gi.Schema.KeyboardAPI.Keys.LEFT_ARROW,
+        gi.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
+        gi.Schema.KeyboardAPI.Keys.ENTER,
+        gi.Schema.KeyboardAPI.Keys.KEY_A,
+        gi.Schema.KeyboardAPI.Keys.KEY_S,
+        gi.Schema.KeyboardAPI.Keys.KEY_D,
+        gi.Schema.KeyboardAPI.Keys.KEY_F
+    );
+
+    gi.Schema.KeyboardAPI.Standard.Dvorak = new gi.Schema.KeyboardAPI(
+        gi.Schema.KeyboardAPI.Keys.UP_ARROW,
+        gi.Schema.KeyboardAPI.Keys.DOWN_ARROW,
+        gi.Schema.KeyboardAPI.Keys.LEFT_ARROW,
+        gi.Schema.KeyboardAPI.Keys.RIGHT_ARROW,
+        gi.Schema.KeyboardAPI.Keys.ENTER,
+        gi.Schema.KeyboardAPI.Keys.KEY_A,
+        gi.Schema.KeyboardAPI.Keys.KEY_O,
+        gi.Schema.KeyboardAPI.Keys.KEY_E,
+        gi.Schema.KeyboardAPI.Keys.KEY_U
+    );
+
+    gi.Type = function(name, theme, defaultSchema)
+    {
+        this.name = name;
+        this.theme = theme;
+        this.schema = defaultSchema;
+    };
+    gi.Type.prototype.enable = function(){};
+
+    gi.Type.Hedgehog = new gi.Type("Hedgehog", new gi.Theme("HedgeHog"));
+
+    gi.Type.Plumber = new gi.Type("Plumber", new gi.Theme("Plumber"));
+
+    gi.Type.Ragdoll = new gi.Type("Ragdoll", new gi.Theme("Ragdoll"));
+
+    gi.Type.Keyboard = new gi.Type("Keyboard", new gi.Theme("Blank"));
+    gi.Type.Keyboard.StandardThemes = {
+        Blank: new gi.Theme("Blank"),
+        Dvorak: new gi.Theme("Dvorak"),
+        QWERTY: new gi.Theme("QWERTY")
+    };
+
+
+    gi.Type.Keyboard.setQWERTY = function()
+    {
+        gi.Type.Keyboard.schema = gi.Schema.KeyboardAPI.Standard.QWERTY;
+        gi.Type.Keyboard.theme = gi.Type.Keyboard.StandardThemes.QWERTY;
+
+        if (typeof(gi.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(gi.Players[gi.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+        {
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.QWERTY;
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.QWERTY;
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme.enable(gi.KeyboardWatcher.PlayerToWatch);
+        }
+    };
+
+    gi.Type.Keyboard.setDvorak = function()
+    {
+        gi.Type.Keyboard.schema = gi.Schema.KeyboardAPI.Standard.Dvorak;
+        gi.Type.Keyboard.theme = gi.Type.Keyboard.StandardThemes.Dvorak;
+
+        if (typeof(gi.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(gi.Players[gi.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
+        {
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.Dvorak;
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.Dvorak;
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme.enable(gi.KeyboardWatcher.PlayerToWatch);
+
+        }
+    };
+
+    /**
+     * @param   schema  gi.Schema
+     */
+    gi.Model = function(type, iconName, id, os, schema)
+    {
+        this.type = type;
+        this.iconName = iconName;
+        this.id = id;
+        this.os = os;
+        this.schema = schema;
+    };
+
+    gi.Model.prototype.getIcon = function()
+    {
+        return "css/gameinput/img/models/" + this.iconName + ".png";
+    }
+
+    gi.Model.prototype.setIcon = function(playerIndex)
+    {
+        if (isNaN(playerIndex)) playerIndex = 0;
+        var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex)
+        for (var i = 0; i < playerIcons.length; i++ ) playerIcons[i].src = this.getIcon();
+
+        var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex)
+        for (var i = 0; i < backgroundIcons.length; i++ ) backgroundIcons[i].style.backgroundImage = "url('" + this.getIcon() + "')";
+    }
+
+    gi.Type.Keyboard.model = new gi.Model(
+            gi.Type.Keyboard,
+            "keyboard",
+            "keyboard",
+            undefined,
+            gi.Schema.KeyboardAPI.Standard.QWERTY);
+
+    gi.Models = {};
+    gi.Models.Generic = [
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "XInput",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                13, 14, 15, 16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "XBox 360",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                13, 14, 15, 16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds3",
+            "PLAYSTATION",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                5,7,8,6,
+                8,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "Logitech Rumblepad 2",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                12,13,14,15,
+                10,
+                2,3,1,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "Logitech Dual Action",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                12,13,14,15,
+                10,
+                2,3,1,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "STANDARD GAMEPAD",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                13, 14, 15, 16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                undefined,
+                undefined,
+                undefined,
+                undefined//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        ))
+    ];
+
+    gi.Models.Specific = [
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
+            "Windows",
+            new gi.Schema.GamePadAPI(
+                13,14,15,16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                13,14,15,16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3)//,
+                // TODO l_button,
+                // TODO r_button,
+                // TODO l_trigger,
+                // TODO r_trigger
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-8),
+                new gi.Schema.AxisButton(8),
+                new gi.Schema.AxisButton(-7),
+                new gi.Schema.AxisButton(7),
+                8,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-5),
+                new gi.Schema.AxisButton(5),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                5,
+                6,
+                new gi.Schema.AxisButton(3),
+                new gi.Schema.AxisButton(6)
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "0e6f-0213-Afterglow Gamepad for Xbox 360",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-8),
+                new gi.Schema.AxisButton(8),
+                new gi.Schema.AxisButton(-7),
+                new gi.Schema.AxisButton(7),
+                8,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-5),
+                new gi.Schema.AxisButton(5),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                5,
+                6,
+                new gi.Schema.AxisButton(3),
+                new gi.Schema.AxisButton(6)
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "dc",
+            "HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                13, 15, 16, 14,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                5, 6
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds3",
+            "Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                13, 14, 15, 16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds3",
+            "054c-0268-Sony PLAYSTATION(R)3 Controller",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                5,7,8,6,
+                4,
+                15, 14, 16, 13,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                11,12,9,10
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds4",
+            "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                13,14,15,16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,
+                6,
+                7,
+                8
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds4",
+            "054c-05c4-Sony Computer Entertainment Wireless Controller",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-8),
+                new gi.Schema.AxisButton(8),
+                new gi.Schema.AxisButton(-7),
+                new gi.Schema.AxisButton(7),
+                10,
+                2,3,1,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-6),
+                new gi.Schema.AxisButton(6),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,
+                6,
+                7,
+                8
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "joystick",
+            "MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                10,
+                4,2,1,3,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                7,8,5,6
+        )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "joystick",
+            "0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                10,
+                1,2,3,4,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                5,6,7,8
+        ))
+    ];
+
+    gi.KeyboardWatcher = new function()
+    {
+        var watcher = this;
+        this.PlayerToWatch = undefined;
+
+        //setup keydown/keyup events
+
+        window.addEventListener("keyup", function(e) {
+            if (!gi.handleKeyboard) return;
+
+            var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
+            if (typeof(player.schema) !== "undefined" )
+            {
+                var schemaButtonName = player.schema.lookup(e.which);
+                if (typeof(schemaButtonName) !== "undefined" )
                 {
-                    for (var j = 0; j < GameInput.Models.Generic.length; j++)
+                    var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                    for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+
+                    player.buttonUp(schemaButtonName);
+                }
+            }
+        });
+
+        window.addEventListener("keydown", function(e) {
+            if (!gi.handleKeyboard) return;
+
+            var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
+            if (typeof(player.schema) !== "undefined" )
+            {
+                var schemaButtonName = player.schema.lookup(e.which);
+                if (typeof(schemaButtonName) !== "undefined" )
+                {
+                    var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                    for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                    player.buttonDown(schemaButtonName);
+                }
+            }
+        });
+    };
+
+    gi.loopingUpdate = true;
+
+    gi.startUpdateLoop = function()
+    {
+        gi.loopingUpdate = true;
+        gi.nextUpdateLoop();
+    }
+
+    gi.stopUpdateLoop = function()
+    {
+        gi.loopingUpdate = false;
+    }
+
+    gi.nextUpdateLoop = function()
+    {
+        if (gi.loopingUpdate === false) return;
+        gi.update();
+         requestAnimationFrame(gi.nextUpdateLoop); // way too slow!
+    }
+
+    gi.update = function()
+    {
+        if (gi.canUseGamepadAPI())
+        {
+            gi.Connection.Gamepads = navigator.getGamepads();
+
+            for (var i = 0; i < gi.Connection.Gamepads.length; i++)
+            {
+                gi.getPlayer(i).previous.state = gi.getPlayer(i).state;
+                gi.getPlayer(i).state = {};
+
+                var currentGamepad = gi.Connection.Gamepads[gi.Connection.GamePadMapping[i]];
+                var currentSchema = gi.getPlayer(i).schema;
+                if (typeof(currentGamepad) === "undefined") continue;
+
+                for (var schemaIndex in currentSchema)
+                {
+                    if (typeof(currentSchema[schemaIndex]) === "undefined")
                     {
-                        if (GameInput.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null)
+                        //skip
+                    }
+                    else if ( typeof(currentGamepad.buttons[currentSchema[schemaIndex] - 1]
+                               ) === "undefined")
+                    {
+                        var negativeAxis = false;
+                        if (currentSchema[schemaIndex].threshold < 0) negativeAxis = true;
+
+                        var axisValue = gi.Connection.Gamepads[i].axes[currentSchema[schemaIndex].index - 1];
+                        var threshold = currentSchema[schemaIndex].threshold;
+
+                        if ( (negativeAxis && axisValue < threshold)
+                            || (!negativeAxis && axisValue > threshold))
                         {
-                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].type = GameInput.Models.Generic[j].type;
-                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].model = GameInput.Models.Generic[j];
-                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema = GameInput.Models.Generic[j].schema;
-                            GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme = GameInput.Models.Generic[j].type.theme;
+                            gi.getPlayer(i).state[schemaIndex] = true;
+
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                        }
+                        else
+                        {
+                            gi.getPlayer(i).state[schemaIndex] = false;
+
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+                        }
+                    }
+                    else
+                    {
+                        if (gi.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
+                        {
+                            gi.getPlayer(i).state[schemaIndex] = true;
+
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                        }
+                        else
+                        {
+                            gi.getPlayer(i).state[schemaIndex] = false;
+
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+                        }
+                    }
+                }
+            }
+
+            // Keydown / Keyup
+            for (var i = 0; i < gi.Players.length; i++)
+            {
+                for (var j in gi.Players[i].state)
+                {
+                    if (gi.firstPress !== true)
+                    {
+                        gi.firstPress = true;
+                        return;
+                    }
+
+                    if ( gi.Players[i].previous.state[j] === false
+                        && gi.Players[i].state[j] === true )
+                    {
+                        gi.Players[i].buttonDown(j);
+                    }
+                    else if ( gi.Players[i].previous.state[j] === true
+                        && gi.Players[i].state[j] === false )
+                    {
+                        gi.Players[i].buttonUp(j);
+                    }
+                }
+            }
+        }
+    };
+
+    gi.initialGamePadSetup = function()
+    {
+        // Pause Game or similar
+        for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+        {
+            if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
+        }
+
+        //clear gamepad information
+        for (var i = 0; i < gi.Players.length; i++)
+        {
+            gi.Players[i].type = undefined;
+            gi.Players[i].model = undefined;
+            gi.Players[i].schema = undefined;
+            gi.Players[i].theme = undefined;
+        }
+        var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
+        for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
+
+        if (gi.canUseGamepadAPI())
+        {
+            window.addEventListener("gamepadconnected", function(e) {
+                if (gi.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                    e.gamepad.index, e.gamepad.id,
+                    e.gamepad.buttons.length, e.gamepad.axes.length);
+                gi.Connection.gained(e.gamepad);
+                gi.initialGamePadSetup();
+            }, false);
+
+            window.addEventListener("gamepaddisconnected", function(e) {
+                if (gi.debug) console.debug("Gamepad disconnected from index %d: %s",
+                    e.gamepad.index, e.gamepad.id);
+                gi.Connection.lost(e.gamepad);
+                gi.initialGamePadSetup();
+            }, false);
+
+            gi.Connection.Gamepads = navigator.getGamepads();
+
+            if (   gi.Connection.Gamepads[0] === undefined
+                && gi.Connection.Gamepads[1] === undefined
+                && gi.Connection.Gamepads[2] === undefined
+                && gi.Connection.Gamepads[3] === undefined )
+            {
+                gi.firstPress = false;
+            }
+
+            for (var i in gi.Connection.Gamepads)
+            {
+                if (gi.Connection.Gamepads[i] instanceof Gamepad)
+                {
+                    //Translate into Type -  Players order is gamepad order
+                    for (var j = 0; j < gi.Models.Specific.length; j++)
+                    {
+                        if ( toASCII(gi.Models.Specific[j].id) === toASCII(gi.Connection.Gamepads[i].id)
+                            && gi.OS.Detected === gi.Models.Specific[j].os )
+                        {
+                            gi.getPlayer(i).type = gi.Models.Specific[j].type;
+                            gi.getPlayer(i).model = gi.Models.Specific[j];
+                            gi.getPlayer(i).schema = gi.Models.Specific[j].schema;
+                            gi.getPlayer(i).theme = gi.Models.Specific[j].type.theme;
                         }
                     }
 
-                    if (GameInput.Connection.Gamepads[i] instanceof Gamepad && typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].model) === "undefined")
+                    if (typeof(gi.getPlayer(i).model) === "undefined")
                     {
-                        console.warn("Gamepad not mapped: \"" + GameInput.Connection.Gamepads[i].id + "\"");
+                        for (var j = 0; j < gi.Models.Generic.length; j++)
+                        {
+                            if (gi.Connection.Gamepads[i].id.match(gi.Models.Generic[j].id) !== null)
+                            {
+                                gi.getPlayer(i).type = gi.Models.Generic[j].type;
+                                gi.getPlayer(i).model = gi.Models.Generic[j];
+                                gi.getPlayer(i).schema = gi.Models.Generic[j].schema;
+                                gi.getPlayer(i).theme = gi.Models.Generic[j].type.theme;
+                            }
+                        }
+
+                        if (gi.Connection.Gamepads[i] instanceof Gamepad && typeof(gi.getPlayer(i).model) === "undefined")
+                        {
+                            console.warn("Gamepad not mapped: \"" + gi.Connection.Gamepads[i].id + "\"");
+                        }
                     }
+
+                    // blank state to start
+                    gi.getPlayer(i).state = {};
+
+                    // setup Previous as current
+                    gi.getPlayer(i).previous.type = gi.getPlayer(i).type;
+                    gi.getPlayer(i).previous.model = gi.getPlayer(i).model;
+                    gi.getPlayer(i).previous.schema = gi.getPlayer(i).schema;
+                    gi.getPlayer(i).previous.theme = gi.getPlayer(i).theme;
+                    gi.getPlayer(i).previous.state = gi.getPlayer(i).state;
+
                 }
-
-                // blank state to start
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].state = {};
-
-                // setup Previous as current
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.type = GameInput.Players[GameInput.Connection.GamePadMapping[i]].type;
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.model = GameInput.Players[GameInput.Connection.GamePadMapping[i]].model;
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.schema = GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema;
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.theme = GameInput.Players[GameInput.Connection.GamePadMapping[i]].theme;
-                GameInput.Players[GameInput.Connection.GamePadMapping[i]].previous.state = GameInput.Players[GameInput.Connection.GamePadMapping[i]].state;
-
             }
         }
-    }
-    else if (GameInput.debug)
-    {
-        console.debug("This browser does not support the Gamepad API");
-    }
-
-    //Setup Keyboard player
-    if (GameInput.handleKeyboard)
-    {
-        GameInput.KeyboardWatcher.PlayerToWatch = undefined;
-        for (var i = 0; i < GameInput.Players.length; i++)
+        else if (gi.debug)
         {
-            // last player is keyboard
-            if (GameInput.Players[i].type === undefined)
+            console.debug("This browser does not support the Gamepad API");
+        }
+
+        //Setup Keyboard player
+        if (gi.handleKeyboard)
+        {
+            gi.KeyboardWatcher.PlayerToWatch = undefined;
+            for (var i = 0; i < gi.Players.length; i++)
             {
-                GameInput.Players[i].type = GameInput.Type.Keyboard;
-                GameInput.Players[i].model = GameInput.Type.Keyboard.model;
-                GameInput.Players[i].schema = GameInput.Type.Keyboard.schema;
-                GameInput.Players[i].theme = GameInput.Type.Keyboard.theme;
+                // last player is keyboard
+                if (gi.Players[i].type === undefined)
+                {
+                    gi.Players[i].type = gi.Type.Keyboard;
+                    gi.Players[i].model = gi.Type.Keyboard.model;
+                    gi.Players[i].schema = gi.Type.Keyboard.schema;
+                    gi.Players[i].theme = gi.Type.Keyboard.theme;
 
-                GameInput.KeyboardWatcher.PlayerToWatch = i;
-                break;
+                    gi.KeyboardWatcher.PlayerToWatch = i;
+                    break;
+                }
+            }
+        }
+        else
+        {
+                    gi.KeyboardWatcher.PlayerToWatch = undefined;
+
+        }
+
+        for (var i = 0; i < gi.Players.length; i++)
+        {
+            if (gi.Players[i].type instanceof gi.Type)
+            {
+                gi.Players[i].type.theme.enable(i);
+                if (typeof(gi.Players[i].model) !== "undefined" && gi.Players[i].model instanceof gi.Model) gi.Players[i].model.setIcon(i);
             }
         }
     }
-    else
-    {
-                GameInput.KeyboardWatcher.PlayerToWatch = undefined;
 
+    gi.reshufflePlayersActions = [];
+
+    gi.onReshufflePlayers = function(action)
+    {
+        gi.reshufflePlayersActions.push(action);
     }
 
-    for (var i = 0; i < GameInput.Players.length; i++)
-    {
-        if (GameInput.Players[i].type instanceof GameInput.Type)
-        {
-            GameInput.Players[i].type.theme.enable(i);
-            if (typeof(GameInput.Players[i].model) !== "undefined" && GameInput.Players[i].model instanceof GameInput.Model) GameInput.Players[i].model.setIcon(i);
+    /* Initial Configuration */
+
+    for (var id in gi.OS.clientStrings) {
+        if (gi.OS.clientStrings[id].r.test(navigator.userAgent)) {
+            gi.OS.Detected = gi.OS.clientStrings[id].s;
+            break;
         }
     }
-}
 
-GameInput.reshufflePlayersActions = [];
+    gi.initialGamePadSetup();
+    if (typeof(gi.Type.Keyboard.schema) === "undefined") gi.Type.Keyboard.setQWERTY();
+    gi.startUpdateLoop();
 
-GameInput.onReshufflePlayers = function(action)
-{
-    GameInput.reshufflePlayersActions.push(action);
-}
+    /* Add Common Style */
+    var commonStyleElement = document.createElement('link');
+    commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
+    document.head.appendChild(commonStyleElement);
 
-/* Initial Configuration */
-
-for (var id in GameInput.OS.clientStrings) {
-    if (GameInput.OS.clientStrings[id].r.test(navigator.userAgent)) {
-        GameInput.OS.Detected = GameInput.OS.clientStrings[id].s;
-        break;
-    }
-}
-
-GameInput.initialGamePadSetup();
-if (typeof(GameInput.Type.Keyboard.schema) === "undefined") GameInput.Type.Keyboard.setQWERTY();
-GameInput.startUpdateLoop();
-
-/* Add Common Style */
-var commonStyleElement = document.createElement('link');
-commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
-document.head.appendChild(commonStyleElement);
+    GameInput = gi; //Setup nicer looking alias
+})();
