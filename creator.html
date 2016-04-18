@@ -252,64 +252,79 @@
 
     document.body.onload = function()
     {
+        //GameInput.Type.Keyboard.setDvorak();
         GameInput.onReshufflePlayers(setupPlayers);
-        setupPlayers();
         GameInput.initialGamePadSetup();
     };
 
     function setupPlayers()
     {
-        $("#players").empty();
+        document.querySelector("#players").innerHTML = '';
 
         for (var i = 0; i < GameInput.Players.length; i++)
         {
             if ( typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]]) === "undefined"
+            ||  typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema) === "undefined"
             ||   typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].type) === "undefined"
             ||   typeof(GameInput.Connection.Gamepads[i]) === "undefined"
             ||   GameInput.Players[GameInput.Connection.GamePadMapping[i]].type === GameInput.Type.Keyboard) continue;
 
-            var row = $("#player-template").clone();
-            row.attr("id", "").attr("number", (i+1)).removeClass("template");
+            var row = document.querySelector("#player-template").cloneNode(true);
+            row.id = "";
+            row.classList.remove("template");
 
-            row.find(".gameinput-icon-player-template")
-                .addClass("gameinput-icon-player" + i)
-                .removeClass("gameinput-icon-player-template")
-            ;
+            var playerNumberReferences = row.querySelectorAll(".player-number");
+            for (var k = 0; k < playerNumberReferences.length; k++) playerNumberReferences[k].textContent = (i+1);
 
-            row.find(".gamepad-id").text( GameInput.Connection.Gamepads[i].id );
-            row.find("select.icon").val( GameInput.Players[GameInput.Connection.GamePadMapping[i]].model.iconName );
+            var iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
+            for (var k = 0; k < iconPlayerReferences.length; k++) {
+                iconPlayerReferences[k].classList.add("gameinput-icon-player" + i);
+                iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
+            }
+
+            var gamepadIDReferences = row.querySelectorAll(".gamepad-id");
+            for (var k = 0; k < gamepadIDReferences.length; k++) {
+                gamepadIDReferences[k].textContent = GameInput.Connection.Gamepads[i].id;
+            }
+
+            var iconSelectorReferences = row.querySelectorAll("select.icon");
+            for (var k = 0; k < iconSelectorReferences.length; k++) {
+                iconSelectorReferences[k].value = GameInput.Players[GameInput.Connection.GamePadMapping[i]].model.iconName;
+            }
 
             for (var j in GameInput.Schema.Names)
             {
-                row.find(".gameinput-player-template-up")
-                    .addClass("gameinput-player" + i + "-up")
-                    .removeClass("gameinput-player-template-up")
-                ;
+                var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
+                for (var k = 0; k < templateUpReferences.length; k++) {
+                    templateUpReferences[k].classList.add("gameinput-player" + i + "-up");
+                    templateUpReferences[k].classList.remove("gameinput-player-template-up");
+                }
+                var templateDownReferences = row.querySelectorAll(".gameinput-player-template-down");
+                for (var k = 0; k < templateDownReferences.length; k++) {
+                    templateDownReferences[k].classList.add("gameinput-player" + i + "-down");
+                    templateDownReferences[k].classList.remove("gameinput-player-template-down");
+                }
+                var templateLeftReferences = row.querySelectorAll(".gameinput-player-template-left");
+                for (var k = 0; k < templateLeftReferences.length; k++) {
+                    templateLeftReferences[k].classList.add("gameinput-player" + i + "-left");
+                    templateLeftReferences[k].classList.remove("gameinput-player-template-left");
+                }
+                var templateRightReferences = row.querySelectorAll(".gameinput-player-template-right");
+                for (var k = 0; k < templateRightReferences.length; k++) {
+                    templateRightReferences[k].classList.add("gameinput-player" + i + "-right");
+                    templateRightReferences[k].classList.remove("gameinput-player-template-right");
+                }
 
-                row.find(".gameinput-player-template-down")
-                    .addClass("gameinput-player" + i + "-down")
-                    .removeClass("gameinput-player-template-down")
-                ;
-
-                row.find(".gameinput-player-template-left")
-                    .addClass("gameinput-player" + i + "-left")
-                    .removeClass("gameinput-player-template-left")
-                ;
-
-                row.find(".gameinput-player-template-right")
-                    .addClass("gameinput-player" + i + "-right")
-                    .removeClass("gameinput-player-template-right")
-                ;
-
-                row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
-                    .addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
-                    .removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
-                ;
+                var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                for (var k = 0; k < templateReferences.length; k++) {
+                    templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInput.Schema.Names[j]);
+                    templateReferences[k].classList.remove("gameinput-player-template-" + GameInput.Schema.Names[j]);
+                }
 
                 updateSelection(row, i, j);
             }
 
-            $("#players").append(row);
+            document.body.querySelector("#players").appendChild(row);
             updateCode(i+1);
         }
     }
@@ -347,7 +362,8 @@
             optionsHTML += "<option value='" + i + "' " + (currentButton == i ? "selected" : "") + " type='button'>" + i  + " button</option>";
         }
 
-        row.find(".possible-mappings[button=" + schemaName + "]").empty().append(optionsHTML);
+        var buttonReferences = row.querySelectorAll(".possible-mappings[button=" + schemaName + "]");
+        for (var k = 0; k < buttonReferences.length; k++) buttonReferences[k].innerHTML = optionsHTML;
     }
 
     function updateMapping(element) {
