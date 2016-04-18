@@ -245,18 +245,17 @@
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="js/jquery.ba-throttle-debounce.min.js"></script>
 <script src="js/gameinput.js"></script>
+<script src="js/jquery.min.js"></script>
 <script>
     "use strict";
 
-    $(function()
+    document.body.onload = function()
     {
         GameInput.onReshufflePlayers(setupPlayers);
         setupPlayers();
         GameInput.initialGamePadSetup();
-    });
+    };
 
     function setupPlayers()
     {

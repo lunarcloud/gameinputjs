@@ -184,8 +184,13 @@ GameInput.Theme.prototype.getStyleSheet = function(playerIndex)
 GameInput.Theme.prototype.enable = function(playerIndex)
 {
     if (isNaN(playerIndex)) playerIndex = 0;
-    $('.gameinput-player' + playerIndex).remove();
-    $("head").append('<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">');
+
+    var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + playerIndex);
+    for (var i = 0; i < previousThemeStyleElements.length; i++) document.head.removeChild(previousThemeStyleElements[i]);
+
+    var themeStyleElement = document.createElement('link');
+    themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">';
+    document.head.appendChild(themeStyleElement);
 }
 
 GameInput.Schema.Key = function(code, text)
@@ -453,8 +458,11 @@ GameInput.Model.prototype.getIcon = function()
 GameInput.Model.prototype.setIcon = function(playerIndex)
 {
     if (isNaN(playerIndex)) playerIndex = 0;
-    $("img.gameinput-icon-player" + playerIndex).attr("src", this.getIcon());
-    $(".gameinput-icon-background-player" + playerIndex).attr("background-image", "url('" + this.getIcon() + "')");
+    var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex)
+    for (var i = 0; i < playerIcons.length; i++ ) playerIcons[i].src = this.getIcon();
+
+    var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex)
+    for (var i = 0; i < backgroundIcons.length; i++ ) backgroundIcons[i].style.backgroundImage = "url('" + this.getIcon() + "')";
 }
 
 GameInput.Type.Keyboard.model = new GameInput.Model(
@@ -854,7 +862,7 @@ GameInput.KeyboardWatcher = new function()
 
     //setup keydown/keyup events
 
-    $(document).keyup(function(e) {
+    window.addEventListener("keyup", function(e) {
         if (!GameInput.handleKeyboard) return;
 
         var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
@@ -863,12 +871,15 @@ GameInput.KeyboardWatcher = new function()
             var schemaButtonName = player.schema.lookup(e.which);
             if (typeof(schemaButtonName) !== "undefined" )
             {
-                $(".gameinput-player" + player.index + "-" + schemaButtonName).removeClass("gameinput-button-active");
+                var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+
                 player.buttonUp(schemaButtonName);
             }
         }
-    })
-    $(document).keydown(function(e) {
+    });
+
+    window.addEventListener("keydown", function(e) {
         if (!GameInput.handleKeyboard) return;
 
         var player = GameInput.Players[GameInput.KeyboardWatcher.PlayerToWatch];
@@ -877,11 +888,12 @@ GameInput.KeyboardWatcher = new function()
             var schemaButtonName = player.schema.lookup(e.which);
             if (typeof(schemaButtonName) !== "undefined" )
             {
-                $(".gameinput-player" + player.index + "-" + schemaButtonName).addClass("gameinput-button-active");
+                var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
                 player.buttonDown(schemaButtonName);
             }
         }
-    })
+    });
 };
 
 GameInput.loopingUpdate = true;
@@ -902,7 +914,6 @@ GameInput.nextUpdateLoop = function()
     if (GameInput.loopingUpdate === false) return;
     GameInput.update();
      requestAnimationFrame(GameInput.nextUpdateLoop); // way too slow!
-//     setTimeout($.throttle(10, GameInput.nextUpdateLoop), 1);
 }
 
 GameInput.update = function()
@@ -939,12 +950,16 @@ GameInput.update = function()
                         || (!negativeAxis && axisValue > threshold))
                     {
                         GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-                        $(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
+
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
                     }
                     else
                     {
                         GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-                        $(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
+
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
                     }
                 }
                 else
@@ -952,12 +967,16 @@ GameInput.update = function()
                     if (GameInput.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
                     {
                         GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = true;
-                        $(".gameinput-player" + i + "-" + schemaIndex).addClass("gameinput-button-active");
+
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
                     }
                     else
                     {
                         GameInput.Players[GameInput.Connection.GamePadMapping[i]].state[schemaIndex] = false;
-                        $(".gameinput-player" + i + "-" + schemaIndex).removeClass("gameinput-button-active");
+
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
+                        for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
                     }
                 }
             }
@@ -1005,7 +1024,8 @@ GameInput.initialGamePadSetup = function()
         GameInput.Players[i].schema = undefined;
         GameInput.Players[i].theme = undefined;
     }
-    $("img.gameinput-icon").attr("src", "");
+    var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
+    for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
 
     if (GameInput.canUseGamepadAPI())
     {
@@ -1144,4 +1164,6 @@ if (typeof(GameInput.Type.Keyboard.schema) === "undefined") GameInput.Type.Keybo
 GameInput.startUpdateLoop();
 
 /* Add Common Style */
-$("head").append('<link rel="stylesheet" href="css/gameinput/common.css">');
+var commonStyleElement = document.createElement('link');
+commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
+document.head.appendChild(commonStyleElement);
