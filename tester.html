@@ -27,6 +27,7 @@
   <link rel="icon" type="image/png" href="images/favicon.png">
 
     <style>
+
         .template
         {
             display: none !important;
@@ -146,7 +147,6 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="js/gameinput.js"></script>
-<script src="js/jquery.min.js"></script>
 <script>
     "use strict";
 
@@ -154,64 +154,72 @@
     {
         //GameInput.Type.Keyboard.setDvorak();
         GameInput.onReshufflePlayers(setupPlayers);
-        setupPlayers();
         GameInput.initialGamePadSetup();
     };
 
     function setupPlayers()
     {
-        $("#players").empty();
+        document.querySelector("#players").innerHTML = '';
+
         for (var i = 0; i < GameInput.Players.length; i++)
         {
-            if (typeof(GameInput.Players[i].type) === "undefined") continue;
+            if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].type) === "undefined"
+            ||  typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema) === "undefined") continue;
 
-            var row = $("#player-template").clone();
-            row.attr("id", "").removeClass("template");
+            var row = document.querySelector("#player-template").cloneNode(true);
+            row.id = "";
+            row.classList.remove("template");
 
-            row.find(".player-number").text(i+1);
+            var playerNumberReferences = row.querySelectorAll(".player-number");
+            for (var k = 0; k < playerNumberReferences.length; k++) playerNumberReferences[k].textContent = (i+1);
 
-            row.find(".gameinput-icon-player-template")
-                .addClass("gameinput-icon-player" + i)
-                .removeClass("gameinput-icon-player-template")
-            ;
+            var iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
+            for (var k = 0; k < iconPlayerReferences.length; k++) {
+                iconPlayerReferences[k].classList.add("gameinput-icon-player" + i);
+                iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
+            }
 
             for (var j in GameInput.Schema.Names)
             {
-                row.find(".gameinput-player-template-up")
-                    .addClass("gameinput-player" + i + "-up")
-                    .removeClass("gameinput-player-template-up")
-                ;
+                var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
+                for (var k = 0; k < templateUpReferences.length; k++) {
+                    templateUpReferences[k].classList.add("gameinput-player" + i + "-up");
+                    templateUpReferences[k].classList.remove("gameinput-player-template-up");
+                }
+                var templateDownReferences = row.querySelectorAll(".gameinput-player-template-down");
+                for (var k = 0; k < templateDownReferences.length; k++) {
+                    templateDownReferences[k].classList.add("gameinput-player" + i + "-down");
+                    templateDownReferences[k].classList.remove("gameinput-player-template-down");
+                }
+                var templateLeftReferences = row.querySelectorAll(".gameinput-player-template-left");
+                for (var k = 0; k < templateLeftReferences.length; k++) {
+                    templateLeftReferences[k].classList.add("gameinput-player" + i + "-left");
+                    templateLeftReferences[k].classList.remove("gameinput-player-template-left");
+                }
+                var templateRightReferences = row.querySelectorAll(".gameinput-player-template-right");
+                for (var k = 0; k < templateRightReferences.length; k++) {
+                    templateRightReferences[k].classList.add("gameinput-player" + i + "-right");
+                    templateRightReferences[k].classList.remove("gameinput-player-template-right");
+                }
 
-                row.find(".gameinput-player-template-down")
-                    .addClass("gameinput-player" + i + "-down")
-                    .removeClass("gameinput-player-template-down")
-                ;
-
-                row.find(".gameinput-player-template-left")
-                    .addClass("gameinput-player" + i + "-left")
-                    .removeClass("gameinput-player-template-left")
-                ;
-
-                row.find(".gameinput-player-template-right")
-                    .addClass("gameinput-player" + i + "-right")
-                    .removeClass("gameinput-player-template-right")
-                ;
-
-                if (typeof(GameInput.Players[i].schema[j]) === "undefined")
+                if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema[GameInput.Schema.Names[j]]) === "undefined")
                 {
-                    row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
-                        .remove();
+                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    for (var k = 0; k < unmappedReferences.length; k++) {
+                        unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
+                    }
                 }
                 else
                 {
-                    row.find(".gameinput-player-template-" + GameInput.Schema.Names[j])
-                        .addClass("gameinput-player" + i + "-" + GameInput.Schema.Names[j])
-                        .removeClass("gameinput-player-template-" + GameInput.Schema.Names[j])
-                    ;
+                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    for (var k = 0; k < templateReferences.length; k++) {
+                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInput.Schema.Names[j]);
+                        templateReferences[k].classList.remove("gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    }
                 }
             }
 
-            $("#players").append(row);
+            document.body.querySelector("#players").appendChild(row);
         }
 
     }
