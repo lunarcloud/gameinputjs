@@ -857,7 +857,9 @@ var gi = {};
                 if (typeof(schemaButtonName) !== "undefined" )
                 {
                     var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                    for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+                    for (var i = 0; i < buttonElements.length; i++) {
+                        buttonElements[i].classList.remove("gameinput-button-active");
+                    }
 
                     player.buttonUp(schemaButtonName);
                 }
@@ -874,7 +876,9 @@ var gi = {};
                 if (typeof(schemaButtonName) !== "undefined" )
                 {
                     var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                    for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                    for (var i = 0; i < buttonElements.length; i++) {
+                        buttonElements[i].classList.add("gameinput-button-active");
+                    }
                     player.buttonDown(schemaButtonName);
                 }
             }
@@ -909,59 +913,68 @@ var gi = {};
 
             for (var i = 0; i < gi.Connection.Gamepads.length; i++)
             {
-                gi.getPlayer(i).previous.state = gi.getPlayer(i).state;
-                gi.getPlayer(i).state = {};
+                gi.Players[i].previous.state = gi.Players[i].state;
+                gi.Players[i].state = {};
 
-                var currentGamepad = gi.Connection.Gamepads[gi.Connection.GamePadMapping[i]];
-                var currentSchema = gi.getPlayer(i).schema;
+                var currentGamepad = gi.Connection.Gamepads[i];
+                var currentSchema = gi.Players[i].schema;
+
                 if (typeof(currentGamepad) === "undefined") continue;
 
-                for (var schemaIndex in currentSchema)
+                for (var j in currentSchema)
                 {
-                    if (typeof(currentSchema[schemaIndex]) === "undefined")
+                    if (typeof(currentSchema[j]) === "undefined")
                     {
                         //skip
                     }
-                    else if ( typeof(currentGamepad.buttons[currentSchema[schemaIndex] - 1]
+                    else if ( typeof(currentGamepad.buttons[currentSchema[j] - 1]
                                ) === "undefined")
                     {
                         var negativeAxis = false;
-                        if (currentSchema[schemaIndex].threshold < 0) negativeAxis = true;
+                        if (currentSchema[j].threshold < 0) negativeAxis = true;
 
-                        var axisValue = gi.Connection.Gamepads[i].axes[currentSchema[schemaIndex].index - 1];
-                        var threshold = currentSchema[schemaIndex].threshold;
+                        var axisValue = currentGamepad.axes[currentSchema[j].index - 1];
+                        var threshold = currentSchema[j].threshold;
 
                         if ( (negativeAxis && axisValue < threshold)
                             || (!negativeAxis && axisValue > threshold))
                         {
-                            gi.getPlayer(i).state[schemaIndex] = true;
+                            gi.Players[i].state[j] = true;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                            for (var k = 0; k < buttonElements.length; k++) {
+                                buttonElements[k].classList.add("gameinput-button-active");
+                            }
                         }
                         else
                         {
-                            gi.getPlayer(i).state[schemaIndex] = false;
+                            gi.Players[i].state[j] = false;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                            for (var k = 0; k < buttonElements.length; k++) {
+                                buttonElements[k].classList.remove("gameinput-button-active");
+                            }
                         }
                     }
                     else
                     {
-                        if (gi.Connection.Gamepads[i].buttons[currentSchema[schemaIndex] - 1].pressed)
+                        if (currentGamepad.buttons[currentSchema[j] - 1].pressed)
                         {
-                            gi.getPlayer(i).state[schemaIndex] = true;
+                            gi.Players[i].state[j] = true;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.add("gameinput-button-active");
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                            for (var k = 0; k < buttonElements.length; k++) {
+                                buttonElements[k].classList.add("gameinput-button-active");
+                            }
                         }
                         else
                         {
-                            gi.getPlayer(i).state[schemaIndex] = false;
+                            gi.Players[i].state[j] = false;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + schemaIndex);
-                            for (var i = 0; i < buttonElements.length; i++) buttonElements[i].classList.remove("gameinput-button-active");
+                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                            for (var k = 0; k < buttonElements.length; k++) {
+                                buttonElements[k].classList.remove("gameinput-button-active");
+                            }
                         }
                     }
                 }
@@ -1049,41 +1062,41 @@ var gi = {};
                         if ( toASCII(gi.Models.Specific[j].id) === toASCII(gi.Connection.Gamepads[i].id)
                             && gi.os === gi.Models.Specific[j].os )
                         {
-                            gi.getPlayer(i).type = gi.Models.Specific[j].type;
-                            gi.getPlayer(i).model = gi.Models.Specific[j];
-                            gi.getPlayer(i).schema = gi.Models.Specific[j].schema;
-                            gi.getPlayer(i).theme = gi.Models.Specific[j].type.theme;
+                            gi.Players[i].type = gi.Models.Specific[j].type;
+                            gi.Players[i].model = gi.Models.Specific[j];
+                            gi.Players[i].schema = gi.Models.Specific[j].schema;
+                            gi.Players[i].theme = gi.Models.Specific[j].type.theme;
                         }
                     }
 
-                    if (typeof(gi.getPlayer(i).model) === "undefined")
+                    if (typeof(gi.Players[i].model) === "undefined")
                     {
                         for (var j = 0; j < gi.Models.Generic.length; j++)
                         {
                             if (gi.Connection.Gamepads[i].id.match(gi.Models.Generic[j].id) !== null)
                             {
-                                gi.getPlayer(i).type = gi.Models.Generic[j].type;
-                                gi.getPlayer(i).model = gi.Models.Generic[j];
-                                gi.getPlayer(i).schema = gi.Models.Generic[j].schema;
-                                gi.getPlayer(i).theme = gi.Models.Generic[j].type.theme;
+                                gi.Players[i].type = gi.Models.Generic[j].type;
+                                gi.Players[i].model = gi.Models.Generic[j];
+                                gi.Players[i].schema = gi.Models.Generic[j].schema;
+                                gi.Players[i].theme = gi.Models.Generic[j].type.theme;
                             }
                         }
 
-                        if (gi.Connection.Gamepads[i] instanceof Gamepad && typeof(gi.getPlayer(i).model) === "undefined")
+                        if (gi.Connection.Gamepads[i] instanceof Gamepad && typeof(gi.Players[i].model) === "undefined")
                         {
                             console.warn("Gamepad not mapped: \"" + gi.Connection.Gamepads[i].id + "\"");
                         }
                     }
 
                     // blank state to start
-                    gi.getPlayer(i).state = {};
+                    gi.Players[i].state = {};
 
                     // setup Previous as current
-                    gi.getPlayer(i).previous.type = gi.getPlayer(i).type;
-                    gi.getPlayer(i).previous.model = gi.getPlayer(i).model;
-                    gi.getPlayer(i).previous.schema = gi.getPlayer(i).schema;
-                    gi.getPlayer(i).previous.theme = gi.getPlayer(i).theme;
-                    gi.getPlayer(i).previous.state = gi.getPlayer(i).state;
+                    gi.Players[i].previous.type = gi.Players[i].type;
+                    gi.Players[i].previous.model = gi.Players[i].model;
+                    gi.Players[i].previous.schema = gi.Players[i].schema;
+                    gi.Players[i].previous.theme = gi.Players[i].theme;
+                    gi.Players[i].previous.state = gi.Players[i].state;
 
                 }
             }
@@ -1114,8 +1127,7 @@ var gi = {};
         }
         else
         {
-                    gi.KeyboardWatcher.PlayerToWatch = undefined;
-
+            gi.KeyboardWatcher.PlayerToWatch = undefined;
         }
 
         for (var i = 0; i < gi.Players.length; i++)

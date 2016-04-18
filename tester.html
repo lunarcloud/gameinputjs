@@ -138,8 +138,9 @@
 
         for (var i = 0; i < GameInput.Players.length; i++)
         {
-            if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].type) === "undefined"
-            ||  typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema) === "undefined") continue;
+            if (typeof(GameInput.getPlayer(i)) === "undefined"
+            ||  typeof(GameInput.getPlayer(i).type) === "undefined"
+            ||  typeof(GameInput.getPlayer(i).schema) === "undefined") continue;
 
             var row = document.querySelector("#player-template").cloneNode(true);
             row.id = "";
@@ -152,10 +153,10 @@
             var keyboardLayoutReferences = row.querySelectorAll(".keyboard-layout");
             for (var k = 0; k < keyboardLayoutReferences.length; k++)
             {
-                if (GameInput.Players[GameInput.Connection.GamePadMapping[i]].type === GameInput.Type.Keyboard) {
-                    keyboardLayoutReferences[k].value = GameInput.Players[GameInput.Connection.GamePadMapping[0]].schema === GameInput.Schema.KeyboardAPI.Standard.Dvorak ? "Dvorak" : "QWERTY";
+                if (GameInput.getPlayer(i).type === GameInput.Type.Keyboard) {
+                    keyboardLayoutReferences[k].value = GameInput.getPlayer(i).schema === GameInput.Schema.KeyboardAPI.Standard.Dvorak ? "Dvorak" : "QWERTY";
                 } else {
-                    keyboardLayoutReferences[k].parentElement.removeChild(keyboardLayoutReferences[k].parentElement);
+                    keyboardLayoutReferences[k].parentElement.removeChild(keyboardLayoutReferences[k]);
                 }
             }
 
@@ -188,7 +189,7 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema[GameInput.Schema.Names[j]]) === "undefined")
+                if (typeof(GameInput.getPlayer(i).schema[GameInput.Schema.Names[j]]) === "undefined")
                 {
                     var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
                     for (var k = 0; k < unmappedReferences.length; k++) {
@@ -204,16 +205,12 @@
                     }
                 }
             }
-
             document.body.querySelector("#players").appendChild(row);
         }
     }
 
-    function changeKeyboardLayout(element) {
-        var playerElement = findAncestor(element, "player");
-        var player = playerElement.getAttribute("number");
-        var index = player - 1;
-        if ( playerElement.querySelector(".keyboard-layout").value === "Dvorak") GameInput.Type.Keyboard.setDvorak();
+    function changeKeyboardLayout() {
+        if ( document.querySelector(".keyboard-layout").value === "Dvorak") GameInput.Type.Keyboard.setDvorak();
         else GameInput.Type.Keyboard.setQWERTY();
     }
 

@@ -230,14 +230,15 @@
 
         for (var i = 0; i < GameInput.Players.length; i++)
         {
-            if ( typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]]) === "undefined"
-            ||  typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].schema) === "undefined"
-            ||   typeof(GameInput.Players[GameInput.Connection.GamePadMapping[i]].type) === "undefined"
-            ||   typeof(GameInput.Connection.Gamepads[i]) === "undefined"
-            ||   GameInput.Players[GameInput.Connection.GamePadMapping[i]].type === GameInput.Type.Keyboard) continue;
+            if ( typeof(GameInput.getPlayer(i)) === "undefined"
+            ||  typeof(GameInput.getPlayer(i).schema) === "undefined"
+            ||   typeof(GameInput.getPlayer(i).type) === "undefined"
+            ||   typeof(GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]]) === "undefined"
+            ||   GameInput.getPlayer(i).type === GameInput.Type.Keyboard) continue;
 
             var row = document.querySelector("#player-template").cloneNode(true);
             row.id = "";
+            row.setAttribute("number", (i+1));
             row.classList.remove("template");
 
             var playerNumberReferences = row.querySelectorAll(".player-number");
@@ -251,12 +252,12 @@
 
             var gamepadIDReferences = row.querySelectorAll(".gamepad-id");
             for (var k = 0; k < gamepadIDReferences.length; k++) {
-                gamepadIDReferences[k].textContent = GameInput.Connection.Gamepads[i].id;
+                gamepadIDReferences[k].textContent = GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]].id;
             }
 
             var iconSelectorReferences = row.querySelectorAll("select.icon");
             for (var k = 0; k < iconSelectorReferences.length; k++) {
-                iconSelectorReferences[k].value = GameInput.Players[GameInput.Connection.GamePadMapping[i]].model.iconName;
+                iconSelectorReferences[k].value = GameInput.getPlayer(i).model.iconName;
             }
 
             for (var j in GameInput.Schema.Names)
@@ -292,7 +293,7 @@
             }
 
             document.body.querySelector("#players").appendChild(row);
-            updateCode(row);
+            updateCode(row.children[0]);
         }
     }
 
@@ -304,7 +305,7 @@
 
         var isUndefined = false;
         var currentAxis;
-        var currentButton = GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName];
+        var currentButton = GameInput.getPlayer(index).schema[schemaName];
 
         if (typeof(currentButton) === "undefined")
         {
@@ -344,13 +345,13 @@
 
         if (type == "button")
         {
-            GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.schema[schemaName] = value;
-            GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName] = value;
+            GameInput.getPlayer(index).model.schema[schemaName] = value;
+            GameInput.getPlayer(index).schema[schemaName] = value;
         }
         else //if (type == "axis")
         {
-            GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.schema[schemaName] = new GameInput.Schema.AxisButton(value);
-            GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName] = new GameInput.Schema.AxisButton(value);
+            GameInput.getPlayer(index).model.schema[schemaName] = new GameInput.Schema.AxisButton(value);
+            GameInput.getPlayer(index).schema[schemaName] = new GameInput.Schema.AxisButton(value);
         }
         updateCode(player);
     }
@@ -363,7 +364,7 @@
 
         var detectedIconReferences = playerElement.querySelectorAll(".detected-icon");
         for (var k = 0; k < detectedIconReferences.length; k++ ) {
-            detectedIconReferences.src = "css/gameinput/img/models/" + icon + ".png";
+            detectedIconReferences[k].src = "css/gameinput/img/models/" + icon + ".png";
         }
 
         updateCode(element);
@@ -375,7 +376,7 @@
         var player = playerElement.getAttribute("number");
         var index = player - 1;
 
-        if (GameInput.Players[GameInput.Connection.GamePadMapping[index]].type == GameInput.Type.Keyboard)
+        if (GameInput.getPlayer(index).type == GameInput.Type.Keyboard)
         {
             console.warn("Player is Keyboard user.");
             return;
@@ -401,11 +402,11 @@
                 break;
         }
 
-        var newCode = 'new GameInput.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.id + '",\n\t"' + GameInput.OS.Detected + '",\n\tnew GameInput.Schema.GamePadAPI(\n';
+        var newCode = 'new GameInput.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.getPlayer(index).model.id + '",\n\t"' + GameInput.os + '",\n\tnew GameInput.Schema.GamePadAPI(\n';
 
         for (var schemaName in GameInput.Schema.Names)
         {
-            var item = GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema[schemaName];
+            var item = GameInput.getPlayer(index).schema[schemaName];
 
             if (item !== undefined && isNaN(item)) item = "new GameInput.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
 
