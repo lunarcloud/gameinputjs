@@ -1,4 +1,4 @@
-# html5-gameinput
+# GameInput JS
 Library specifically geared towards game input for HTML5, both keyboard and gamepad
 The main file is 'js/gameinput.js'
 
