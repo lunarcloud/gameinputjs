@@ -2,19 +2,18 @@
  * @author  Samuel J Sarette
  * License  MIT
  */
-"use strict";
 
 /**
  * GameInput
- * @brief   HTML5 Game Input System
+ * @brief   Game Input System
  * @desc    System for using a gamepad or keyboard control scheme for games
- *
  */
 var GameInput;
 var gi = {};
 
 // encapsulate
 (function(){
+    "use strict";
 
     /* Helper function */
     function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
