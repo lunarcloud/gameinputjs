@@ -3,4 +3,4 @@ Library specifically geared towards game input for HTML5, both keyboard and game
 The main file is 'js/gameinput.js'
 
 ##Note:
-jQuery is necessary for the web pages, but not for the library itself.
+jQuery usage is deprecated and is currently only still used in "creator.html".
