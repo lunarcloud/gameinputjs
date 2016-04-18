@@ -10,7 +10,8 @@
  * @desc    System for using a gamepad or keyboard control scheme for games
  *
  */
-var GameInput = gi = {};
+var GameInput;
+var gi = {};
 
 // encapsulate
 (function(){
