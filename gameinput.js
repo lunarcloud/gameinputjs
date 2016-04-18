@@ -18,15 +18,7 @@ var gi = {};
     /* Helper function */
     function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
 
-    gi.OS = {};
-    gi.OS.Detected = "Other OS";
-    gi.OS.clientStrings = [
-        {s:'Windows', r:/Windows/},
-        {s:'Android', r:/Android/},
-        {s:'Linux', r:/(Linux|X11)/},
-        {s:'iOS', r:/(iPhone|iPad|iPod)/},
-        {s:'Mac OS X', r:/(Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh)/}
-    ];
+    gi.os = "Other";
 
     gi.Schema = {};
 
@@ -1055,7 +1047,7 @@ var gi = {};
                     for (var j = 0; j < gi.Models.Specific.length; j++)
                     {
                         if ( toASCII(gi.Models.Specific[j].id) === toASCII(gi.Connection.Gamepads[i].id)
-                            && gi.OS.Detected === gi.Models.Specific[j].os )
+                            && gi.os === gi.Models.Specific[j].os )
                         {
                             gi.getPlayer(i).type = gi.Models.Specific[j].type;
                             gi.getPlayer(i).model = gi.Models.Specific[j];
@@ -1145,11 +1137,16 @@ var gi = {};
 
     /* Initial Configuration */
 
-    for (var id in gi.OS.clientStrings) {
-        if (gi.OS.clientStrings[id].r.test(navigator.userAgent)) {
-            gi.OS.Detected = gi.OS.clientStrings[id].s;
-            break;
-        }
+    /* Detect OS */
+    var clientStrings = [
+        {s:'Windows', r:/Windows/},
+        {s:'Android', r:/Android/},
+        {s:'Linux', r:/(Linux|X11)/},
+        {s:'iOS', r:/(iPhone|iPad|iPod)/},
+        {s:'Mac OS X', r:/Mac/}
+    ];
+    for (var id in clientStrings) {
+        if (clientStrings[id].r.test(navigator.userAgent)) { gi.os = clientStrings[id].s; break; }
     }
 
     gi.initialGamePadSetup();
