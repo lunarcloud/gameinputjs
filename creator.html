@@ -218,7 +218,6 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="gameinput.js"></script>
-<!-- deprecated --><script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 <script>
     "use strict";
 
@@ -293,7 +292,7 @@
             }
 
             document.body.querySelector("#players").appendChild(row);
-            updateCode(i+1);
+            updateCode(row);
         }
     }
 
@@ -335,12 +334,13 @@
     }
 
     function updateMapping(element) {
-        var player = parseInt($(element).closest(".player").attr("number"));
-        var index = parseInt($(element).closest(".player").attr("number")) -1;
+        var playerElement = findAncestor(element, "player");
+        var player = playerElement.getAttribute("number");
+        var index = player - 1;
 
-        var type = $(element).find(":selected").attr("type");
-        var schemaName = $(element).attr("button");
-        var value = parseInt($(element).val());
+        var type = element[element.selectedIndex].getAttribute("type");
+        var schemaName = element.getAttribute("button");
+        var value = parseInt(element.value);
 
         if (type == "button")
         {
@@ -356,28 +356,31 @@
     }
 
     function updateIcon(element) {
-        var player = parseInt($(element).closest(".player").attr("number"));
+        var playerElement = findAncestor(element, "player");
+        var player = playerElement.getAttribute("number");
+        var index = player - 1;
+        var icon = playerElement.querySelector("select.icon").value;
 
-        $(".player[number=" + player + "]")
-            .find(".detected-icon")
-            .attr(
-                "src",
-                "css/gameinput/img/models/"
-                + $(".player[number=" + player + "]").find("select.icon").val()
-                + ".png"
-            );
-        updateCode(player);
+        var detectedIconReferences = playerElement.querySelectorAll(".detected-icon");
+        for (var k = 0; k < detectedIconReferences.length; k++ ) {
+            detectedIconReferences.src = "css/gameinput/img/models/" + icon + ".png";
+        }
+
+        updateCode(element);
     }
 
-    function updateCode(player)
+    function updateCode(element)
     {
+        var playerElement = findAncestor(element, "player");
+        var player = playerElement.getAttribute("number");
         var index = player - 1;
+
         if (GameInput.Players[GameInput.Connection.GamePadMapping[index]].type == GameInput.Type.Keyboard)
         {
             console.warn("Player is Keyboard user.");
             return;
         }
-        var icon = $(".player[number=" + player + "]").find("select.icon").val();
+        var icon = playerElement.querySelector("select.icon").value;
         var theme = "";
 
         switch (icon) {
@@ -412,7 +415,14 @@
 
         newCode += '\n\t)\n),';
 
-        $(".player[number=" + player + "] code").text(newCode);
+        playerElement.querySelector("code").textContent = newCode;
+    }
+
+    function findAncestor (el, cls) {
+        if (typeof(el.closest)) return el.closest("." + cls);
+
+        while ((el = el.parentElement) && !el.classList.contains(cls));
+        return el;
     }
 
 </script>
