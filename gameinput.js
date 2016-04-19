@@ -497,11 +497,8 @@ var gi = {};
                 new gi.Schema.AxisButton(-4),
                 new gi.Schema.AxisButton(4),
                 new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3)//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
         )),
         new gi.Model(
             gi.Type.Ragdoll,
@@ -582,15 +579,13 @@ var gi = {};
                 new gi.Schema.AxisButton(2),
                 new gi.Schema.AxisButton(-1),
                 new gi.Schema.AxisButton(1),
-                undefined,
-                undefined,
-                undefined,
-                undefined//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
         ))
+        
     ];
 
     gi.Models.Specific = [
@@ -610,12 +605,58 @@ var gi = {};
                 new gi.Schema.AxisButton(-4),
                 new gi.Schema.AxisButton(4),
                 new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3)//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
         )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds4",
+            "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
+            "Windows",
+            new gi.Schema.GamePadAPI(
+                13,14,15,16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
+            )
+        ),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds4",
+            "054c-05c4-Wireless Controller",
+            "Windows",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  15,
+                /* d_down */  16,
+                /* d_left */  17,
+                /* d_right */  18,
+                /* menu */  10,
+                /* button0 */  2,
+                /* button1 */  3,
+                /* button2 */  1,
+                /* button3 */  4,
+                /* l_up */  new gi.Schema.AxisButton(-2),
+                /* l_down */  new gi.Schema.AxisButton(2),
+                /* l_left */  new gi.Schema.AxisButton(-1),
+                /* l_right */  new gi.Schema.AxisButton(1),
+                /* r_up */  new gi.Schema.AxisButton(-6),
+                /* r_down */  new gi.Schema.AxisButton(6),
+                /* r_left */  new gi.Schema.AxisButton(-3),
+                /* r_right */  new gi.Schema.AxisButton(3),
+                /* l_button */  5,
+                /* r_button */  6,
+                /* l_trigger */  7,
+                /* r_trigger */  8
+            )
+        ),
         new gi.Model(
             gi.Type.Hedgehog,
             "xbox360",
@@ -693,6 +734,27 @@ var gi = {};
             "dc",
             "HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
             "Linux",
+            new gi.Schema.GamePadAPI(
+                13, 15, 16, 14,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                5, 6
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "dc",
+            "USB GamePad (Vendor: 0e8f Product: 3013)",
+            "Windows",
             new gi.Schema.GamePadAPI(
                 13, 15, 16, 14,
                 10,
@@ -794,6 +856,35 @@ var gi = {};
                 7,
                 8
         )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "joystick",
+            "Mayflash Arcade Stick (Vendor: 0e8f Product: 0003)",
+            "Windows",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  new gi.Schema.AxisButton(-2),
+                /* d_down */  new gi.Schema.AxisButton(2),
+                /* d_left */  new gi.Schema.AxisButton(-1),
+                /* d_right */  new gi.Schema.AxisButton(1),
+                /* menu */  10,
+                /* button0 */  1,
+                /* button1 */  2,
+                /* button2 */  3,
+                /* button3 */  4,
+                /* l_up */  undefined,
+                /* l_down */  undefined,
+                /* l_left */  undefined,
+                /* l_right */  undefined,
+                /* r_up */  undefined,
+                /* r_down */  undefined,
+                /* r_left */  undefined,
+                /* r_right */  undefined,
+                /* l_button */  5,
+                /* r_button */  6,
+                /* l_trigger */  7,
+                /* r_trigger */  8
+            )
+        ),
         new gi.Model(
             gi.Type.Ragdoll,
             "joystick",
