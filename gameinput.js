@@ -131,16 +131,24 @@ var gi = {};
      */
     gi.Player.prototype.getButtonText = function(schemaName, ragdollSymbolsAsWords)
     {
+        schemaName = schemaName.replace(/[alrd]_(up|down|left|right)/, "$1");
+
         var tempButton = document.createElement("div");
+        tempButton.id = "temp-button-player" + this.index + "-" + schemaName;
+        tempButton.style.display = "none";
         tempButton.classList.add("gameinput-button");
         tempButton.classList.add("gameinput-player" + this.index + "-" + schemaName);
 
         var tempText = document.createElement("span");
-        textText.classList.add("text");
+        tempText.classList.add("text");
 
         tempButton.appendChild(tempText);
 
-        var text = getComputedStyle(tempText, ":before").content.trim();
+        document.body.appendChild(tempButton);
+
+        var text = getComputedStyle(document.body.querySelector("#" + tempButton.id).querySelector(".text"), ":before").content.replace(/"/g, "").trim();
+
+        document.body.removeChild(document.body.querySelector("#" + tempButton.id));
 
         if (ragdollSymbolsAsWords !== true) return text;
 
@@ -153,6 +161,8 @@ var gi = {};
                 return "square";
             case "△":
                 return "triangle";
+            default:
+                return text;
         }
     }
 
@@ -1010,7 +1020,7 @@ var gi = {};
         //setup keydown/keyup events
 
         window.addEventListener("keyup", function(e) {
-            if (!gi.handleKeyboard) return;
+            if (!gi.handleKeyboard || !gi.KeyboardWatcher.PlayerToWatch) return;
 
             var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
             if (typeof(player.schema) !== "undefined" )
@@ -1029,7 +1039,7 @@ var gi = {};
         });
 
         window.addEventListener("keydown", function(e) {
-            if (!gi.handleKeyboard) return;
+            if (!gi.handleKeyboard || !gi.KeyboardWatcher.PlayerToWatch) return;
 
             var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
             if (typeof(player.schema) !== "undefined" )
