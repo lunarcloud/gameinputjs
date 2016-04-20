@@ -26,8 +26,8 @@ GameInput.onReshufflePlayers(function()
     /* Remove Old Stuff */
     for (var i = 0; i < gi.Players.length; i++)
     {
-        var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + i);
-        for (var j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements);
+        var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + i);
+        for (var j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
     }
 
     setTimeout(function(){
@@ -44,7 +44,9 @@ GameInput.onReshufflePlayers(function()
                 for (var j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('img/models/" + player.model.iconName + ".png')";
 
                 var themeStyleElement = document.createElement('link');
-                themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + player.index + '" rel="stylesheet" href="css/' + player.type.theme.name.toLowerCase() + '/' + player.index + '.css">';
+                themeStyleElement.classList.add("gameinput-theme-player" + player.index);
+                themeStyleElement.setAttribute("rel", "stylesheet");
+                themeStyleElement.setAttribute("href", "css/" + player.type.theme.name.toLowerCase() + "/" + player.index + ".css");
                 document.head.appendChild(themeStyleElement);
             } else {
                 var previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
