@@ -123,6 +123,39 @@ var gi = {};
         return typeof(this.type) !== "undefined" && this.type === GameInput.Type.Keyboard;
     };
 
+    /**
+     * Gets the button text from the CSS
+     * @note    we create a button element in memory instead of relying on a button already existing
+     * @param   schemaName              name of the button or axisValue
+     * @param   ragdollSymbolsAsWords   whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
+     */
+    gi.Player.prototype.getButtonText = function(schemaName, ragdollSymbolsAsWords)
+    {
+        var tempButton = document.createElement("div");
+        tempButton.classList.add("gameinput-button");
+        tempButton.classList.add("gameinput-player" + this.index + "-" + schemaName);
+
+        var tempText = document.createElement("span");
+        textText.classList.add("text");
+
+        tempButton.appendChild(tempText);
+
+        var text = getComputedStyle(tempText, ":before").content.trim();
+
+        if (ragdollSymbolsAsWords !== true) return text;
+
+        switch (text) {
+            case "x":
+                return "cross";
+            case "o":
+                return "circle";
+            case "□":
+                return "square";
+            case "△":
+                return "triangle";
+        }
+    }
+
     gi.Players = [
         new gi.Player(1),
         new gi.Player(2),
