@@ -124,45 +124,34 @@ var gi = {};
     };
 
     /**
-     * Gets the button text from the CSS
-     * @note    we create a button element in memory instead of relying on a button already existing
+     * @desc    Gets the button text
      * @param   schemaName              name of the button or axisValue
      * @param   ragdollSymbolsAsWords   whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      */
     gi.Player.prototype.getButtonText = function(schemaName, ragdollSymbolsAsWords)
     {
-        schemaName = schemaName.replace(/[alrd]_(up|down|left|right)/, "$1");
+        if ( this.schema instanceof gi.Schema.KeyboardAPI )
+        {
+            return this.schema[schemaName].text;
+        }
+        else
+        {
+            var text = this.model.type.schemaNames[schemaName];
 
-        var tempButton = document.createElement("div");
-        tempButton.id = "temp-button-player" + this.index + "-" + schemaName;
-        tempButton.style.display = "none";
-        tempButton.classList.add("gameinput-button");
-        tempButton.classList.add("gameinput-player" + this.index + "-" + schemaName);
+            if (ragdollSymbolsAsWords !== true) return text;
 
-        var tempText = document.createElement("span");
-        tempText.classList.add("text");
-
-        tempButton.appendChild(tempText);
-
-        document.body.appendChild(tempButton);
-
-        var text = getComputedStyle(document.body.querySelector("#" + tempButton.id).querySelector(".text"), ":before").content.replace(/"/g, "").trim();
-
-        document.body.removeChild(document.body.querySelector("#" + tempButton.id));
-
-        if (ragdollSymbolsAsWords !== true) return text;
-
-        switch (text) {
-            case "x":
-                return "cross";
-            case "o":
-                return "circle";
-            case "□":
-                return "square";
-            case "△":
-                return "triangle";
-            default:
-                return text;
+            switch (text) {
+                case "x":
+                    return "cross";
+                case "o":
+                    return "circle";
+                case "□":
+                    return "square";
+                case "△":
+                    return "triangle";
+                default:
+                    return text;
+            }
         }
     }
 
@@ -417,25 +406,82 @@ var gi = {};
         gi.Schema.KeyboardAPI.Keys.KEY_U
     );
 
-    gi.Type = function(name, theme, defaultSchema)
+    gi.Type = function(name, theme, themeSchemaNames)
     {
         this.name = name;
         this.theme = theme;
-        this.schema = defaultSchema;
+        if (name != "Keyboard")
+        {
+            this.schemaNames = {
+                d_up        :   "↑",
+                d_down      :   "↓",
+                d_left      :   "←",
+                d_right     :   "→",
+                menu        :   "▶",
+                button0     :   "button0",
+                button1     :   "button1",
+                button2     :   "button2",
+                button3     :   "button3",
+                l_up        :   "↑",
+                l_down      :   "↓",
+                l_left      :   "←",
+                l_right     :   "→",
+                r_up        :   "↑",
+                r_down      :   "↓",
+                r_left      :   "←",
+                r_right     :   "→",
+                l_button    :   "l_button",
+                r_button    :   "r_button",
+                l_trigger   :   "l_trigger",
+                r_trigger   :   "r_trigger"
+            };
+            for (var i in themeSchemaNames)
+            {
+                if (i in this.schemaNames ) this.schemaNames[i] = themeSchemaNames[i];
+            }
+        }
     };
     gi.Type.prototype.enable = function(){};
 
-    gi.Type.Hedgehog = new gi.Type("Hedgehog", new gi.Theme("HedgeHog"));
+    gi.Type.Hedgehog = new gi.Type("Hedgehog", new gi.Theme("HedgeHog"), {
+            button0     :   "A",
+            button1     :   "B",
+            button2     :   "X",
+            button3     :   "Y",
+            l_button    :   "LB",
+            r_button    :   "RB",
+            l_trigger   :   "LT",
+            r_trigger   :   "RT"
+    });
 
-    gi.Type.Plumber = new gi.Type("Plumber", new gi.Theme("Plumber"));
+    gi.Type.Plumber = new gi.Type("Plumber", new gi.Theme("Plumber"), {
+            button0     :   "B",
+            button1     :   "A",
+            button2     :   "Y",
+            button3     :   "X",
+            l_button    :   "LB",
+            r_button    :   "RB",
+            l_trigger   :   "LT",
+            r_trigger   :   "RT"
+    });
 
-    gi.Type.Ragdoll = new gi.Type("Ragdoll", new gi.Theme("Ragdoll"));
+    gi.Type.Ragdoll = new gi.Type("Ragdoll", new gi.Theme("Ragdoll"), {
+            button0     :   "x",
+            button1     :   "o",
+            button2     :   "□",
+            button3     :   "△",
+            l_button    :   "L1",
+            r_button    :   "R1",
+            l_trigger   :   "L2",
+            r_trigger   :   "R2"
+    });
 
-    gi.Type.Keyboard = new gi.Type("Keyboard", new gi.Theme("Blank"));
+    gi.Type.Keyboard = new gi.Type("Keyboard", new gi.Theme("QWERTY"));
+
     gi.Type.Keyboard.StandardThemes = {
-        Blank: new gi.Theme("Blank"),
+        QWERTY: new gi.Theme("QWERTY"),
         Dvorak: new gi.Theme("Dvorak"),
-        QWERTY: new gi.Theme("QWERTY")
+        Blank: new gi.Theme("Blank")
     };
 
 
@@ -1020,10 +1066,10 @@ var gi = {};
         //setup keydown/keyup events
 
         window.addEventListener("keyup", function(e) {
-            if (!gi.handleKeyboard || !gi.KeyboardWatcher.PlayerToWatch) return;
+            if (!gi.handleKeyboard) return;
 
             var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
-            if (typeof(player.schema) !== "undefined" )
+            if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
                 if (typeof(schemaButtonName) !== "undefined" )
@@ -1039,10 +1085,10 @@ var gi = {};
         });
 
         window.addEventListener("keydown", function(e) {
-            if (!gi.handleKeyboard || !gi.KeyboardWatcher.PlayerToWatch) return;
+            if (!gi.handleKeyboard) return;
 
             var player = gi.Players[gi.KeyboardWatcher.PlayerToWatch];
-            if (typeof(player.schema) !== "undefined" )
+            if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
                 if (typeof(schemaButtonName) !== "undefined" )
