@@ -15,10 +15,12 @@ var gi = {};
 (function(){
     "use strict";
 
+    gi.debug = true; // disable to remove console output
+    gi.handleKeyboard = true; // disable to deal with keyboard on your own
+    gi.manipulateDOM = true; // disables css file and element classes manipulation
+
     /* Helper function */
     function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
-
-    gi.os = "Other";
 
     gi.Schema = {};
 
@@ -46,10 +48,7 @@ var gi = {};
         r_trigger   :   "r_trigger"
     };
 
-    gi.debug = true;
-
-    gi.handleKeyboard = true;
-
+    gi.os = "Other";
     gi.firstPress = false;
 
     gi.canUseGamepadAPI = function()
@@ -200,6 +199,8 @@ var gi = {};
 
     gi.Theme.prototype.enable = function(playerIndex)
     {
+        if (gi.manipulateDOM === false) return;
+
         if (isNaN(playerIndex)) playerIndex = 0;
 
         var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + playerIndex);
@@ -531,11 +532,13 @@ var gi = {};
 
     gi.Model.prototype.setIcon = function(playerIndex)
     {
+        if (gi.manipulateDOM === false) return;
+
         if (isNaN(playerIndex)) playerIndex = 0;
-        var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex)
+        var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex);
         for (var i = 0; i < playerIcons.length; i++ ) playerIcons[i].src = this.getIcon();
 
-        var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex)
+        var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex);
         for (var i = 0; i < backgroundIcons.length; i++ ) backgroundIcons[i].style.backgroundImage = "url('" + this.getIcon() + "')";
     }
 
@@ -1064,7 +1067,6 @@ var gi = {};
         this.PlayerToWatch = undefined;
 
         //setup keydown/keyup events
-
         window.addEventListener("keyup", function(e) {
             if (!gi.handleKeyboard) return;
 
@@ -1074,9 +1076,11 @@ var gi = {};
                 var schemaButtonName = player.schema.lookup(e.which);
                 if (typeof(schemaButtonName) !== "undefined" )
                 {
-                    var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                    for (var i = 0; i < buttonElements.length; i++) {
-                        buttonElements[i].classList.remove("gameinput-button-active");
+                    if ( gi.manipulateDOM ) {
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                        for (var i = 0; i < buttonElements.length; i++) {
+                            buttonElements[i].classList.remove("gameinput-button-active");
+                        }
                     }
 
                     player.buttonUp(schemaButtonName);
@@ -1093,9 +1097,11 @@ var gi = {};
                 var schemaButtonName = player.schema.lookup(e.which);
                 if (typeof(schemaButtonName) !== "undefined" )
                 {
-                    var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                    for (var i = 0; i < buttonElements.length; i++) {
-                        buttonElements[i].classList.add("gameinput-button-active");
+                    if ( gi.manipulateDOM ) {
+                        var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
+                        for (var i = 0; i < buttonElements.length; i++) {
+                            buttonElements[i].classList.add("gameinput-button-active");
+                        }
                     }
                     player.buttonDown(schemaButtonName);
                 }
@@ -1159,18 +1165,22 @@ var gi = {};
                         {
                             gi.Players[i].state[j] = true;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                            for (var k = 0; k < buttonElements.length; k++) {
-                                buttonElements[k].classList.add("gameinput-button-active");
+                            if ( gi.manipulateDOM ) {
+                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                                for (var k = 0; k < buttonElements.length; k++) {
+                                    buttonElements[k].classList.add("gameinput-button-active");
+                                }
                             }
                         }
                         else
                         {
                             gi.Players[i].state[j] = false;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                            for (var k = 0; k < buttonElements.length; k++) {
-                                buttonElements[k].classList.remove("gameinput-button-active");
+                            if ( gi.manipulateDOM ) {
+                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                                for (var k = 0; k < buttonElements.length; k++) {
+                                    buttonElements[k].classList.remove("gameinput-button-active");
+                                }
                             }
                         }
                     }
@@ -1180,18 +1190,22 @@ var gi = {};
                         {
                             gi.Players[i].state[j] = true;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                            for (var k = 0; k < buttonElements.length; k++) {
-                                buttonElements[k].classList.add("gameinput-button-active");
+                            if ( gi.manipulateDOM ) {
+                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                                for (var k = 0; k < buttonElements.length; k++) {
+                                    buttonElements[k].classList.add("gameinput-button-active");
+                                }
                             }
                         }
                         else
                         {
                             gi.Players[i].state[j] = false;
 
-                            var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                            for (var k = 0; k < buttonElements.length; k++) {
-                                buttonElements[k].classList.remove("gameinput-button-active");
+                            if ( gi.manipulateDOM ) {
+                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
+                                for (var k = 0; k < buttonElements.length; k++) {
+                                    buttonElements[k].classList.remove("gameinput-button-active");
+                                }
                             }
                         }
                     }
@@ -1240,8 +1254,11 @@ var gi = {};
             gi.Players[i].schema = undefined;
             gi.Players[i].theme = undefined;
         }
-        var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
-        for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
+
+        if ( gi.manipulateDOM ) {
+            var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
+            for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
+        }
 
         if (gi.canUseGamepadAPI())
         {
@@ -1384,9 +1401,12 @@ var gi = {};
     gi.startUpdateLoop();
 
     /* Add Common Style */
-    var commonStyleElement = document.createElement('link');
-    commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
-    document.head.appendChild(commonStyleElement);
+    if (gi.manipulateDOM)
+    {
+        var commonStyleElement = document.createElement('link');
+        commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
+        document.head.appendChild(commonStyleElement);
+    }
 
     GameInput = gi; //Setup nicer looking alias
 })();
