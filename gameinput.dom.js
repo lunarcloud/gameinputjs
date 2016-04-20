@@ -1,7 +1,7 @@
 "use strict";
 
 var commonStyleElement = document.createElement('link');
-commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
+commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput-common.css">';
 document.head.appendChild(commonStyleElement);
 
 
@@ -38,13 +38,12 @@ GameInput.onReshufflePlayers(function()
 
             if (typeof(player.type) !== "undefined" && typeof(player.model) !== "undefined") {
                 var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
-                for (var j = 0; j < playerIcons.length; j++ ) playerIcons[j].setAttribute("src", "css/gameinput/img/models/" + player.model.iconName + ".png");
 
                 var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + player.index);
-                for (var j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('css/gameinput/img/models/" + player.model.iconName + ".png')";
+                for (var j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('img/models/" + player.model.iconName + ".png')";
 
                 var themeStyleElement = document.createElement('link');
-                themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + player.index + '" rel="stylesheet" href="css/gameinput/' + player.type.theme.name.toLowerCase() + '/' + player.index + '.css">';
+                themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + player.index + '" rel="stylesheet" href="css/' + player.type.theme.name.toLowerCase() + '/' + player.index + '.css">';
                 document.head.appendChild(themeStyleElement);
             } else {
                 var previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
