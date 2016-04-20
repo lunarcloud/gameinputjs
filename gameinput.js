@@ -17,7 +17,6 @@ var gi = {};
 
     gi.debug = true; // disable to remove console output
     gi.handleKeyboard = true; // disable to deal with keyboard on your own
-    gi.manipulateDOM = true; // disables css file and element classes manipulation
 
     /* Helper function */
     function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
@@ -56,6 +55,27 @@ var gi = {};
         return "getGamepads" in navigator;
     }
 
+    gi.buttonDownActions = [];
+    gi.buttonUpActions = [];
+
+    gi.onButtonDown = function(action) {
+        if (typeof(action) !== "function") throw "Action must be a function";
+        gi.buttonDownActions.push(action);
+    };
+
+    gi.onButtonUp = function(action) {
+        if (typeof(action) !== "function") throw "Action must be a function";
+        gi.buttonUpActions.push(action);
+    };
+
+    gi.buttonDown = function(player, schemaName) {
+        for ( var action in gi.buttonDownActions) gi.buttonDownActions[action](player, schemaName);
+    }
+
+    gi.buttonUp = function(player, schemaName) {
+        for ( var action in gi.buttonUpActions) gi.buttonUpActions[action](player, schemaName);
+    }
+
     gi.Player = function(number)
     {
         this.number = number;
@@ -86,12 +106,14 @@ var gi = {};
 
     gi.Player.prototype.buttonDown = function(schemaName)
     {
+        gi.buttonDown(this.index, schemaName);
         for ( var action in this.buttonDownActions[schemaName])
             this.buttonDownActions[schemaName][action]();
     }
 
     gi.Player.prototype.buttonUp = function(schemaName)
     {
+        gi.buttonUp(this.index, schemaName);
         for ( var action in this.buttonUpActions[schemaName])
             this.buttonUpActions[schemaName][action]();
     }
@@ -190,26 +212,6 @@ var gi = {};
     {
         this.name = name;
     };
-
-    gi.Theme.prototype.getStyleSheet = function(playerIndex)
-    {
-        if (isNaN(playerIndex)) playerIndex = 0;
-        return "css/gameinput/" + this.name.toLowerCase() + "/" + playerIndex + ".css";
-    }
-
-    gi.Theme.prototype.enable = function(playerIndex)
-    {
-        if (gi.manipulateDOM === false) return;
-
-        if (isNaN(playerIndex)) playerIndex = 0;
-
-        var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-player' + playerIndex);
-        for (var i = 0; i < previousThemeStyleElements.length; i++) document.head.removeChild(previousThemeStyleElements[i]);
-
-        var themeStyleElement = document.createElement('link');
-        themeStyleElement.innerHTML = '<link class="gameinput-theme-player' + playerIndex + '" rel="stylesheet" href="' + this.getStyleSheet(playerIndex) + '">';
-        document.head.appendChild(themeStyleElement);
-    }
 
     gi.Schema.Key = function(code, text)
     {
@@ -495,7 +497,12 @@ var gi = {};
         {
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.QWERTY;
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.QWERTY;
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme.enable(gi.KeyboardWatcher.PlayerToWatch);
+
+            /* Treat this like a player reshuffle */
+            for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+            {
+                if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
+            }
         }
     };
 
@@ -508,8 +515,12 @@ var gi = {};
         {
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.Dvorak;
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.Dvorak;
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme.enable(gi.KeyboardWatcher.PlayerToWatch);
 
+            /* Treat this like a player reshuffle */
+            for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+            {
+                if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
+            }
         }
     };
 
@@ -524,23 +535,6 @@ var gi = {};
         this.os = os;
         this.schema = schema;
     };
-
-    gi.Model.prototype.getIcon = function()
-    {
-        return "css/gameinput/img/models/" + this.iconName + ".png";
-    }
-
-    gi.Model.prototype.setIcon = function(playerIndex)
-    {
-        if (gi.manipulateDOM === false) return;
-
-        if (isNaN(playerIndex)) playerIndex = 0;
-        var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + playerIndex);
-        for (var i = 0; i < playerIcons.length; i++ ) playerIcons[i].src = this.getIcon();
-
-        var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + playerIndex);
-        for (var i = 0; i < backgroundIcons.length; i++ ) backgroundIcons[i].style.backgroundImage = "url('" + this.getIcon() + "')";
-    }
 
     gi.Type.Keyboard.model = new gi.Model(
             gi.Type.Keyboard,
@@ -1074,17 +1068,7 @@ var gi = {};
             if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
-                if (typeof(schemaButtonName) !== "undefined" )
-                {
-                    if ( gi.manipulateDOM ) {
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                        for (var i = 0; i < buttonElements.length; i++) {
-                            buttonElements[i].classList.remove("gameinput-button-active");
-                        }
-                    }
-
-                    player.buttonUp(schemaButtonName);
-                }
+                if (typeof(schemaButtonName) !== "undefined" ) player.buttonUp(schemaButtonName);
             }
         });
 
@@ -1095,16 +1079,7 @@ var gi = {};
             if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
-                if (typeof(schemaButtonName) !== "undefined" )
-                {
-                    if ( gi.manipulateDOM ) {
-                        var buttonElements = document.querySelectorAll(".gameinput-player" + player.index + "-" + schemaButtonName);
-                        for (var i = 0; i < buttonElements.length; i++) {
-                            buttonElements[i].classList.add("gameinput-button-active");
-                        }
-                    }
-                    player.buttonDown(schemaButtonName);
-                }
+                if (typeof(schemaButtonName) !== "undefined" ) player.buttonDown(schemaButtonName);
             }
         });
     };
@@ -1160,54 +1135,11 @@ var gi = {};
                         var axisValue = currentGamepad.axes[currentSchema[j].index - 1];
                         var threshold = currentSchema[j].threshold;
 
-                        if ( (negativeAxis && axisValue < threshold)
-                            || (!negativeAxis && axisValue > threshold))
-                        {
-                            gi.Players[i].state[j] = true;
-
-                            if ( gi.manipulateDOM ) {
-                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                                for (var k = 0; k < buttonElements.length; k++) {
-                                    buttonElements[k].classList.add("gameinput-button-active");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            gi.Players[i].state[j] = false;
-
-                            if ( gi.manipulateDOM ) {
-                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                                for (var k = 0; k < buttonElements.length; k++) {
-                                    buttonElements[k].classList.remove("gameinput-button-active");
-                                }
-                            }
-                        }
+                        gi.Players[i].state[j] = (negativeAxis && axisValue < threshold) || (!negativeAxis && axisValue > threshold);
                     }
                     else
                     {
-                        if (currentGamepad.buttons[currentSchema[j] - 1].pressed)
-                        {
-                            gi.Players[i].state[j] = true;
-
-                            if ( gi.manipulateDOM ) {
-                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                                for (var k = 0; k < buttonElements.length; k++) {
-                                    buttonElements[k].classList.add("gameinput-button-active");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            gi.Players[i].state[j] = false;
-
-                            if ( gi.manipulateDOM ) {
-                                var buttonElements = document.querySelectorAll(".gameinput-player" + i + "-" + j);
-                                for (var k = 0; k < buttonElements.length; k++) {
-                                    buttonElements[k].classList.remove("gameinput-button-active");
-                                }
-                            }
-                        }
+                        gi.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed;
                     }
                 }
             }
@@ -1253,11 +1185,6 @@ var gi = {};
             gi.Players[i].model = undefined;
             gi.Players[i].schema = undefined;
             gi.Players[i].theme = undefined;
-        }
-
-        if ( gi.manipulateDOM ) {
-            var gameInputIcons = document.querySelectorAll("img.gameinput-icon");
-            for (var i; i < gameInputIcons.length; i++) gameInputIcons[i].src = "";
         }
 
         if (gi.canUseGamepadAPI())
@@ -1364,15 +1291,6 @@ var gi = {};
         {
             gi.KeyboardWatcher.PlayerToWatch = undefined;
         }
-
-        for (var i = 0; i < gi.Players.length; i++)
-        {
-            if (gi.Players[i].type instanceof gi.Type)
-            {
-                gi.Players[i].type.theme.enable(i);
-                if (typeof(gi.Players[i].model) !== "undefined" && gi.Players[i].model instanceof gi.Model) gi.Players[i].model.setIcon(i);
-            }
-        }
     }
 
     gi.reshufflePlayersActions = [];
@@ -1399,14 +1317,6 @@ var gi = {};
     gi.initialGamePadSetup();
     if (typeof(gi.Type.Keyboard.schema) === "undefined") gi.Type.Keyboard.setQWERTY();
     gi.startUpdateLoop();
-
-    /* Add Common Style */
-    if (gi.manipulateDOM)
-    {
-        var commonStyleElement = document.createElement('link');
-        commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput/common.css">';
-        document.head.appendChild(commonStyleElement);
-    }
 
     GameInput = gi; //Setup nicer looking alias
 })();
