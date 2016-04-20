@@ -585,7 +585,7 @@ var gi = {};
                 new gi.Schema.AxisButton(3),
                 5,6,7,8
         ))
-        
+
     ];
 
     gi.Models.Specific = [
@@ -596,6 +596,44 @@ var gi = {};
             "Windows",
             new gi.Schema.GamePadAPI(
                 13,14,15,16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "Xbox 360 Wireless Receiver (Vendor: 0000 Product: 0000)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                16,17,14,15,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "0000-0000-Xbox 360 Wireless Receiver",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                16,17,14,15,
                 10,
                 1,2,3,4,
                 new gi.Schema.AxisButton(-2),
