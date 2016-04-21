@@ -146,10 +146,10 @@ var gi = {};
 
     /**
      * @desc    Gets the button text
-     * @param   schemaName              name of the button or axisValue
-     * @param   ragdollSymbolsAsWords   whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
+     * @param   schemaName      name of the button or axisValue
+     * @param   symbolsAsWords  whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      */
-    gi.Player.prototype.getButtonText = function(schemaName, ragdollSymbolsAsWords)
+    gi.Player.prototype.getButtonText = function(schemaName, symbolsAsWords)
     {
         if ( this.schema instanceof gi.Schema.KeyboardAPI )
         {
@@ -159,9 +159,11 @@ var gi = {};
         {
             var text = this.model.type.schemaNames[schemaName];
 
-            if (ragdollSymbolsAsWords !== true) return text;
+            if (symbolsAsWords !== true) return text;
 
             switch (text) {
+                case "▶":
+                    return "start";
                 case "x":
                     return "cross";
                 case "o":
@@ -479,6 +481,18 @@ var gi = {};
             r_trigger   :   "R2"
     });
 
+    gi.Type.Ragdoll4 = new gi.Type("Ragdoll", new gi.Theme("Ragdoll"), {
+            menu        :   "options",
+            button0     :   "x",
+            button1     :   "o",
+            button2     :   "□",
+            button3     :   "△",
+            l_button    :   "L1",
+            r_button    :   "R1",
+            l_trigger   :   "L2",
+            r_trigger   :   "R2"
+    });
+
     gi.Type.Keyboard = new gi.Type("Keyboard", new gi.Theme("QWERTY"));
 
     gi.Type.Keyboard.StandardThemes = {
@@ -733,7 +747,7 @@ var gi = {};
                 5,6,7,8
         )),
         new gi.Model(
-            gi.Type.Ragdoll,
+            gi.Type.Ragdoll4,
             "ds4",
             "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
             "Windows",
@@ -753,7 +767,7 @@ var gi = {};
             )
         ),
         new gi.Model(
-            gi.Type.Ragdoll,
+            gi.Type.Ragdoll4,
             "ds4",
             "054c-05c4-Wireless Controller",
             "Windows",
@@ -934,7 +948,7 @@ var gi = {};
                 11,12,9,10
         )),
         new gi.Model(
-            gi.Type.Ragdoll,
+            gi.Type.Ragdoll4,
             "ds4",
             "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
             "Linux",
@@ -956,7 +970,7 @@ var gi = {};
                 8
         )),
         new gi.Model(
-            gi.Type.Ragdoll,
+            gi.Type.Ragdoll4,
             "ds4",
             "054c-05c4-Sony Computer Entertainment Wireless Controller",
             "Linux",
