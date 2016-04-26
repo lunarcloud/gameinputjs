@@ -15,6 +15,22 @@
 	content: "F";
 }
 
+.gameinput-button.gameinput-player3-l_button .text:before {
+	content: 'Q';
+}
+
+ .gameinput-button.gameinput-player3-r_button .text:before {
+	content: "W";
+} 
+
+.gameinput-button.gameinput-player3-l_trigger .text:before {
+	content: "E";
+} 
+
+.gameinput-button.gameinput-player3-r_trigger .text:before {
+	content: "R";
+}
+
 .gameinput-button.gameinput-player3-button
 {
 	color: black;
