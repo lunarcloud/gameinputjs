@@ -15,6 +15,22 @@
 	content: "U";
 }
 
+.gameinput-button.gameinput-player1-l_button .text:before {
+	content: '"';
+}
+
+ .gameinput-button.gameinput-player1-r_button .text:before {
+	content: "<";
+} 
+
+.gameinput-button.gameinput-player1-l_trigger .text:before {
+	content: ">";
+} 
+
+.gameinput-button.gameinput-player1-r_trigger .text:before {
+	content: "P";
+}
+
 .gameinput-button.gameinput-player1-button
 {
 	color: black;
