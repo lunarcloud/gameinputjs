@@ -1108,6 +1108,50 @@ var gi = {};
                 undefined,
                 undefined,
                 5,6,7,8
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "ASUS Gamepad",
+            "Android",
+            new gi.Schema.GamePadAPI(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                12,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                7, 8, 5, 6
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "NYKO PLAYPAD PRO",
+            "Android",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-8),
+                new gi.Schema.AxisButton(8),
+                new gi.Schema.AxisButton(-7),
+                new gi.Schema.AxisButton(7),
+                10,
+                2,3,1,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-6),
+                new gi.Schema.AxisButton(6),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5, 6, 7, 8
         ))
     ];
 
@@ -1360,11 +1404,11 @@ var gi = {};
 
     /* Detect OS */
     var clientStrings = [
-        {s:'Windows', r:/Windows/},
         {s:'Android', r:/Android/},
-        {s:'Linux', r:/(Linux|X11)/},
         {s:'iOS', r:/(iPhone|iPad|iPod)/},
-        {s:'Mac OS X', r:/Mac/}
+        {s:'Windows', r:/Windows/},
+        {s:'Mac OS X', r:/Mac/},
+        {s:'Linux', r:/(Linux|X11)/},
     ];
     for (var id in clientStrings) {
         if (clientStrings[id].r.test(navigator.userAgent)) { gi.os = clientStrings[id].s; break; }
