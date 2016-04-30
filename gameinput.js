@@ -739,7 +739,7 @@ var gi = {};
         )),
         new gi.Model(
             gi.Type.Plumber,
-            "generic",
+            "plumber-generic",
             "0925-8866-SFC/USB Pad",
             "Windows",
             new gi.Schema.GamePadAPI(
@@ -748,7 +748,7 @@ var gi = {};
                 new gi.Schema.AxisButton(-1),
                 new gi.Schema.AxisButton(1),
                 8,
-                1,2,3,4,
+                2,1,4,3,
                 undefined,
                 undefined,
                 undefined,
@@ -761,7 +761,7 @@ var gi = {};
         )),
         new gi.Model(
             gi.Type.Plumber,
-            "generic",
+            "plumber-generic",
             "SFC/USB Pad (Vendor: 0925 Product: 8866)",
             "Windows",
             new gi.Schema.GamePadAPI(
@@ -770,7 +770,7 @@ var gi = {};
                 new gi.Schema.AxisButton(-1),
                 new gi.Schema.AxisButton(1),
                 8,
-                1,2,3,4,
+                2,1,4,3,
                 undefined,
                 undefined,
                 undefined,

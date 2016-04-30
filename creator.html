@@ -67,7 +67,8 @@
                 <td>
                     <select class="icon" onchange="updateIcon(this);">
                         <option value="generic">Generic</option>
-                        <option value="joystick">Joystick</option>
+                        <option value="nintendo-generic">Nintendo Generic</option>
+                        <option value="joystick">Generic Joystick</option>
                         <option value="ds3">DualShock 3</option>
                         <option value="ds4">DualShock 4</option>
                         <option value="dc">Dreamcast</option>
@@ -389,10 +390,14 @@
 
         switch (icon) {
             case "ds3":
-            case "ds4":
                 changeGamepadType(index, GameInput.Type.Ragdoll);
                 theme = "GameInput.Type.Ragdoll";
                 break;
+            case "ds4":
+                changeGamepadType(index, GameInput.Type.Ragdoll4);
+                theme = "GameInput.Type.Ragdoll4";
+                break;
+            case "nintendo-generic":
             case "snes":
                 changeGamepadType(index, GameInput.Type.Plumber);
                 theme = "GameInput.Type.Plumber";
