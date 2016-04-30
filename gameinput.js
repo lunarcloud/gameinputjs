@@ -588,11 +588,27 @@ var gi = {};
                 new gi.Schema.AxisButton(-4),
                 new gi.Schema.AxisButton(4),
                 new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3)//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "xbox360",
+            "xinput",
+            undefined,
+            new gi.Schema.GamePadAPI(
+                13, 14, 15, 16,
+                10,
+                1,2,3,4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5,6,7,8
         )),
         new gi.Model(
             gi.Type.Hedgehog,
