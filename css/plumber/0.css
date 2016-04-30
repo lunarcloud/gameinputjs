@@ -1,20 +1,20 @@
 .gameinput-button.gameinput-player0-button0
 {
+    background-color: red;
+}
+
+.gameinput-button.gameinput-player0-button1 {
     color: black;
     text-shadow: 0 0 4px white;
     background-color: yellow;
 }
 
-.gameinput-button.gameinput-player0-button1 {
-    background-color: red;
-}
-
 .gameinput-button.gameinput-player0-button2 {
-    background-color: green;
+    background-color: blue;
 }
 
 .gameinput-button.gameinput-player0-button3 {
-    background-color: blue;
+    background-color: green;
 }
 
 .gameinput-button.gameinput-player0-button0 .text:before {

@@ -739,7 +739,7 @@ var gi = {};
         )),
         new gi.Model(
             gi.Type.Plumber,
-            "plumber-generic",
+            "nintendo-generic",
             "0925-8866-SFC/USB Pad",
             "Windows",
             new gi.Schema.GamePadAPI(
@@ -761,7 +761,7 @@ var gi = {};
         )),
         new gi.Model(
             gi.Type.Plumber,
-            "plumber-generic",
+            "nintendo-generic",
             "SFC/USB Pad (Vendor: 0925 Product: 8866)",
             "Windows",
             new gi.Schema.GamePadAPI(
