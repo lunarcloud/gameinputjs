@@ -473,10 +473,10 @@ var gi = {};
     });
 
     gi.Type.Plumber = new gi.Type("Plumber", new gi.Theme("Plumber"), {
-            button0     :   "B",
-            button1     :   "A",
-            button2     :   "Y",
-            button3     :   "X",
+            button0     :   "A",
+            button1     :   "B",
+            button2     :   "X",
+            button3     :   "Y",
             l_button    :   "LB",
             r_button    :   "RB",
             l_trigger   :   "LT",
@@ -770,7 +770,7 @@ var gi = {};
                 new gi.Schema.AxisButton(-1),
                 new gi.Schema.AxisButton(1),
                 8,
-                1,2,3,4,
+                2,1,4,3,
                 undefined,
                 undefined,
                 undefined,
@@ -789,7 +789,7 @@ var gi = {};
             new gi.Schema.GamePadAPI(
                 16,17,14,15,
                 10,
-                1,2,3,4,
+                2,1,4,3,
                 new gi.Schema.AxisButton(-2),
                 new gi.Schema.AxisButton(2),
                 new gi.Schema.AxisButton(-1),

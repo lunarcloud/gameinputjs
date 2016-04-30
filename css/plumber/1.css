@@ -18,19 +18,19 @@
 }
 
 .gameinput-button.gameinput-player1-button0 .text:before {
-    content: "B";
-}
-
-.gameinput-button.gameinput-player1-button1 .text:before {
     content: "A";
 }
 
-.gameinput-button.gameinput-player1-button2 .text:before {
-    content: "Y";
+.gameinput-button.gameinput-player2-button1 .text:before {
+    content: "B";
 }
 
-.gameinput-button.gameinput-player1-button3 .text:before {
+.gameinput-button.gameinput-player3-button2 .text:before {
     content: "X";
+}
+
+.gameinput-button.gameinput-player4-button3 .text:before {
+    content: "Y";
 }
 
 .gameinput-button.gameinput-player1-l_button .text:before {

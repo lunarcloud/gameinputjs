@@ -18,19 +18,19 @@
 }
 
 .gameinput-button.gameinput-player2-button0 .text:before {
-    content: "B";
-}
-
-.gameinput-button.gameinput-player2-button1 .text:before {
     content: "A";
 }
 
+.gameinput-button.gameinput-player2-button1 .text:before {
+    content: "B";
+}
+
 .gameinput-button.gameinput-player2-button2 .text:before {
-    content: "Y";
+    content: "X";
 }
 
 .gameinput-button.gameinput-player2-button3 .text:before {
-    content: "X";
+    content: "Y";
 }
 
 .gameinput-button.gameinput-player2-l_button .text:before {
