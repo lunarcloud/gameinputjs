@@ -137,12 +137,12 @@ var gi = {};
 
     gi.Player.prototype.hasGamePad = function()
     {
-        return typeof(this.type) !== "undefined" && this.type !== GameInput.Type.Keyboard;
+        return typeof(this.type) !== "undefined" && this.type !== gi.Type.Keyboard;
     };
 
     gi.Player.prototype.hasKeyboard = function()
     {
-        return typeof(this.type) !== "undefined" && this.type === GameInput.Type.Keyboard;
+        return typeof(this.type) !== "undefined" && this.type === gi.Type.Keyboard;
     };
 
     /**
@@ -743,20 +743,20 @@ var gi = {};
             "0925-8866-SFC/USB Pad",
             "Windows",
             new gi.Schema.GamePadAPI(
-                new GameInput.Schema.AxisButton(-2),
-                new GameInput.Schema.AxisButton(2),
-                new GameInput.Schema.AxisButton(-1),
-                new GameInput.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
                 8,
                 2,1,4,3,
                 undefined,
                 undefined,
                 undefined,
                 undefined,
-                new GameInput.Schema.AxisButton(-4),
-                new GameInput.Schema.AxisButton(4),
-                new GameInput.Schema.AxisButton(-3),
-                new GameInput.Schema.AxisButton(3),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
                 5, 6, undefined, undefined
         )),
         new gi.Model(
@@ -765,20 +765,20 @@ var gi = {};
             "SFC/USB Pad (Vendor: 0925 Product: 8866)",
             "Windows",
             new gi.Schema.GamePadAPI(
-                new GameInput.Schema.AxisButton(-2),
-                new GameInput.Schema.AxisButton(2),
-                new GameInput.Schema.AxisButton(-1),
-                new GameInput.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
                 8,
                 2,1,4,3,
                 undefined,
                 undefined,
                 undefined,
                 undefined,
-                new GameInput.Schema.AxisButton(-4),
-                new GameInput.Schema.AxisButton(4),
-                new GameInput.Schema.AxisButton(-3),
-                new GameInput.Schema.AxisButton(3),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
                 5, 6, undefined, undefined
         )),
         new gi.Model(
