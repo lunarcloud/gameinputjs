@@ -87,12 +87,14 @@ var gi = {};
         this.schema;
         this.theme;
         this.state;
+        this.analogState;
 
         this.previous = {
             type: undefined,
             model: undefined,
             schema: undefined,
             state: undefined,
+            analogState: undefined,
         };
 
         this.buttonDownActions = {};
@@ -1256,6 +1258,54 @@ var gi = {};
                 new gi.Schema.AxisButton(-3),
                 new gi.Schema.AxisButton(3),
                 5, 6, 7, 8
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "Moga 2 HID",
+            "Android",
+            new gi.Schema.GamePadAPI(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                10,
+                1, 2, 3, 4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                7, 8,
+                undefined,
+                undefined
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "generic",
+            "Moga 2 HID (Vendor: 20d6 Product: 89e5)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                new gi.Schema.AxisButton(-8),
+                new gi.Schema.AxisButton(8),
+                new gi.Schema.AxisButton(-7),
+                new gi.Schema.AxisButton(7),
+                7,
+                1, 2, 3, 4,
+                new gi.Schema.AxisButton(-2),
+                new gi.Schema.AxisButton(2),
+                new gi.Schema.AxisButton(-1),
+                new gi.Schema.AxisButton(1),
+                new gi.Schema.AxisButton(-4),
+                new gi.Schema.AxisButton(4),
+                new gi.Schema.AxisButton(-3),
+                new gi.Schema.AxisButton(3),
+                5, 6,
+                new gi.Schema.AxisButton(6),
+                new gi.Schema.AxisButton(5)
         ))
     ];
 
@@ -1318,6 +1368,8 @@ var gi = {};
             {
                 gi.Players[i].previous.state = gi.Players[i].state;
                 gi.Players[i].state = {};
+                gi.Players[i].previous.analogState = gi.Players[i].analogState;
+                gi.Players[i].analogState = {};
 
                 var currentGamepad = gi.Connection.Gamepads[i];
                 var currentSchema = gi.Players[i].schema;
@@ -1330,8 +1382,7 @@ var gi = {};
                     {
                         //skip
                     }
-                    else if ( typeof(currentGamepad.buttons[currentSchema[j] - 1]
-                               ) === "undefined")
+                    else if ( typeof(currentGamepad.buttons[currentSchema[j] - 1] ) === "undefined")
                     {
                         var negativeAxis = false;
                         if (currentSchema[j].threshold < 0) negativeAxis = true;
@@ -1339,11 +1390,15 @@ var gi = {};
                         var axisValue = currentGamepad.axes[currentSchema[j].index - 1];
                         var threshold = currentSchema[j].threshold;
 
+                        gi.Players[i].analogState[j] = axisValue;
+
                         gi.Players[i].state[j] = (negativeAxis && axisValue < threshold) || (!negativeAxis && axisValue > threshold);
                     }
                     else
                     {
                         gi.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed;
+
+                        gi.Players[i].analogState[j] = gi.Players[i].state[j] ? 1 : 0;
                     }
                 }
             }
@@ -1456,6 +1511,7 @@ var gi = {};
 
                     // blank state to start
                     gi.Players[i].state = {};
+                    gi.Players[i].analogState = {};
 
                     // setup Previous as current
                     gi.Players[i].previous.type = gi.Players[i].type;
@@ -1463,6 +1519,7 @@ var gi = {};
                     gi.Players[i].previous.schema = gi.Players[i].schema;
                     gi.Players[i].previous.theme = gi.Players[i].theme;
                     gi.Players[i].previous.state = gi.Players[i].state;
+                    gi.Players[i].previous.analogState = gi.Players[i].analogState;
 
                 }
             }
