@@ -63,3 +63,7 @@ GameInput.onReshufflePlayers(function()
     },1);
 });
 
+/**
+ * @preserve
+ * @license-end
+ */
