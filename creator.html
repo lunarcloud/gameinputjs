@@ -391,32 +391,38 @@
         switch (icon) {
             case "ds3":
                 changeGamepadType(index, GameInput.Type.Ragdoll);
-                theme = "GameInput.Type.Ragdoll";
+                theme = "gi.Type.Ragdoll";
                 break;
             case "ds4":
                 changeGamepadType(index, GameInput.Type.Ragdoll4);
-                theme = "GameInput.Type.Ragdoll4";
+                theme = "gi.Type.Ragdoll4";
                 break;
             case "nintendo-generic":
             case "snes":
                 changeGamepadType(index, GameInput.Type.Plumber);
-                theme = "GameInput.Type.Plumber";
+                theme = "gi.Type.Plumber";
                 break;
             case "xbox360":
             case "xboxone":
             default:
                 changeGamepadType(index, GameInput.Type.Hedgehog);
-                theme = "GameInput.Type.Hedgehog";
+                theme = "gi.Type.Hedgehog";
                 break;
         }
 
-        var newCode = 'new GameInput.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.getPlayer(index).model.id + '",\n\t"' + GameInput.os + '",\n\tnew GameInput.Schema.GamePadAPI(\n';
+        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.getPlayer(index).model.id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
 
         for (var schemaName in GameInput.Schema.Names)
         {
             var item = GameInput.getPlayer(index).schema[schemaName];
 
-            if (item !== undefined && isNaN(item)) item = "new GameInput.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
+            if (typeof(item) !== "undefined" && isNaN(item)) {
+                if (item instanceof GameInput.Schema.AxisButton) {
+                    item = "new gi.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
+                } else {
+                    item = "undefined";
+                }
+            }
 
             newCode += "\t\t/* " + schemaName + " */  " + item + ",\n";
         }
