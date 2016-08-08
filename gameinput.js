@@ -573,6 +573,25 @@ var gi = {};
             gi.Schema.KeyboardAPI.Standard.QWERTY);
 
     gi.Models = {};
+    gi.Models.UnknownStandardMapping = new gi.Model(
+        gi.Type.Hedgehog,
+        "generic",
+        "Unknown",
+        undefined,
+        new gi.Schema.GamePadAPI(
+            13, 14, 15, 16,
+            10,
+            1,2,3,4,
+            new gi.Schema.AxisButton(-2),
+            new gi.Schema.AxisButton(2),
+            new gi.Schema.AxisButton(-1),
+            new gi.Schema.AxisButton(1),
+            new gi.Schema.AxisButton(-4),
+            new gi.Schema.AxisButton(4),
+            new gi.Schema.AxisButton(-3),
+            new gi.Schema.AxisButton(3),
+            5,6,7,8
+    ));
     gi.Models.Generic = [
         new gi.Model(
             gi.Type.Hedgehog,
@@ -1561,7 +1580,16 @@ var gi = {};
 
                         if (gi.Connection.Gamepads[i] instanceof Gamepad && typeof(gi.Players[i].model) === "undefined")
                         {
-                            console.warn("Gamepad not mapped: \"" + gi.Connection.Gamepads[i].id + "\"");
+                            if (gi.Connection.Gamepads[i].mapping === "standard") {
+                                console.warn("Gamepad not detected, detected \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
+                            } else {
+                                console.warn("Gamepad not detected, forcing \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
+                            }
+
+                            gi.Players[i].type = gi.Models.UnknownStandardMapping.type;
+                            gi.Players[i].model = gi.Models.UnknownStandardMapping
+                            gi.Players[i].schema = gi.Models.UnknownStandardMapping.schema;
+                            gi.Players[i].theme = gi.Models.UnknownStandardMapping.theme;
                         }
                     }
 
