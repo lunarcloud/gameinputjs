@@ -29,7 +29,7 @@ gi.CustomLearning = {};
     var completeMappingHandlers = [];
 
     /**
-      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @desc   Setup a function to fire when axes ignore detection event occurs, used for display purposes.
       * @param  handler     the function to handle the event
       */
     gi.CustomLearning.onDetectIgnorableAxes = function(handler) {
@@ -37,7 +37,7 @@ gi.CustomLearning = {};
     }
 
     /**
-      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @desc   Setup a function to fire when begin mapping event occurs, used for display purposes.
       * @param  handler     the function to handle the event
       */
     gi.CustomLearning.onBeginMapping = function(handler) {
@@ -61,7 +61,7 @@ gi.CustomLearning = {};
     }
 
     /**
-      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @desc   Setup a function to fire when complete mapping event occurs, used for display purposes.
       * @param  handler     the function to handle the event
       */
     gi.CustomLearning.onCompleteMapping = function(handler) {
