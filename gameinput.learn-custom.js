@@ -20,9 +20,53 @@ gi.CustomLearning = {};
 
     var ignorableAxes = {};
     var customMappings = {};
-    var mappingListeningHandlers = [];
-    var mappingSetHandlers = [];
 
+    /* Event Handlers */
+    var detectIgnorableAxesHandlers = [];
+    var beginMappingHandlers = [];
+    var listeningForMappingHandlers = [];
+    var setMappingHandlers = [];
+    var completeMappingHandlers = [];
+
+    /**
+      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onDetectIgnorableAxes = function(handler) {
+        detectIgnorableAxesHandlers.push(handler);
+    }
+
+    /**
+      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onBeginMapping = function(handler) {
+        beginMappingHandlers.push(handler);
+    }
+
+    /**
+      * @desc   Setup a function to fire when listening event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onListeningForMappingItem = function(handler) {
+        listeningForMappingHandlers.push(handler);
+    }
+
+    /**
+      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onSetMappingItem = function(handler) {
+        setMappingHandlers.push(handler);
+    }
+
+    /**
+      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onCompleteMapping = function(handler) {
+        completeMappingHandlers.push(handler);
+    }
 
     /**
       * @desc   Detects erratic / noisy axes to ignore while mapping, such as accelerometers or broken sticks
@@ -31,6 +75,7 @@ gi.CustomLearning = {};
     gi.CustomLearning.detectIgnorableAxes = function(player) {
         ignorableAxes[player] = {};
         //TODO
+        //TODO fire detectIgnorableAxesHandlers handlers with the player
     }
 
     /**
@@ -41,21 +86,7 @@ gi.CustomLearning = {};
         customMappings[player] = {};
         //TODO
         //TODO listen for each item
-    }
-
-    /**
-      * @desc   Setup a function to fire when listening event occurs, used for display purposes.
-      * @param  handler     the function to handle the event
-      */
-    gi.CustomLearning.onListeningForMappingItem = function(handler) {
-        mappingListeningHandlers.push(handler);
-    }
-    /**
-      * @desc   Setup a function to fire when set event occurs, used for display purposes.
-      * @param  handler     the function to handle the event
-      */
-    gi.CustomLearning.onSetMappingItem = function(handler) {
-        mappingSetHandlers.push(handler);
+        //TODO fire beginMappingHandlers handlers with the player
     }
 
     /**
@@ -66,7 +97,7 @@ gi.CustomLearning = {};
     gi.CustomLearning.listenForMappingItem = function(player, schemaName) {
         //TODO
         //TODO if threshold oof an axis (not in ignorableAxes) is above 0.5 or if a button is true, setMappingItem to that
-        //TODO fire mappingListeningHandlers handlers with the player and schemaName
+        //TODO fire listeningForMappingHandlers handlers with the player and schemaName
     }
 
     /**
@@ -77,7 +108,7 @@ gi.CustomLearning = {};
       */
     gi.CustomLearning.setMappingItem = function(player, schemaName, button) {
         //TODO
-        //TODO fire mappingSetHandlers handlers with the player, schemaName, and button
+        //TODO fire setMappingHandlers handlers with the player, schemaName, and button
     }
 
     /**
@@ -86,6 +117,7 @@ gi.CustomLearning = {};
       */
     gi.CustomLearning.completeCustomMapping = function(player) {
         //TODO
+        //TODO fire completeMappingHandlers handlers with the player
     }
 
 })();
