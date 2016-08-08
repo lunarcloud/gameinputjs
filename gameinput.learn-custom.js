@@ -20,6 +20,8 @@ gi.CustomLearning = {};
 
     var ignorableAxes = {};
     var customMappings = {};
+    var mappingListeningHandlers = [];
+
 
     /**
       * @desc   Detects erratic / noisy axes to ignore while mapping, such as accelerometers or broken sticks
@@ -41,12 +43,21 @@ gi.CustomLearning = {};
     }
 
     /**
+      * @desc   Setup a function to fire when listening event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onListeningForMappingItem = function(handler) {
+        mappingListeningHandlers.push(handler);
+    }
+
+    /**
       * @desc   Listens for a mapping item
       * @param  player      index of the player whose gamepad to listen to
       * @param  schemaName  one of the gi.Schema.Names
       */
     gi.CustomLearning.listenForMappingItem = function(player, schemaName) {
         //TODO
+        //TODO fire mappingListeningHandlers handlers with the player and schemaName
     }
 
     /**
@@ -58,7 +69,6 @@ gi.CustomLearning = {};
     gi.CustomLearning.setMappingItem = function(player, schemaName, button) {
         //TODO
     }
-
 
     /**
       * @desc   Finalized and assigns mapping
