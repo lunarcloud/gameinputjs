@@ -21,6 +21,7 @@ gi.CustomLearning = {};
     var ignorableAxes = {};
     var customMappings = {};
     var mappingListeningHandlers = [];
+    var mappingSetHandlers = [];
 
 
     /**
@@ -49,6 +50,13 @@ gi.CustomLearning = {};
     gi.CustomLearning.onListeningForMappingItem = function(handler) {
         mappingListeningHandlers.push(handler);
     }
+    /**
+      * @desc   Setup a function to fire when set event occurs, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onSetMappingItem = function(handler) {
+        mappingSetHandlers.push(handler);
+    }
 
     /**
       * @desc   Listens for a mapping item
@@ -57,6 +65,7 @@ gi.CustomLearning = {};
       */
     gi.CustomLearning.listenForMappingItem = function(player, schemaName) {
         //TODO
+        //TODO if threshold oof an axis (not in ignorableAxes) is above 0.5 or if a button is true, setMappingItem to that
         //TODO fire mappingListeningHandlers handlers with the player and schemaName
     }
 
@@ -68,6 +77,7 @@ gi.CustomLearning = {};
       */
     gi.CustomLearning.setMappingItem = function(player, schemaName, button) {
         //TODO
+        //TODO fire mappingSetHandlers handlers with the player, schemaName, and button
     }
 
     /**
