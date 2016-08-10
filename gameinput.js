@@ -898,10 +898,12 @@ var gi = {};
 
                         if (gi.Connection.Gamepads[i] instanceof Gamepad && typeof(gi.Players[i].model) === "undefined")
                         {
-                            if (gi.Connection.Gamepads[i].mapping === "standard") {
-                                console.warn("Gamepad not detected, detected \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
-                            } else {
-                                console.warn("Gamepad not detected, forcing \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
+                            if (gi.debug) {
+                                if (gi.Connection.Gamepads[i].mapping === "standard") {
+                                    console.debug("Gamepad not detected, detected \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
+                                } else {
+                                    console.debug("Gamepad not detected, forcing \"stardard\" mapping: \"" + gi.Connection.Gamepads[i].id + "\"");
+                                }
                             }
 
                             gi.Players[i].type = gi.Models.UnknownStandardMapping.type;
