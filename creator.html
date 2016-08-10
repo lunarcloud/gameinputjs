@@ -68,6 +68,7 @@
                     <select class="icon" onchange="updateIcon(this);">
                         <option value="generic">Generic</option>
                         <option value="nintendo-generic">Nintendo Generic</option>
+                        <option value="sega-generic">SEGA Generic</option>
                         <option value="joystick">Generic Joystick</option>
                         <option value="ds3">DualShock 3</option>
                         <option value="ds4">DualShock 4</option>
@@ -403,6 +404,8 @@
                 changeGamepadType(index, GameInput.Type.Plumber);
                 theme = "gi.Type.Plumber";
                 break;
+            case "sega-generic":
+            case "dc":
             case "xbox360":
             case "xboxone":
             default:

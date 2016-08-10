@@ -1384,7 +1384,7 @@ var gi = {};
         )),
         new gi.Model(
             gi.Type.Hedgehog,
-            "saturn",
+            "sega-generic",
             "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)",
             "Linux",
             new gi.Schema.GamePadAPI(
@@ -1412,7 +1412,7 @@ var gi = {};
             )),
         new gi.Model(
             gi.Type.Ragdoll,
-            "ds2",
+            "ds3",
             "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)",
             "Linux",
             new gi.Schema.GamePadAPI(
