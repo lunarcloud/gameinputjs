@@ -18,22 +18,39 @@ gi.CustomLearning = {};
 (function(){
     "use strict";
 
-    var ignorableAxes = {};
+    var ignorable = {};
     var customMappings = {};
 
     /* Event Handlers */
-    var detectIgnorableAxesHandlers = [];
+    var detectIgnorableBeginHandlers = [];
+    var detectIgnorableDiscoverHandlers = [];
+    var detectIgnorableCompleteHandlers = [];
     var beginMappingHandlers = [];
     var listeningForMappingHandlers = [];
     var setMappingHandlers = [];
     var completeMappingHandlers = [];
 
     /**
-      * @desc   Setup a function to fire when axes ignore detection event occurs, used for display purposes.
+      * @desc   Setup a function to fire when axes ignore detection event starts, used for display purposes.
       * @param  handler     the function to handle the event
       */
-    gi.CustomLearning.onDetectIgnorableAxes = function(handler) {
-        detectIgnorableAxesHandlers.push(handler);
+    gi.CustomLearning.onDetectIgnorableBegin = function(handler) {
+        detectIgnorableStartHandlers.push(handler);
+    }
+    /**
+      * @desc   Setup a function to fire when axes ignore detection event finds an item, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onDetectIgnorableDiscover = function(handler) {
+        detectIgnorableDiscoverHandlers.push(handler);
+    }
+
+    /**
+      * @desc   Setup a function to fire when axes ignore detection event ends, used for display purposes.
+      * @param  handler     the function to handle the event
+      */
+    gi.CustomLearning.onDetectIgnorableComplete = function(handler) {
+        detectIgnorableCompleteHandlers.push(handler);
     }
 
     /**
@@ -69,13 +86,22 @@ gi.CustomLearning = {};
     }
 
     /**
-      * @desc   Detects erratic / noisy axes to ignore while mapping, such as accelerometers or broken sticks
+      * @desc   Detects erratic / noisy items to ignore while mapping, such as accelerometers or broken sticks
       * @param  player      index of the player whose noisy axes we're listening for
       */
-    gi.CustomLearning.detectIgnorableAxes = function(player) {
-        ignorableAxes[player] = {};
+    gi.CustomLearning.detectIgnorable = function(player) {
+        ignorable[player] = {};
+
+        //TODO fire detectIgnorableBeginHandlers handlers with the player
+
+        if ( gi.getPlayer(player).schema instanceof gi.Schema.KeyboardAPI ) {
+        } else /* if (gi.getPlayer(player).schema instanceof gi.Schema.GamePadAPI) */ {
+        }
+
         //TODO
-        //TODO fire detectIgnorableAxesHandlers handlers with the player
+        //TODO fire detectIgnorableDiscoverHandlers handlers with the player
+
+        //TODO fire detectIgnorableCompleteHandlers handlers with the player
     }
 
     /**
@@ -84,6 +110,10 @@ gi.CustomLearning = {};
       */
     gi.CustomLearning.beginCustomMapping = function(player) {
         customMappings[player] = {};
+
+        if ( gi.getPlayer(player).schema instanceof gi.Schema.KeyboardAPI ) {
+        } else /* if (gi.getPlayer(player).schema instanceof gi.Schema.GamePadAPI) */ {
+        }
         //TODO
         //TODO listen for each item
         //TODO fire beginMappingHandlers handlers with the player
@@ -95,8 +125,13 @@ gi.CustomLearning = {};
       * @param  schemaName  one of the gi.Schema.Names
       */
     gi.CustomLearning.listenForMappingItem = function(player, schemaName) {
+
+        if ( gi.getPlayer(player).schema instanceof gi.Schema.KeyboardAPI ) {
+        } else /* if (gi.getPlayer(player).schema instanceof gi.Schema.GamePadAPI) */ {
+        }
+
         //TODO
-        //TODO if threshold oof an axis (not in ignorableAxes) is above 0.5 or if a button is true, setMappingItem to that
+        //TODO if threshold oof an axis (not in ignorable) is above 0.5 or if a button is true, setMappingItem to that
         //TODO fire listeningForMappingHandlers handlers with the player and schemaName
     }
 
@@ -107,6 +142,11 @@ gi.CustomLearning = {};
       * @param  button      button to assign to the schemaName'd item
       */
     gi.CustomLearning.setMappingItem = function(player, schemaName, button) {
+
+        if ( gi.getPlayer(player).schema instanceof gi.Schema.KeyboardAPI ) {
+        } else /* if (gi.getPlayer(player).schema instanceof gi.Schema.GamePadAPI) */ {
+        }
+
         //TODO
         //TODO fire setMappingHandlers handlers with the player, schemaName, and button
     }
@@ -116,6 +156,11 @@ gi.CustomLearning = {};
       * @param  player      index of the player to finish mapping for
       */
     gi.CustomLearning.completeCustomMapping = function(player) {
+
+        if ( gi.getPlayer(player).schema instanceof gi.Schema.KeyboardAPI ) {
+        } else /* if (gi.getPlayer(player).schema instanceof gi.Schema.GamePadAPI) */ {
+        }
+
         //TODO
         //TODO fire completeMappingHandlers handlers with the player
     }
