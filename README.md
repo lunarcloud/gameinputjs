@@ -1,9 +1,9 @@
 GameInput JS
 =============
 
-Include [gameinput.js](https://github.com/lunarcloud/gameinputjs/blob/master/gameinput.js) in your project and hook it up to your game or other gamepad-powered application.
+Include [gameinput.js](https://github.com/lunarcloud/gameinputjs/blob/master/gameinput.js), typically [gameinput.models.js](https://github.com/lunarcloud/gameinputjs/blob/master/gameinput.models.js) for automatic mapping of gamepads, and hopefully [gameinput.custom.js](https://github.com/lunarcloud/gameinputjs/blob/master/gameinput.custom.js) for customizable mapping ("push attack button") in your project and hook it up to your game or other gamepad-powered application.
 
-All other files in the repository are to test mappings, create mappings, and show example usage.
+All other files in the repository are to test and create mappings and to show example usage.
 
 Mappings
 ----------
