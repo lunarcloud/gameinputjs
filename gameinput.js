@@ -572,13 +572,7 @@ var gi = {};
             undefined,
             gi.Schema.KeyboardAPI.Standard.QWERTY);
 
-    gi.Models = {};
-    gi.Models.UnknownStandardMapping = new gi.Model(
-        gi.Type.Hedgehog,
-        "generic",
-        "Unknown",
-        undefined,
-        new gi.Schema.GamePadAPI(
+    gi.Schema.StardardSchema = new gi.Schema.GamePadAPI(
             13, 14, 15, 16,
             10,
             1,2,3,4,
@@ -591,65 +585,39 @@ var gi = {};
             new gi.Schema.AxisButton(-3),
             new gi.Schema.AxisButton(3),
             5,6,7,8
-    ));
+    );
+
+    gi.Models = {};
+
+    gi.Models.UnknownStandardMapping = new gi.Model(
+        gi.Type.Hedgehog,
+        "generic",
+        "Unknown",
+        undefined,
+        gi.Schema.StardardMapping);
+
     gi.Models.Generic = [
         new gi.Model(
             gi.Type.Hedgehog,
             "xbox360",
             "XInput",
             undefined,
-            new gi.Schema.GamePadAPI(
-                13, 14, 15, 16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Hedgehog,
             "xbox360",
             "xinput",
             undefined,
-            new gi.Schema.GamePadAPI(
-                13, 14, 15, 16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Hedgehog,
             "xbox360",
             "XBox 360",
             undefined,
-            new gi.Schema.GamePadAPI(
-                13, 14, 15, 16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Ragdoll,
             "ds3",
@@ -721,21 +689,8 @@ var gi = {};
             "generic",
             "STANDARD GAMEPAD",
             undefined,
-            new gi.Schema.GamePadAPI(
-                13, 14, 15, 16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        ))
-
+            gi.Schema.StardardSchema
+        )
     ];
 
     gi.Models.Specific = [
@@ -744,20 +699,8 @@ var gi = {};
             "xbox360",
             "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
             "Windows",
-            new gi.Schema.GamePadAPI(
-                13,14,15,16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Plumber,
             "nintendo-generic",
@@ -845,39 +788,15 @@ var gi = {};
             "ds4",
             "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
             "Windows",
-            new gi.Schema.GamePadAPI(
-                13,14,15,16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Ragdoll4,
             "ds4",
             "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
             "Mac OS X",
-            new gi.Schema.GamePadAPI(
-            13, 14, 15, 16,
-            10,
-            1, 2, 3, 4,
-            new gi.Schema.AxisButton(-2),
-            new gi.Schema.AxisButton(2),
-            new gi.Schema.AxisButton(-1),
-            new gi.Schema.AxisButton(1),
-            new gi.Schema.AxisButton(-4),
-            new gi.Schema.AxisButton(4),
-            new gi.Schema.AxisButton(-3),
-            new gi.Schema.AxisButton(3),
-            5, 6, 7, 8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Ragdoll4,
             "ds4",
@@ -902,23 +821,8 @@ var gi = {};
             "xbox360",
             "©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
             "Linux",
-            new gi.Schema.GamePadAPI(
-                13,14,15,16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3)//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Hedgehog,
             "xbox360",
@@ -1031,20 +935,8 @@ var gi = {};
             "ds3",
             "Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
             "Linux",
-            new gi.Schema.GamePadAPI(
-                13, 14, 15, 16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5,6,7,8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Ragdoll,
             "ds3",
@@ -1069,20 +961,8 @@ var gi = {};
             "ds4",
             "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
             "Linux",
-            new gi.Schema.GamePadAPI(
-                13,14,15,16,
-                10,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3),
-                5, 6, 7, 8
-        )),
+            gi.Schema.StardardSchema
+        ),
         new gi.Model(
             gi.Type.Ragdoll4,
             "ds4",
