@@ -389,6 +389,7 @@
         var theme = "";
 
         switch (icon) {
+            case "ds2":
             case "ds3":
                 changeGamepadType(index, GameInput.Type.Ragdoll);
                 theme = "gi.Type.Ragdoll";
@@ -410,7 +411,7 @@
                 break;
         }
 
-        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.getPlayer(index).model.id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
+        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Connection.Gamepads[0].id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
 
         for (var schemaName in GameInput.Schema.Names)
         {

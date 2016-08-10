@@ -1381,7 +1381,63 @@ var gi = {};
                 5, 6,
                 new gi.Schema.AxisButton(6),
                 new gi.Schema.AxisButton(5)
-        ))
+        )),
+        new gi.Model(
+            gi.Type.Hedgehog,
+            "saturn",
+            "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  13,
+                /* d_down */  15,
+                /* d_left */  16,
+                /* d_right */  14,
+                /* menu */  9,
+                /* button0 */  1,
+                /* button1 */  2,
+                /* button2 */  4,
+                /* button3 */  5,
+                /* l_up */  new gi.Schema.AxisButton(-2),
+                /* l_down */  new gi.Schema.AxisButton(2),
+                /* l_left */  new gi.Schema.AxisButton(-1),
+                /* l_right */  new gi.Schema.AxisButton(1),
+                /* r_up */  new gi.Schema.AxisButton(NaN),
+                /* r_down */  new gi.Schema.AxisButton(NaN),
+                /* r_left */  new gi.Schema.AxisButton(NaN),
+                /* r_right */  new gi.Schema.AxisButton(NaN),
+                /* l_button */  6,
+                /* r_button */  3,
+                /* l_trigger */  7,
+                /* r_trigger */  8
+            )),
+        new gi.Model(
+            gi.Type.Ragdoll,
+            "ds2",
+            "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  13,
+                /* d_down */  15,
+                /* d_left */  16,
+                /* d_right */  14,
+                /* menu */  9,
+                /* button0 */  3,
+                /* button1 */  2,
+                /* button2 */  4,
+                /* button3 */  1,
+                /* l_up */  new gi.Schema.AxisButton(-2),
+                /* l_down */  new gi.Schema.AxisButton(2),
+                /* l_left */  new gi.Schema.AxisButton(-1),
+                /* l_right */  new gi.Schema.AxisButton(1),
+                /* r_up */  new gi.Schema.AxisButton(-4),
+                /* r_down */  new gi.Schema.AxisButton(4),
+                /* r_left */  new gi.Schema.AxisButton(-3),
+                /* r_right */  new gi.Schema.AxisButton(3),
+                /* l_button */  6,
+                /* r_button */  8,
+                /* l_trigger */  5,
+                /* r_trigger */  7
+            ))
     ];
 
     gi.KeyboardWatcher = new function()
@@ -1562,6 +1618,8 @@ var gi = {};
                             gi.Players[i].model = gi.Models.Specific[j];
                             gi.Players[i].schema = gi.Models.Specific[j].schema;
                             gi.Players[i].theme = gi.Models.Specific[j].type.theme;
+
+                            break;
                         }
                     }
 
