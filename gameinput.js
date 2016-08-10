@@ -71,11 +71,15 @@ var gi = {};
     };
 
     gi.buttonDown = function(player, schemaName) {
-        for ( var action in gi.buttonDownActions) gi.buttonDownActions[action](player, schemaName);
+        for ( var action in gi.buttonDownActions) {
+            if (typeof(gi.buttonDownActions[action]) === "function") gi.buttonDownActions[action](player, schemaName);
+        }
     }
 
     gi.buttonUp = function(player, schemaName) {
-        for ( var action in gi.buttonUpActions) gi.buttonUpActions[action](player, schemaName);
+        for ( var action in gi.buttonUpActions) {
+            if (typeof(gi.buttonUpActions[action]) === "function") gi.buttonUpActions[action](player, schemaName);
+        }
     }
 
     gi.Player = function(number)
