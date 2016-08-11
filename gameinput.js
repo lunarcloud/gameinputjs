@@ -973,7 +973,7 @@ var gi = {};
         {s:'Android', r:/Android/},
         {s:'iOS', r:/(iPhone|iPad|iPod)/},
         {s:'Windows', r:/Windows/},
-        {s:'Mac OS X', r:/Mac/},
+        {s:'macOS', r:/Mac/},
         {s:'Linux', r:/(Linux|X11)/}
     ];
     for (var id in osStrings) {
