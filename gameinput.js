@@ -93,6 +93,7 @@ var gi = {};
         this.theme;
         this.state;
         this.analogState;
+        this.rawAnalogState;
 
         this.previous = {
             type: undefined,
@@ -100,6 +101,7 @@ var gi = {};
             schema: undefined,
             state: undefined,
             analogState: undefined,
+            rawAnalogState: undefined
         };
 
         this.buttonDownActions = {};
@@ -234,12 +236,14 @@ var gi = {};
         this.index = index;
     };
 
-    gi.Schema.AxisButton = function(indexAndDirection, threshold)
+    gi.Schema.AxisButton = function(indexAndDirection, threshold, deadZone)
     {
         this.index = Math.abs(indexAndDirection);
         this.direction = indexAndDirection < 0 ? "negative" : "positive";
         if ( typeof(threshold) === "undefined" ) threshold = 0.5;
         this.threshold = (this.direction === "positive" ? 1 : -1 ) * Math.abs(threshold);
+        if ( typeof(deadZone) === "undefined" ) deadZone = 0;
+        this.deadZone = (this.direction === "positive" ? 1 : -1 ) * Math.abs(deadZone);
     };
 
     gi.Schema.Generic = function(d_up, d_down, d_left, d_right,
@@ -761,6 +765,8 @@ var gi = {};
                 gi.Players[i].state = {};
                 gi.Players[i].previous.analogState = gi.Players[i].analogState;
                 gi.Players[i].analogState = {};
+                gi.Players[i].previous.rawAnalogState = gi.Players[i].rawAnalogState;
+                gi.Players[i].rawAnalogState = {};
 
                 var currentGamepad = gi.Connection.Gamepads[i];
                 var currentSchema = gi.Players[i].schema;
@@ -775,21 +781,16 @@ var gi = {};
                     }
                     else if ( typeof(currentGamepad.buttons[currentSchema[j] - 1] ) === "undefined")
                     {
-                        var negativeAxis = false;
-                        if (currentSchema[j].threshold < 0) negativeAxis = true;
+                        var negativeAxis = currentSchema[j].threshold < 0;
 
-                        var axisValue = currentGamepad.axes[currentSchema[j].index - 1];
-                        var threshold = currentSchema[j].threshold;
-
-                        gi.Players[i].analogState[j] = axisValue;
-
-                        gi.Players[i].state[j] = (negativeAxis && axisValue < threshold) || (!negativeAxis && axisValue > threshold);
+                        var axisValue = gi.Players[i].rawAnalogState[j] = currentGamepad.axes[currentSchema[j].index - 1];
+                        gi.Players[i].analogState[j] = Math.abs(axisValue) > Math.abs(currentSchema[j].deadZone) ? axisValue : 0 ;
+                        gi.Players[i].state[j] = (negativeAxis && axisValue < currentSchema[j].threshold) || (!negativeAxis && axisValue > currentSchema[j].threshold);
                     }
                     else
                     {
                         gi.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed;
-
-                        gi.Players[i].analogState[j] = gi.Players[i].state[j] ? 1 : 0;
+                        gi.Players[i].rawAnalogState[j] = gi.Players[i].analogState[j] = gi.Players[i].state[j] ? 1 : 0; // set both raw and regular to the same binary output
                     }
                 }
             }
