@@ -422,12 +422,17 @@
         {
             var item = GameInput.getPlayer(index).schema[schemaName];
 
-            if (typeof(item) !== "undefined" && isNaN(item)) {
+            if (typeof(item) !== "undefined"
+                && isNaN(item.index)  === false
+                && typeof(item.direction) !== "undefined")
+            {
                 if (item instanceof GameInput.Schema.AxisButton) {
                     item = "new gi.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
                 } else {
                     item = "undefined";
                 }
+            } else if (isNaN(item)) {
+                item = "undefined";
             }
 
             newCode += "\t\t/* " + schemaName + " */  " + item + ",\n";
