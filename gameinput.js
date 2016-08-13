@@ -628,28 +628,6 @@ var gi = {};
             gi.Schema.StardardSchema
         ),
         new gi.Model(
-            gi.Type.Ragdoll,
-            "ds3",
-            "PLAYSTATION",
-            undefined,
-            new gi.Schema.GamePadAPI(
-                5,7,8,6,
-                8,
-                1,2,3,4,
-                new gi.Schema.AxisButton(-2),
-                new gi.Schema.AxisButton(2),
-                new gi.Schema.AxisButton(-1),
-                new gi.Schema.AxisButton(1),
-                new gi.Schema.AxisButton(-4),
-                new gi.Schema.AxisButton(4),
-                new gi.Schema.AxisButton(-3),
-                new gi.Schema.AxisButton(3)//,
-                // TODO l_button,
-                // TODO r_button,
-                // TODO l_trigger,
-                // TODO r_trigger
-        )),
-        new gi.Model(
             gi.Type.Hedgehog,
             "generic",
             "Logitech Rumblepad 2",

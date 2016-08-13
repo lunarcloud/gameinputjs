@@ -31,6 +31,11 @@ gi.Schema.GravisGamepadPro = new gi.Schema.GamePadAPI(
             /* r_trigger */  8
     );
 
+/*
+ * "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)"
+ * Force to manually configure this multiple-configuration adapter instead of assuming which adapter port you're using
+ */
+
 gi.Models.Specific = [
     new gi.Model(
         gi.Type.Hedgehog,
@@ -600,7 +605,6 @@ gi.Models.Specific = [
             new gi.Schema.AxisButton(6),
             new gi.Schema.AxisButton(5)
     )),
-    /* Force to manually configure this multiple-configuration adapter instead of assuming which adapter port you're using "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)" */
     new gi.Model(
         gi.Type.Plumber,
         "nintendo-generic",
