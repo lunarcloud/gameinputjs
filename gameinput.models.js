@@ -7,6 +7,30 @@
 
 if (typeof(GameInput) == "undefined") throw "GameInput JS must be included first!";
 
+gi.Schema.GravisGamepadPro = new gi.Schema.GamePadAPI(
+            /* d_up */  new gi.Schema.AxisButton(-2),
+            /* d_down */  new gi.Schema.AxisButton(2),
+            /* d_left */  new gi.Schema.AxisButton(-1),
+            /* d_right */  new gi.Schema.AxisButton(1),
+            /* menu */  10,
+            /* button0 */  2,
+            /* button1 */  3,
+            /* button2 */  1,
+            /* button3 */  4,
+            /* l_up */  undefined,
+            /* l_down */  undefined,
+            /* l_left */  undefined,
+            /* l_right */  undefined,
+            /* r_up */  new gi.Schema.AxisButton(-4),
+            /* r_down */  new gi.Schema.AxisButton(4),
+            /* r_left */  new gi.Schema.AxisButton(-3),
+            /* r_right */  new gi.Schema.AxisButton(3),
+            /* l_button */  5,
+            /* r_button */  6,
+            /* l_trigger */  7,
+            /* r_trigger */  8
+    );
+
 gi.Models.Specific = [
     new gi.Model(
         gi.Type.Hedgehog,
@@ -694,57 +718,25 @@ gi.Models.Specific = [
         "generic",
         "Gravis GamePad Pro USB  (Vendor: 0428 Product: 4001)",
         "Linux",
-        new gi.Schema.GamePadAPI(
-            /* d_up */  new gi.Schema.AxisButton(-2),
-            /* d_down */  new gi.Schema.AxisButton(2),
-            /* d_left */  new gi.Schema.AxisButton(-1),
-            /* d_right */  new gi.Schema.AxisButton(1),
-            /* menu */  10,
-            /* button0 */  2,
-            /* button1 */  3,
-            /* button2 */  1,
-            /* button3 */  4,
-            /* l_up */  undefined,
-            /* l_down */  undefined,
-            /* l_left */  undefined,
-            /* l_right */  undefined,
-            /* r_up */  new gi.Schema.AxisButton(-4),
-            /* r_down */  new gi.Schema.AxisButton(4),
-            /* r_left */  new gi.Schema.AxisButton(-3),
-            /* r_right */  new gi.Schema.AxisButton(3),
-            /* l_button */  5,
-            /* r_button */  6,
-            /* l_trigger */  7,
-            /* r_trigger */  8
-    )),
+        gi.Schema.GravisGamepadPro),
     new gi.Model(
         gi.Type.Hedgehog,
         "generic",
         "0428-4001-Gravis GamePad Pro USB ",
         "Linux",
-        new gi.Schema.GamePadAPI(
-            /* d_up */  new gi.Schema.AxisButton(-2),
-            /* d_down */  new gi.Schema.AxisButton(2),
-            /* d_left */  new gi.Schema.AxisButton(-1),
-            /* d_right */  new gi.Schema.AxisButton(1),
-            /* menu */  10,
-            /* button0 */  2,
-            /* button1 */  3,
-            /* button2 */  1,
-            /* button3 */  4,
-            /* l_up */  undefined,
-            /* l_down */  undefined,
-            /* l_left */  undefined,
-            /* l_right */  undefined,
-            /* r_up */  new gi.Schema.AxisButton(-4),
-            /* r_down */  new gi.Schema.AxisButton(4),
-            /* r_left */  new gi.Schema.AxisButton(-3),
-            /* r_right */  new gi.Schema.AxisButton(3),
-            /* l_button */  5,
-            /* r_button */  6,
-            /* l_trigger */  7,
-            /* r_trigger */  8
-    ))
+        gi.Schema.GravisGamepadPro),
+    new gi.Model(
+        gi.Type.Hedgehog,
+        "generic",
+        "GamePad Pro USB  (Vendor: 0428 Product: 4001)",
+        "macOS",
+        gi.Schema.GravisGamepadPro),
+    new gi.Model(
+        gi.Type.Hedgehog,
+        "generic",
+        "428-4001-GamePad Pro USB ",
+        "macOS",
+        gi.Schema.GravisGamepadPro)
 ];
 
 gi.initialGamePadSetup(); // re-detect gamepads
