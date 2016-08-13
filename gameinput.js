@@ -601,9 +601,9 @@ var gi = {};
     gi.Models.UnknownStandardMapping = new gi.Model(
         gi.Type.Hedgehog,
         "generic",
-        "Unknown",
         undefined,
-        gi.Schema.StardardMapping);
+        undefined,
+        gi.Schema.StardardSchema);
 
     gi.Models.Generic = [
         new gi.Model(
@@ -908,7 +908,7 @@ var gi = {};
                             }
 
                             gi.Players[i].type = gi.Models.UnknownStandardMapping.type;
-                            gi.Players[i].model = gi.Models.UnknownStandardMapping
+                            gi.Players[i].model = gi.Models.UnknownStandardMapping;
                             gi.Players[i].schema = gi.Models.UnknownStandardMapping.schema;
                             gi.Players[i].theme = gi.Models.UnknownStandardMapping.theme;
                         }
