@@ -300,7 +300,7 @@
             }
 
             document.body.querySelector("#players").appendChild(row);
-            updateCode(row.children[0]);
+            updateCode(row.children[i]);
         }
     }
 
@@ -416,7 +416,7 @@
                 break;
         }
 
-        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Connection.Gamepads[0].id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
+        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Connection.Gamepads[index].id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
 
         for (var schemaName in GameInput.Schema.Names)
         {

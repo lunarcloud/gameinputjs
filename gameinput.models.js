@@ -740,7 +740,35 @@ gi.Models.Specific = [
         "generic",
         "428-4001-GamePad Pro USB ",
         "macOS",
-        gi.Schema.GravisGamepadPro)
+        gi.Schema.GravisGamepadPro),
+    new gi.Model(
+        gi.Type.Hedgehog,
+        "xboxone",
+        "Performance Designed Products Afterglow Wired Controller for Xbox One (Vendor: 0e6f Product: 0139)",
+        "Linux",
+        new gi.Schema.GamePadAPI(
+            /* d_up */  new gi.Schema.AxisButton(-8),
+            /* d_down */  new gi.Schema.AxisButton(8),
+            /* d_left */  new gi.Schema.AxisButton(-7),
+            /* d_right */  new gi.Schema.AxisButton(7),
+            /* menu */  8,
+            /* button0 */  1,
+            /* button1 */  2,
+            /* button2 */  3,
+            /* button3 */  4,
+            /* l_up */  new gi.Schema.AxisButton(-2),
+            /* l_down */  new gi.Schema.AxisButton(2),
+            /* l_left */  new gi.Schema.AxisButton(-1),
+            /* l_right */  new gi.Schema.AxisButton(1),
+            /* r_up */  new gi.Schema.AxisButton(-5),
+            /* r_down */  new gi.Schema.AxisButton(5),
+            /* r_left */  new gi.Schema.AxisButton(-4),
+            /* r_right */  new gi.Schema.AxisButton(4),
+            /* l_button */  5,
+            /* r_button */  6,
+            /* l_trigger */  new gi.Schema.AxisButton(3),
+            /* r_trigger */  new gi.Schema.AxisButton(6)
+        ))
 ];
 
 gi.initialGamePadSetup(); // re-detect gamepads
