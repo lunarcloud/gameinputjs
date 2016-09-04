@@ -768,6 +768,34 @@ gi.Models.Specific = [
             /* r_button */  6,
             /* l_trigger */  new gi.Schema.AxisButton(3),
             /* r_trigger */  new gi.Schema.AxisButton(6)
+        )),
+    new gi.Model(
+        gi.Type.Hedgehog,
+        "xboxone",
+        "0e6f-0139-Afterglow Prismatic Wired Controller",
+        "Linux",
+        new gi.Schema.GamePadAPI(
+            /* d_up */  new gi.Schema.AxisButton(-8),
+            /* d_down */  new gi.Schema.AxisButton(8),
+            /* d_left */  new gi.Schema.AxisButton(-7),
+            /* d_right */  new gi.Schema.AxisButton(7),
+            /* menu */  8,
+            /* button0 */  1,
+            /* button1 */  2,
+            /* button2 */  3,
+            /* button3 */  4,
+            /* l_up */  new gi.Schema.AxisButton(-2),
+            /* l_down */  new gi.Schema.AxisButton(2),
+            /* l_left */  new gi.Schema.AxisButton(-1),
+            /* l_right */  new gi.Schema.AxisButton(1),
+            /* r_up */  new gi.Schema.AxisButton(-5),
+            /* r_down */  new gi.Schema.AxisButton(5),
+            /* r_left */  new gi.Schema.AxisButton(-4),
+            /* r_right */  new gi.Schema.AxisButton(4),
+            /* l_button */  5,
+            /* r_button */  6,
+            /* l_trigger */  new gi.Schema.AxisButton(3),
+            /* r_trigger */  new gi.Schema.AxisButton(6)
         ))
 ];
 
