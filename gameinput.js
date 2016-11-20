@@ -858,6 +858,9 @@ var gi = {};
                             gi.Players[i].schema = gi.Models.Specific[j].schema;
                             gi.Players[i].theme = gi.Models.Specific[j].type.theme;
 
+                            if (gi.debug) {
+                                console.debug("Gamepad of type " +  gi.Players[i].type.name + " configured");
+                            }
                             break;
                         }
                     }
@@ -872,6 +875,9 @@ var gi = {};
                                 gi.Players[i].model = gi.Models.Generic[j];
                                 gi.Players[i].schema = gi.Models.Generic[j].schema;
                                 gi.Players[i].theme = gi.Models.Generic[j].type.theme;
+                                if (gi.debug) {
+                                    console.debug("Gamepad of type " +  gi.Players[i].type.name + " configured");
+                                }
                             }
                         }
 
@@ -889,6 +895,10 @@ var gi = {};
                             gi.Players[i].model = gi.Models.UnknownStandardMapping;
                             gi.Players[i].schema = gi.Models.UnknownStandardMapping.schema;
                             gi.Players[i].theme = gi.Models.UnknownStandardMapping.theme;
+
+                            if (gi.debug) {
+                                console.debug("Gamepad of type " +  gi.Players[i].type.name + " configured");
+                            }
                         }
                     }
 
@@ -966,7 +976,7 @@ var gi = {};
     } // else { gi.browser = "Other" }
 
 
-    gi.initialGamePadSetup();
+    // gi.initialGamePadSetup(); // don't do this stuff until models exist
     if (typeof(gi.Type.Keyboard.schema) === "undefined") gi.Type.Keyboard.setQWERTY();
     gi.startUpdateLoop();
 
