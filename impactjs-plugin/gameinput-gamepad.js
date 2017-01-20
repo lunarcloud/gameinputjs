@@ -246,7 +246,7 @@ ig.module(
             return "img/gamepad/buttons/" + theme.toLowerCase() + "/" + button + ".png";
         },
 
-        getGameInputButtonText: function(player, button)
+        getGameInputButtonText: function(player, button, supportsUTF8)
         {
             if ( typeof(button) === "undefined" && typeof(player) === "string" ) /* If you only provide the button name... */
             {
@@ -256,7 +256,7 @@ ig.module(
 
             if (typeof(button) !== "string" || button in gi.Schema.Names === false) throw "Must provide a value from gi.Schema.Names!";
 
-            return gi.getPlayer(player-1).getButtonText(button, true);
+            return gi.getPlayer(player-1).getButtonText(button, supportsUTF8 === true ? false : true);
         }
     });
 
