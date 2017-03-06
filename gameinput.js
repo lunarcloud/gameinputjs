@@ -749,7 +749,7 @@ var gi = {};
                 var currentGamepad = gi.Connection.Gamepads[i];
                 var currentSchema = gi.Players[i].schema;
 
-                if (typeof(currentGamepad) === "undefined") continue;
+                if (typeof(currentGamepad) === "undefined" || currentGamepad === null) continue;
 
                 for (var j in currentSchema)
                 {
