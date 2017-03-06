@@ -188,6 +188,7 @@ ig.module(
             'nintendo-generic': new ig.Image("media/gamepads/nintendo-generic.png"),
             'sega-generic': new ig.Image("media/gamepads/sega-generic.png"),
             joystick: new ig.Image("media/gamepads/joystick.png"),
+            keyboard: new ig.Image("media/gamepads/keyboard.png")
         },
 
         getGameInputIcon: function(playerOrTheme)
