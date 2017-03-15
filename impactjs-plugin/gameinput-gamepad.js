@@ -22,6 +22,8 @@ ig.module(
 )
 .defines(function(){
     "use strict";
+	
+	if (typeof(gi) == "undefined") throw "GameInput JS must be included first!";
 
     // Assign some values to the Gamepad buttons. We use an offset of 256
     // here so we don't collide with the keyboard buttons when binding.
@@ -68,16 +70,16 @@ ig.module(
             var index = player - 1;
 
             if (ig.input.disableGamepadLeftAnalogStrafe) return false;
-            if (GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema === undefined) return false;
+            if (gi.Players[gi.Connection.GamePadMapping[index]].schema === undefined) return false;
 
-            return GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema.r_left !== undefined
-                &&  GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema.r_right !== undefined
-                /* && GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema.r_up !== undefined
-                &&  GameInput.Players[GameInput.Connection.GamePadMapping[index]].schema.r_down !== undefined */
+            return gi.Players[gi.Connection.GamePadMapping[index]].schema.r_left !== undefined
+                &&  gi.Players[gi.Connection.GamePadMapping[index]].schema.r_right !== undefined
+                /* && gi.Players[gi.Connection.GamePadMapping[index]].schema.r_up !== undefined
+                &&  gi.Players[gi.Connection.GamePadMapping[index]].schema.r_down !== undefined */
                 ;
         },
 
-        onGamepadChange: function(action) { GameInput.onReshufflePlayers(action); },
+        onGamepadChange: function(action) { gi.onReshufflePlayers(action); },
 
         pollGamepads: function()
         {
@@ -93,26 +95,26 @@ ig.module(
 
             if (ig.input.hasSetupGameInput[index] === false)
             {
-                GameInput.stopUpdateLoop();
-                GameInput.handleKeyboard = false;
-                GameInput.initialGamePadSetup();
+                gi.stopUpdateLoop();
+                gi.handleKeyboard = false;
+                gi.initialGamePadSetup();
 
-                if (typeof(GameInput.Type.Keyboard.schema) === "undefined") GameInput.Type.Keyboard.setQWERTY();
+                if (typeof(gi.Type.Keyboard.schema) === "undefined") gi.Type.Keyboard.setQWERTY();
 
 
-                GameInput.stopUpdateLoop();
+                gi.stopUpdateLoop();
 
                 // setup action-gameinput relationship
                 for (var i in ig['GAMEPAD' + player])
                 {
                     (function(){
                         var button = i;
-                        GameInput.Players[GameInput.Connection.GamePadMapping[index]].onButtonDown(button, function() {
+                        gi.Players[gi.Connection.GamePadMapping[index]].onButtonDown(button, function() {
                             if (typeof(ig.input.bindings[ig['GAMEPAD' + player][button]]) === "undefined") return;
                             ig.input.actions[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
                             ig.input.presses[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
                         });
-                        GameInput.Players[GameInput.Connection.GamePadMapping[index]].onButtonUp(button, function() {
+                        gi.Players[gi.Connection.GamePadMapping[index]].onButtonUp(button, function() {
                             if (typeof(ig.input.bindings[ig['GAMEPAD' + player][button]]) === "undefined") return;
                             ig.input.delayedKeyup[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
                         });
@@ -121,7 +123,7 @@ ig.module(
 
                 ig.input.hasSetupGameInput[index] = true;
             }
-            if (!document.hasFocus || document.hasFocus()) GameInput.update();
+            if (!document.hasFocus || document.hasFocus()) gi.update();
         },
 
         getGamepadId: function(player)
@@ -129,8 +131,8 @@ ig.module(
             if (isNaN(player)) player = 1;
             var index = player - 1;
 
-            if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[index]].model) !== "undefined") {
-                    return GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.id;
+            if (typeof(gi.Players[gi.Connection.GamePadMapping[index]].model) !== "undefined") {
+                    return gi.Players[gi.Connection.GamePadMapping[index]].model.id;
             }
             return false;
         },
@@ -140,8 +142,8 @@ ig.module(
             if (isNaN(player)) player = 1;
             var index = player - 1;
 
-            if (typeof(GameInput.Players[GameInput.Connection.GamePadMapping[index]].model) !== "undefined") {
-                    return GameInput.Players[GameInput.Connection.GamePadMapping[index]].type.name.toLowerCase();
+            if (typeof(gi.Players[gi.Connection.GamePadMapping[index]].model) !== "undefined") {
+                    return gi.Players[gi.Connection.GamePadMapping[index]].type.name.toLowerCase();
             }
             return false;
         },
@@ -151,8 +153,8 @@ ig.module(
             if (isNaN(player)) player = 1;
             var index = player - 1;
 
-            if (GameInput.Connection.Gamepads[player] instanceof Gamepad && typeof(GameInput.Players[GameInput.Connection.GamePadMapping[index]].model) === "undefined") {
-                    return GameInput.Connection.Gamepads[index].id;
+            if (gi.Connection.Gamepads[player] instanceof Gamepad && typeof(gi.Players[gi.Connection.GamePadMapping[index]].model) === "undefined") {
+                    return gi.Connection.Gamepads[index].id;
             }
             return false;
         },
@@ -162,9 +164,9 @@ ig.module(
             if (isNaN(player)) player = 1;
             var index = player - 1;
 
-            return typeof(GameInput.Players[GameInput.Connection.GamePadMapping[index]]) !== "undefined"
-                && typeof(GameInput.Players[GameInput.Connection.GamePadMapping[index]].type) !== "undefined"
-                && GameInput.Players[GameInput.Connection.GamePadMapping[index]].type !== GameInput.Type.Keyboard;
+            return typeof(gi.Players[gi.Connection.GamePadMapping[index]]) !== "undefined"
+                && typeof(gi.Players[gi.Connection.GamePadMapping[index]].type) !== "undefined"
+                && gi.Players[gi.Connection.GamePadMapping[index]].type !== gi.Type.Keyboard;
         },
 
         gamepadsCount: function()
@@ -200,7 +202,7 @@ ig.module(
                 icon = playerOrTheme;
             } else if (!isNaN(playerOrTheme)) {
                 var index = playerOrTheme - 1;
-                icon = GameInput.Players[GameInput.Connection.GamePadMapping[index]].model.iconName;
+                icon = gi.Players[gi.Connection.GamePadMapping[index]].model.iconName;
             } else {
                 throw "Must provide praver number (1-4) or theme";
             }
@@ -216,7 +218,7 @@ ig.module(
                 icon = playerOrTheme;
             } else if (!isNaN(playerOrTheme)) {
                 var index = playerOrTheme - 1;
-                icon = GameInput.Players[GameInput.Connection.GamePadMapping[index]].theme.name;
+                icon = gi.Players[gi.Connection.GamePadMapping[index]].theme.name;
             } else {
                 throw "Must provide praver number (1-4) or theme";
             }
@@ -239,7 +241,7 @@ ig.module(
                 theme = playerOrTheme;
             } else if (!isNaN(playerOrTheme)) {
                 var index = playerOrTheme - 1;
-                theme = GameInput.Players[GameInput.Connection.GamePadMapping[index]].theme.name;
+                theme = gi.Players[gi.Connection.GamePadMapping[index]].theme.name;
             } else {
                 throw "Must provide praver number (1-4) or theme";
             }

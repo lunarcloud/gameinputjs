@@ -131,20 +131,20 @@
 <script>
     "use strict";
 
-    GameInput.debug = true;
-    GameInput.handleKeyboard = true;
-    GameInput.onReshufflePlayers(setupPlayers);
-    GameInput.initialGamePadSetup();
+    gi.debug = true;
+    gi.handleKeyboard = true;
+    gi.onReshufflePlayers(setupPlayers);
+    gi.initialGamePadSetup();
 
     function setupPlayers()
     {
         document.querySelector("#players").innerHTML = '';
 
-        for (var i = 0; i < GameInput.Players.length; i++)
+        for (var i = 0; i < gi.Players.length; i++)
         {
-            if (typeof(GameInput.getPlayer(i)) === "undefined"
-            ||  typeof(GameInput.getPlayer(i).type) === "undefined"
-            ||  typeof(GameInput.getPlayer(i).schema) === "undefined") continue;
+            if (typeof(gi.getPlayer(i)) === "undefined"
+            ||  typeof(gi.getPlayer(i).type) === "undefined"
+            ||  typeof(gi.getPlayer(i).schema) === "undefined") continue;
 
             var row = document.querySelector("#player-template").cloneNode(true);
             row.id = "";
@@ -157,8 +157,8 @@
             var keyboardLayoutReferences = row.querySelectorAll(".keyboard-layout");
             for (var k = 0; k < keyboardLayoutReferences.length; k++)
             {
-                if (GameInput.getPlayer(i).type === GameInput.Type.Keyboard) {
-                    keyboardLayoutReferences[k].value = GameInput.getPlayer(i).schema === GameInput.Schema.KeyboardAPI.Standard.Dvorak ? "Dvorak" : "QWERTY";
+                if (gi.getPlayer(i).type === gi.Type.Keyboard) {
+                    keyboardLayoutReferences[k].value = gi.getPlayer(i).schema === gi.Schema.KeyboardAPI.Standard.Dvorak ? "Dvorak" : "QWERTY";
                 } else {
                     keyboardLayoutReferences[k].parentElement.removeChild(keyboardLayoutReferences[k]);
                 }
@@ -170,7 +170,7 @@
                 iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
             }
 
-            for (var j in GameInput.Schema.Names)
+            for (var j in gi.Schema.Names)
             {
                 var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
                 for (var k = 0; k < templateUpReferences.length; k++) {
@@ -193,19 +193,19 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                if (typeof(GameInput.getPlayer(i).schema[GameInput.Schema.Names[j]]) === "undefined")
+                if (typeof(gi.getPlayer(i).schema[gi.Schema.Names[j]]) === "undefined")
                 {
-                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + gi.Schema.Names[j]);
                     for (var k = 0; k < unmappedReferences.length; k++) {
                         unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
                     }
                 }
                 else
                 {
-                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + gi.Schema.Names[j]);
                     for (var k = 0; k < templateReferences.length; k++) {
-                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInput.Schema.Names[j]);
-                        templateReferences[k].classList.remove("gameinput-player-template-" + GameInput.Schema.Names[j]);
+                        templateReferences[k].classList.add("gameinput-player" + i + "-" + gi.Schema.Names[j]);
+                        templateReferences[k].classList.remove("gameinput-player-template-" + gi.Schema.Names[j]);
                     }
                 }
             }
@@ -214,8 +214,8 @@
     }
 
     function changeKeyboardLayout() {
-        if ( document.querySelector(".keyboard-layout").value === "Dvorak") GameInput.Type.Keyboard.setDvorak();
-        else GameInput.Type.Keyboard.setQWERTY();
+        if ( document.querySelector(".keyboard-layout").value === "Dvorak") gi.Type.Keyboard.setDvorak();
+        else gi.Type.Keyboard.setQWERTY();
     }
 
     function findAncestor (el, cls) {
