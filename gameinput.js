@@ -210,16 +210,6 @@ var gi = {};
 
     gi.Connection.Gamepads = [undefined, undefined, undefined, undefined];
 
-    gi.Connection.gained = function(gamepad)
-    {
-        gi.initialGamePadSetup();
-    };
-
-    gi.Connection.lost = function(gamepad)
-    {
-        gi.initialGamePadSetup();
-    };
-
     gi.Theme = function(name)
     {
         this.name = name;
@@ -799,6 +789,32 @@ var gi = {};
         }
     };
 
+    gi.gamepadsCount = function()
+    {
+        var gamepads = navigator.getGamepads();
+        var count = 0;
+
+        for (var i = 0; i < 4; i++) {
+            count += typeof gamepads[i] === "object" && gamepads[i] !== null ? 1 : 0;
+        }
+
+        return count;
+    }
+
+    var lastCheckedNumberOfGamepads = 0;
+    function connectionWatchLoop() {
+        var currentNumberOfGamepads = gi.gamepadsCount();
+
+        if ( lastCheckedNumberOfGamepads !== currentNumberOfGamepads) {
+            if ( gi.debug ) console.debug("Now have " + currentNumberOfGamepads + " gamepad(s).");
+
+            lastCheckedNumberOfGamepads = currentNumberOfGamepads;
+            gi.initialGamePadSetup();
+        }
+
+        requestAnimationFrame(connectionWatchLoop);
+    }
+
     gi.initialGamePadSetup = function()
     {
         // Pause Game or similar
@@ -818,21 +834,6 @@ var gi = {};
 
         if (gi.canUseGamepadAPI())
         {
-            window.addEventListener("gamepadconnected", function(e) {
-                if (gi.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-                    e.gamepad.index, e.gamepad.id,
-                    e.gamepad.buttons.length, e.gamepad.axes.length);
-                gi.Connection.gained(e.gamepad);
-                gi.initialGamePadSetup();
-            }, false);
-
-            window.addEventListener("gamepaddisconnected", function(e) {
-                if (gi.debug) console.debug("Gamepad disconnected from index %d: %s",
-                    e.gamepad.index, e.gamepad.id);
-                gi.Connection.lost(e.gamepad);
-                gi.initialGamePadSetup();
-            }, false);
-
             gi.Connection.Gamepads = navigator.getGamepads();
 
             if (   gi.Connection.Gamepads[0] === undefined
@@ -979,6 +980,26 @@ var gi = {};
     // gi.initialGamePadSetup(); // don't do this stuff until models exist
     if (typeof(gi.Type.Keyboard.schema) === "undefined") gi.Type.Keyboard.setQWERTY();
     gi.startUpdateLoop();
+
+    // Start watching for gamepads joining and leaving
+    if (gi.canUseGamepadAPI())
+    {
+        connectionWatchLoop();
+
+            // warning, these are very unreliable!
+            window.addEventListener("gamepadconnected", function(e) {
+                if (gi.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                    e.gamepad.index, e.gamepad.id,
+                    e.gamepad.buttons.length, e.gamepad.axes.length);
+                //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
+            }, false);
+
+            window.addEventListener("gamepaddisconnected", function(e) {
+                if (gi.debug) console.debug("Gamepad disconnected from index %d: %s",
+                    e.gamepad.index, e.gamepad.id);
+                //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
+            }, false);
+    }
 
     GameInput = gi; //Setup nicer looking alias
 })();
