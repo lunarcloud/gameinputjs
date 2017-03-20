@@ -966,7 +966,7 @@ gi.Models.Specific = [
             /* r_trigger */  undefined
         )),
     new gi.Model(
-        gi.Type.Plumber,
+        gi.Type.Plumber, // it's a square and x /y are generic style, while a / b are nintendo style
         "nintendo-generic",
         "BUFFALO BGC-FC801 USB Gamepad (Vendor: 0411 Product: 00c6)",
         "macOS",
@@ -994,7 +994,7 @@ gi.Models.Specific = [
             /* r_trigger */  undefined
         )),
     new gi.Model(
-        gi.Type.Plumber,
+        gi.Type.Plumber, // it's a square and x /y are generic style, while a / b are nintendo style
         "nintendo-generic",
         "0411-00c6-BUFFALO BGC-FC801 USB Gamepad ",
         "macOS",
