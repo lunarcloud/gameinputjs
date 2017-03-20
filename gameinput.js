@@ -3,24 +3,33 @@
  * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
-
-/**
- * GameInput
- * @brief   Game Input System
- * @desc    System for using a gamepad or keyboard control scheme for games
- */
-var GameInput;
-var gi = {};
-
-// encapsulate
-(function(){
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define([], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node, CommonJS-like
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.gi = factory();
+    }
+}(this, function () {
     "use strict";
+
+    /**
+     * GameInput
+     * @brief   Game Input System
+     * @desc    System for using a gamepad or keyboard control scheme for games
+     */
+    var gi = {};
 
     gi.debug = true; // disable to remove console output
     gi.handleKeyboard = true; // disable to deal with keyboard on your own
 
     /* Helper function */
     function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
+
 
     gi.Schema = {};
 
@@ -1001,9 +1010,8 @@ var gi = {};
             }, false);
     }
 
-    GameInput = gi; //Setup nicer looking alias
-})();
-
+    return gi;
+}));
 
 /**
  * @preserve

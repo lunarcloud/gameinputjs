@@ -3,20 +3,27 @@
  * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.custom.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
-"use strict";
-
-if (typeof(GameInput) == "undefined") throw "GameInput JS must be included first!";
-
-/**
- * gi.CustomLearning
- * @brief   Game Input System Learning Functionality
- * @desc    System for mapping a gamepad or keyboard control scheme by prompts
- */
-gi.CustomLearning = {};
-
-// encapsulate
-(function(){
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['gi'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node, CommonJS-like
+        module.exports = factory(require(gi));
+    } else {
+        // Browser globals (root is window)
+        root.gi = factory(root.gi);
+    }
+}(this, function (gi) {
     "use strict";
+    if (typeof(gi) == "undefined") throw "GameInput JS must be included first!";
+
+    /**
+     * gi.CustomLearning
+     * @brief   Game Input System Learning Functionality
+     * @desc    System for mapping a gamepad or keyboard control scheme by prompts
+     */
+    gi.CustomLearning = {};
 
     var ignorable = {};
     var customMappings = {};
@@ -165,8 +172,8 @@ gi.CustomLearning = {};
         //TODO fire completeMappingHandlers handlers with the player
     }
 
-})();
-
+    return gi;
+}));
 
 /**
  * @preserve
