@@ -12,7 +12,7 @@
         module.exports = factory(require(gi));
     } else {
         // Browser globals (root is window)
-        root.gi = factory(root.gi);
+        factory(root.gi);
     }
 }(this, function (gi) {
     "use strict";
