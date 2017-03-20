@@ -8,7 +8,7 @@
 if (typeof(GameInput) == "undefined") throw "GameInput JS must be included first!";
 
 /**
- * GameInput.CustomLearning
+ * gi.CustomLearning
  * @brief   Game Input System Learning Functionality
  * @desc    System for mapping a gamepad or keyboard control scheme by prompts
  */

@@ -12,21 +12,21 @@ commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput-commo
 document.head.appendChild(commonStyleElement);
 
 
-GameInput.onButtonDown(function(playerIndex, schemaName) {
+gi.onButtonDown(function(playerIndex, schemaName) {
     var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
     for (var i = 0; i < buttonElements.length; i++) {
         buttonElements[i].classList.add("gameinput-button-active");
     }
 });
 
-GameInput.onButtonUp(function(playerIndex, schemaName) {
+gi.onButtonUp(function(playerIndex, schemaName) {
     var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
     for (var i = 0; i < buttonElements.length; i++) {
         buttonElements[i].classList.remove("gameinput-button-active");
     }
 });
 
-GameInput.onReshufflePlayers(function()
+gi.onReshufflePlayers(function()
 {
     "use strict";
 

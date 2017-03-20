@@ -226,22 +226,22 @@
 <script>
     "use strict";
 
-    GameInput.debug = true;
-    GameInput.handleKeyboard = false;
-    GameInput.onReshufflePlayers(setupPlayers);
-    GameInput.initialGamePadSetup();
+    gi.debug = true;
+    gi.handleKeyboard = false;
+    gi.onReshufflePlayers(setupPlayers);
+    gi.initialGamePadSetup();
 
     function setupPlayers()
     {
         document.querySelector("#players").innerHTML = '';
 
-        for (var i = 0; i < GameInput.Players.length; i++)
+        for (var i = 0; i < gi.Players.length; i++)
         {
-            if ( typeof(GameInput.getPlayer(i)) === "undefined"
-            ||  typeof(GameInput.getPlayer(i).schema) === "undefined"
-            ||   typeof(GameInput.getPlayer(i).type) === "undefined"
-            ||   typeof(GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]]) === "undefined"
-            ||   GameInput.getPlayer(i).type === GameInput.Type.Keyboard) continue;
+            if ( typeof(gi.getPlayer(i)) === "undefined"
+            ||  typeof(gi.getPlayer(i).schema) === "undefined"
+            ||   typeof(gi.getPlayer(i).type) === "undefined"
+            ||   typeof(gi.Connection.Gamepads[gi.Connection.GamePadMapping[i]]) === "undefined"
+            ||   gi.getPlayer(i).type === gi.Type.Keyboard) continue;
 
             var row = document.querySelector("#player-template").cloneNode(true);
             row.id = "";
@@ -259,15 +259,15 @@
 
             var gamepadIDReferences = row.querySelectorAll(".gamepad-id");
             for (var k = 0; k < gamepadIDReferences.length; k++) {
-                gamepadIDReferences[k].textContent = GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[i]].id;
+                gamepadIDReferences[k].textContent = gi.Connection.Gamepads[gi.Connection.GamePadMapping[i]].id;
             }
 
             var iconSelectorReferences = row.querySelectorAll("select.icon");
             for (var k = 0; k < iconSelectorReferences.length; k++) {
-                iconSelectorReferences[k].value = GameInput.getPlayer(i).model.iconName;
+                iconSelectorReferences[k].value = gi.getPlayer(i).model.iconName;
             }
 
-            for (var j in GameInput.Schema.Names)
+            for (var j in gi.Schema.Names)
             {
                 var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
                 for (var k = 0; k < templateUpReferences.length; k++) {
@@ -290,10 +290,10 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.Schema.Names[j]);
+                var templateReferences = row.querySelectorAll(".gameinput-player-template-" + gi.Schema.Names[j]);
                 for (var k = 0; k < templateReferences.length; k++) {
-                    templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInput.Schema.Names[j]);
-                    templateReferences[k].classList.remove("gameinput-player-template-" + GameInput.Schema.Names[j]);
+                    templateReferences[k].classList.add("gameinput-player" + i + "-" + gi.Schema.Names[j]);
+                    templateReferences[k].classList.remove("gameinput-player-template-" + gi.Schema.Names[j]);
                 }
 
                 updateSelection(row, i, j);
@@ -312,7 +312,7 @@
 
         var isUndefined = false;
         var currentAxis;
-        var currentButton = GameInput.getPlayer(index).schema[schemaName];
+        var currentButton = gi.getPlayer(index).schema[schemaName];
 
         if (typeof(currentButton) === "undefined")
         {
@@ -326,13 +326,13 @@
 
         optionsHTML += "<option value='undefined' " + (isUndefined ? "selected" : "") + " type='undefined'>Not Mapped</option>";
 
-        for (var i = 1; i <= GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[index]].axes.length; i++)
+        for (var i = 1; i <= gi.Connection.Gamepads[gi.Connection.GamePadMapping[index]].axes.length; i++)
         {
             optionsHTML += "<option value='" + i + "' " + (currentAxis == i ? "selected" : "" ) + " type='axis'>+ " + i  + " axis</option>";
             optionsHTML += "<option value='-" + i + "' " + (currentAxis == -1*i ? "selected" : "") + " type='axis'>- " + i  + " axis</option>";
         }
 
-        for (var i = 1; i <= GameInput.Connection.Gamepads[GameInput.Connection.GamePadMapping[index]].buttons.length; i++)
+        for (var i = 1; i <= gi.Connection.Gamepads[gi.Connection.GamePadMapping[index]].buttons.length; i++)
         {
             optionsHTML += "<option value='" + i + "' " + (currentButton == i ? "selected" : "") + " type='button'>" + i  + " button</option>";
         }
@@ -352,13 +352,13 @@
 
         if (type == "button")
         {
-            GameInput.getPlayer(index).model.schema[schemaName] = value;
-            GameInput.getPlayer(index).schema[schemaName] = value;
+            gi.getPlayer(index).model.schema[schemaName] = value;
+            gi.getPlayer(index).schema[schemaName] = value;
         }
         else //if (type == "axis")
         {
-            GameInput.getPlayer(index).model.schema[schemaName] = new GameInput.Schema.AxisButton(value);
-            GameInput.getPlayer(index).schema[schemaName] = new GameInput.Schema.AxisButton(value);
+            gi.getPlayer(index).model.schema[schemaName] = new gi.Schema.AxisButton(value);
+            gi.getPlayer(index).schema[schemaName] = new gi.Schema.AxisButton(value);
         }
         updateCode(element);
     }
@@ -383,7 +383,7 @@
         var player = playerElement.getAttribute("number");
         var index = player - 1;
 
-        if (GameInput.getPlayer(index).type == GameInput.Type.Keyboard)
+        if (gi.getPlayer(index).type == gi.Type.Keyboard)
         {
             console.warn("Player is Keyboard user.");
             return;
@@ -394,16 +394,16 @@
         switch (icon) {
             case "ds2":
             case "ds3":
-                changeGamepadType(index, GameInput.Type.Ragdoll);
+                changeGamepadType(index, gi.Type.Ragdoll);
                 theme = "gi.Type.Ragdoll";
                 break;
             case "ds4":
-                changeGamepadType(index, GameInput.Type.Ragdoll4);
+                changeGamepadType(index, gi.Type.Ragdoll4);
                 theme = "gi.Type.Ragdoll4";
                 break;
             case "nintendo-generic":
             case "snes":
-                changeGamepadType(index, GameInput.Type.Plumber);
+                changeGamepadType(index, gi.Type.Plumber);
                 theme = "gi.Type.Plumber";
                 break;
             case "sega-generic":
@@ -411,22 +411,22 @@
             case "xbox360":
             case "xboxone":
             default:
-                changeGamepadType(index, GameInput.Type.Hedgehog);
+                changeGamepadType(index, gi.Type.Hedgehog);
                 theme = "gi.Type.Hedgehog";
                 break;
         }
 
-        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + GameInput.Connection.Gamepads[index].id + '",\n\t"' + GameInput.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
+        var newCode = 'new gi.Model(\n\t' + theme + ',\n\t"' + icon + '",\n\t"' + gi.Connection.Gamepads[index].id + '",\n\t"' + gi.os + '",\n\tnew gi.Schema.GamePadAPI(\n';
 
-        for (var schemaName in GameInput.Schema.Names)
+        for (var schemaName in gi.Schema.Names)
         {
-            var item = GameInput.getPlayer(index).schema[schemaName];
+            var item = gi.getPlayer(index).schema[schemaName];
 
             if (typeof(item) !== "undefined"
                 && isNaN(item.index)  === false
                 && typeof(item.direction) !== "undefined")
             {
-                if (item instanceof GameInput.Schema.AxisButton) {
+                if (item instanceof gi.Schema.AxisButton) {
                     item = "new gi.Schema.AxisButton(" + ( item.index * (item.direction === "positive" ? 1 : -1 )) + ")";
                 } else {
                     item = "undefined";
@@ -446,7 +446,7 @@
 
     function changeGamepadType(playerIndex, type)
     {
-        var player = GameInput.getPlayer(playerIndex);
+        var player = gi.getPlayer(playerIndex);
         player.type = type;
 
         var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + player.index);
