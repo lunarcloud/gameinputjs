@@ -167,17 +167,6 @@ ig.module(
                 && GameInput.Players[GameInput.Connection.GamePadMapping[index]].type !== GameInput.Type.Keyboard;
         },
 
-        gamepadsCount: function()
-        {
-            var count = 0;
-
-            for (var i = 1; i <= ig.input.maxPlayers; i++) {
-                count += ig.input.playerHasGamepad(i) ? 1 : 0;
-            }
-
-            return count;
-        },
-
         icons: {
             dc: new ig.Image("media/gamepads/dc.png"),
             xbox360: new ig.Image("media/gamepads/xbox360.png"),
