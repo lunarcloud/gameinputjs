@@ -810,7 +810,7 @@
         return count;
     }
 
-    var lastCheckedNumberOfGamepads = 0;
+    var lastCheckedNumberOfGamepads = -1;
     function connectionWatchLoop() {
         var currentNumberOfGamepads = gi.gamepadsCount();
 
