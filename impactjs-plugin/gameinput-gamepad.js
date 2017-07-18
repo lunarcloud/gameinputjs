@@ -60,6 +60,16 @@ ig.module(
 
         maxPlayers: 4,
 
+        analog: {},
+        rawAnalog: {},
+
+        getAnalog: function(action) {
+            return this.analog[action] || 0;
+        },
+        getRawAnalog: function(action) {
+            return this.rawAnalog[action] || 0;
+        },
+
         disableGamepadLeftAnalogStrafe: false,
 
         gamepadHasRightStick: function(player)
@@ -107,17 +117,24 @@ ig.module(
                 {
                     (function(){
                         var button = i;
-                        gi.Players[gi.Connection.GamePadMapping[index]].onButtonDown(button, function() {
+
+                        gi.getPlayer(index).onButtonDown(button, function() {
                             if (typeof(ig.input.bindings[ig['GAMEPAD' + player][button]]) === "undefined") return;
                             ig.input.actions[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
                             ig.input.presses[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
+                            ig.input.analog[ig.input.bindings[ig['GAMEPAD' + player][button]]] = Math.abs(gi.getPlayer(index).analogState[button]);
+                            ig.input.rawAnalog[ig.input.bindings[ig['GAMEPAD' + player][button]]] = gi.getPlayer(index).rawAnalogState[button];
                         });
-                        gi.Players[gi.Connection.GamePadMapping[index]].onButtonUp(button, function() {
+
+                        gi.getPlayer(index).onButtonUp(button, function() {
                             if (typeof(ig.input.bindings[ig['GAMEPAD' + player][button]]) === "undefined") return;
                             ig.input.delayedKeyup[ig.input.bindings[ig['GAMEPAD' + player][button]]] = true;
+                            ig.input.analog[ig.input.bindings[ig['GAMEPAD' + player][button]]] = Math.abs(gi.getPlayer(index).analogState[button]);
+                            ig.input.rawAnalog[ig.input.bindings[ig['GAMEPAD' + player][button]]] = gi.getPlayer(index).rawAnalogState[button];
                         });
                     }());
                 }
+
 
                 ig.input.hasSetupGameInput[index] = true;
             }
@@ -247,6 +264,25 @@ ig.module(
             if (typeof(button) !== "string" || button in gi.Schema.Names === false) throw "Must provide a value from gi.Schema.Names!";
 
             return gi.getPlayer(player-1).getButtonText(button, supportsUTF8 === true ? false : true);
+        },
+
+        getAnalogValue: function(player, button) {
+            if ( typeof(button) === "undefined" && typeof(player) === "string" ) /* If you only provide the button name... */
+            {
+                button = player;
+                player = 1;
+            }
+
+            if (typeof(button) !== "string" || button in gi.Schema.Names === false) throw "Must provide a value from gi.Schema.Names!";
+
+            if (button in gi.getPlayer(player).analogState)
+            {
+                return gi.getPlayer(player-1).analogState[button];
+            }
+            else
+            {
+                return 0;
+            }
         }
     });
 

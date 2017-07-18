@@ -694,6 +694,10 @@
             if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
+                player.state[schemaButtonName] = false;
+                player.rawAnalogState[schemaButtonName]
+                    = player.analogState[schemaButtonName]
+                    = 0;
                 if (typeof(schemaButtonName) !== "undefined" ) player.buttonUp(schemaButtonName);
             }
         });
@@ -705,6 +709,10 @@
             if (typeof(player) !== "undefined" && typeof(player.schema) !== "undefined" )
             {
                 var schemaButtonName = player.schema.lookup(e.which);
+                player.state[schemaButtonName] = true;
+                player.rawAnalogState[schemaButtonName]
+                    = player.analogState[schemaButtonName]
+                    = 1;
                 if (typeof(schemaButtonName) !== "undefined" ) player.buttonDown(schemaButtonName);
             }
         });
@@ -761,12 +769,15 @@
                         var negativeAxis = currentSchema[j].threshold < 0;
 
                         var axisValue = gi.Players[i].rawAnalogState[j] = currentGamepad.axes[currentSchema[j].index - 1];
+
                         gi.Players[i].analogState[j] = Math.abs(axisValue) > Math.abs(currentSchema[j].deadZone) ? axisValue : 0 ;
+
                         gi.Players[i].state[j] = (negativeAxis && axisValue < currentSchema[j].threshold) || (!negativeAxis && axisValue > currentSchema[j].threshold);
                     }
                     else
                     {
                         gi.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed;
+
                         gi.Players[i].rawAnalogState[j] = gi.Players[i].analogState[j] = gi.Players[i].state[j] ? 1 : 0; // set both raw and regular to the same binary output
                     }
                 }
@@ -915,6 +926,7 @@
                     // blank state to start
                     gi.Players[i].state = {};
                     gi.Players[i].analogState = {};
+                    gi.Players[i].rawAnalogState = {};
 
                     // setup Previous as current
                     gi.Players[i].previous.type = gi.Players[i].type;
@@ -923,6 +935,7 @@
                     gi.Players[i].previous.theme = gi.Players[i].theme;
                     gi.Players[i].previous.state = gi.Players[i].state;
                     gi.Players[i].previous.analogState = gi.Players[i].analogState;
+                    gi.Players[i].previous.rawAnalogState = gi.Players[i].rawAnalogState;
 
                 }
             }
