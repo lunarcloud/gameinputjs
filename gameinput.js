@@ -17,6 +17,107 @@
 }(this, function () {
     "use strict";
 
+    function Vector2(x, y) {
+        this.x = (x === undefined) ? 0 : x;
+        this.y = (y === undefined) ? 0 : y;
+    }
+
+    Vector2.prototype = {
+        set: function(x, y) {
+            this.x = x || 0;
+            this.y = y || 0;
+        },
+
+        clone: function() {
+            return new Vector2(this.x, this.y)
+        },
+
+        add: function(vector) {
+            return new Vector2(this.x + vector.x, this.y + vector.y);
+        },
+
+        subtract: function(vector) {
+            return new Vector2(this.x - vector.x, this.y - vector.y);
+        },
+
+        scale: function(scalar) {
+            return new Vector2(this.x * scalar, this.y * scalar);
+        },
+
+        dot: function(vector) {
+            return (this.x * vector.x + this.y + vector.y);
+        },
+
+        moveTowards: function(vector, t) {
+            // Linearly interpolates between vectors A and B by t.
+            // t = 0 returns A, t = 1 returns B
+            t = Math.min(t, 1); // still allow negative t
+            var diff = vector.subtract(this);
+            return this.add(diff.scale(t));
+        },
+
+        magnitude: function() {
+            return Math.sqrt(this.magnitudeSqr());
+        },
+
+        magnitudeSqr: function() {
+            return (this.x * this.x + this.y * this.y);
+        },
+
+        distance: function (vector) {
+            return Math.sqrt(this.distanceSqr(vector));
+        },
+
+        distanceSqr: function (vector) {
+            var deltaX = this.x - vector.x;
+            var deltaY = this.y - vector.y;
+            return (deltaX * deltaX + deltaY * deltaY);
+        },
+
+        normalize: function() {
+            var mag = this.magnitude();
+            var vector = this.clone();
+            if(Math.abs(mag) < 1e-9) {
+                vector.x = 0;
+                vector.y = 0;
+            } else {
+                vector.x /= mag;
+                vector.y /= mag;
+            }
+            return vector;
+        },
+
+        angle: function() {
+            return Math.atan2(this.y, this.x);
+        },
+
+        rotate: function(alpha) {
+            var cos = Math.cos(alpha);
+            var sin = Math.sin(alpha);
+            var vector = new Vector2();
+            vector.x = this.x * cos - this.y * sin;
+            vector.y = this.x * sin + this.y * cos;
+            return vector;
+        },
+
+        toPrecision: function(precision) {
+            var vector = this.clone();
+            vector.x = vector.x.toFixed(precision);
+            vector.y = vector.y.toFixed(precision);
+            return vector;
+        },
+
+        toString: function () {
+            var vector = this.toPrecision(1);
+            return ("[" + vector.x + "; " + vector.y + "]");
+        }
+    };
+
+
+    function normalize(val, min, max) {
+        return (val-min)/(max-min);
+    }
+
     /**
      * GameInput
      * @brief   Game Input System
@@ -101,16 +202,14 @@
         this.schema;
         this.theme;
         this.state;
-        this.analogState;
-        this.rawAnalogState;
+        this.analog;
 
         this.previous = {
             type: undefined,
             model: undefined,
             schema: undefined,
             state: undefined,
-            analogState: undefined,
-            rawAnalogState: undefined
+            analog: undefined,
         };
 
         this.buttonDownActions = {};
@@ -161,6 +260,96 @@
     gi.Player.prototype.hasKeyboard = function()
     {
         return typeof(this.type) !== "undefined" && this.type === gi.Type.Keyboard;
+    };
+
+    gi.Player.prototype.getStickVector = function(stick)
+    {
+        if (stick != "l" && stick != "r") throw "Must be l or r";
+
+        var x = 0;
+        var y = 0;
+
+        if (   this.schema[stick + "_up"] instanceof gi.Schema.AxisButton ) {
+            if (this.schema[stick + "_up"].direction == "negative") {
+                y -= this.analog[stick + "_up"] < this.schema[stick + "_up"].deadZone ? Math.abs(this.analog[stick + "_up"]) : 0;
+            } else {
+                y -= this.analog[stick + "_up"] > this.schema[stick + "_up"].deadZone ? Math.abs(this.analog[stick + "_up"]) : 0;
+            }
+        } else {
+            y -= 0.7;
+        }
+
+        if (   this.schema[stick + "_down"] instanceof gi.Schema.AxisButton ) {
+            if (this.schema[stick + "_down"].direction == "negative") {
+                y += this.analog[stick + "_down"] < this.schema[stick + "_down"].deadZone ? Math.abs(this.analog[stick + "_down"]) : 0;
+            } else {
+                y += this.analog[stick + "_down"] > this.schema[stick + "_down"].deadZone ? Math.abs(this.analog[stick + "_down"]) : 0;
+            }
+        } else {
+            x += 0.7;
+        }
+
+        if (   this.schema[stick + "_left"] instanceof gi.Schema.AxisButton ) {
+            if (this.schema[stick + "_left"].direction == "negative") {
+                x -= this.analog[stick + "_left"] < this.schema[stick + "_left"].deadZone ? Math.abs(this.analog[stick + "_left"]) : 0;
+            } else {
+                x -= this.analog[stick + "_left"] > this.schema[stick + "_left"].deadZone ? Math.abs(this.analog[stick + "_left"]) : 0;
+            }
+        } else {
+            x -= 0.7;
+        }
+
+        if (   this.schema[stick + "_right"] instanceof gi.Schema.AxisButton ) {
+            if (this.schema[stick + "_right"].direction == "negative") {
+                x += this.analog[stick + "_right"] < this.schema[stick + "_right"].deadZone ? Math.abs(this.analog[stick + "_right"]) : 0;
+            } else {
+                x += this.analog[stick + "_right"] > this.schema[stick + "_right"].deadZone ? Math.abs(this.analog[stick + "_right"]) : 0;
+            }
+        } else {
+            x += 0.7;
+        }
+
+        return new Vector2(x, y);
+
+    };
+
+    gi.Player.prototype.getNormalizedStickVector = function(stick)
+    {
+        var stickInput = this.getStickVector(stick);
+        var radialDeadZone = 0;
+
+        for (var direction in ["up", "down", "left", "right"]) {
+            if ( this.schema[stick + "_" + direction] instanceof gi.Schema.AxisButton ) {
+                if (this.schema[stick + "_" + direction].deadZone > radialDeadZone) {
+                    radialDeadZone = this.schema[stick + "_" + direction].deadZone;
+                }
+            }
+        }
+
+        if(stickInput.magnitude < radialDeadZone) {
+            return new Vector2(0,0);
+        } else {
+            return stickInput.normalize().scale((stickInput.magnitude() - radialDeadZone) / (1 - radialDeadZone));
+        }
+    };
+
+    gi.Player.prototype.getNormalizedTriggerValue = function(trigger)
+    {
+        if (trigger != "l" && trigger != "r") throw "Must be l or r";
+        trigger += "_trigger";
+
+        if (   this.schema[trigger] instanceof gi.Schema.Key
+            || this.schema[trigger] instanceof gi.Schema.Button
+           ) {
+            return this.state[trigger] ? 1 : 0;
+        }
+        // else  this.schema[trigger] instanceof gi.Schema.AxisButton
+
+        return normalize(
+            /*val*/ this.state[trigger],
+            /*min*/ this.schema[trigger].deadZone,
+            /*max*/ 1
+        );
     };
 
     /**
@@ -695,9 +884,7 @@
             {
                 var schemaButtonName = player.schema.lookup(e.which);
                 player.state[schemaButtonName] = false;
-                player.rawAnalogState[schemaButtonName]
-                    = player.analogState[schemaButtonName]
-                    = 0;
+                player.analog[schemaButtonName] = 0;
                 if (typeof(schemaButtonName) !== "undefined" ) player.buttonUp(schemaButtonName);
             }
         });
@@ -710,9 +897,7 @@
             {
                 var schemaButtonName = player.schema.lookup(e.which);
                 player.state[schemaButtonName] = true;
-                player.rawAnalogState[schemaButtonName]
-                    = player.analogState[schemaButtonName]
-                    = 1;
+                player.analog[schemaButtonName] = 1;
                 if (typeof(schemaButtonName) !== "undefined" ) player.buttonDown(schemaButtonName);
             }
         });
@@ -748,10 +933,8 @@
             {
                 gi.Players[i].previous.state = gi.Players[i].state;
                 gi.Players[i].state = {};
-                gi.Players[i].previous.analogState = gi.Players[i].analogState;
-                gi.Players[i].analogState = {};
-                gi.Players[i].previous.rawAnalogState = gi.Players[i].rawAnalogState;
-                gi.Players[i].rawAnalogState = {};
+                gi.Players[i].previous.analog = gi.Players[i].analog;
+                gi.Players[i].analog = {};
 
                 var currentGamepad = gi.Connection.Gamepads[i];
                 var currentSchema = gi.Players[i].schema;
@@ -768,9 +951,7 @@
                     {
                         var negativeAxis = currentSchema[j].threshold < 0;
 
-                        var axisValue = gi.Players[i].rawAnalogState[j] = currentGamepad.axes[currentSchema[j].index - 1];
-
-                        gi.Players[i].analogState[j] = Math.abs(axisValue) > Math.abs(currentSchema[j].deadZone) ? axisValue : 0 ;
+                        var axisValue = gi.Players[i].analog[j] = currentGamepad.axes[currentSchema[j].index - 1];
 
                         gi.Players[i].state[j] = (negativeAxis && axisValue < currentSchema[j].threshold) || (!negativeAxis && axisValue > currentSchema[j].threshold);
                     }
@@ -778,7 +959,7 @@
                     {
                         gi.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed;
 
-                        gi.Players[i].rawAnalogState[j] = gi.Players[i].analogState[j] = gi.Players[i].state[j] ? 1 : 0; // set both raw and regular to the same binary output
+                        gi.Players[i].analog[j] = gi.Players[i].state[j] ? 1 : 0;
                     }
                 }
             }
@@ -925,8 +1106,7 @@
 
                     // blank state to start
                     gi.Players[i].state = {};
-                    gi.Players[i].analogState = {};
-                    gi.Players[i].rawAnalogState = {};
+                    gi.Players[i].analog = {};
 
                     // setup Previous as current
                     gi.Players[i].previous.type = gi.Players[i].type;
@@ -934,8 +1114,7 @@
                     gi.Players[i].previous.schema = gi.Players[i].schema;
                     gi.Players[i].previous.theme = gi.Players[i].theme;
                     gi.Players[i].previous.state = gi.Players[i].state;
-                    gi.Players[i].previous.analogState = gi.Players[i].analogState;
-                    gi.Players[i].previous.rawAnalogState = gi.Players[i].rawAnalogState;
+                    gi.Players[i].previous.analog = gi.Players[i].analog;
 
                 }
             }
