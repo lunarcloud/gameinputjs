@@ -503,10 +503,8 @@
                                 r_up, r_down, r_left, r_right,
                                 l_button, r_button, l_trigger, r_trigger)
     {
-        this.name = name;
         for (var i in arguments)
         {
-            if (i == 0) continue;
             if (typeof(arguments[i]) !== "undefined" && (arguments[i] instanceof gi.Schema.Key) === false) throw "Must be undefined or gi.Schema.Key";
         }
         gi.Schema.Generic.call(this, d_up, d_down, d_left, d_right,
@@ -590,7 +588,6 @@
     gi.Schema.KeyboardAPI.Standard = {};
 
     gi.Schema.KeyboardAPI.Standard.QWERTY = new gi.Schema.KeyboardAPI(
-        "QWERTY",
         gi.Schema.KeyboardAPI.Keys.UP_ARROW,
         gi.Schema.KeyboardAPI.Keys.DOWN_ARROW,
         gi.Schema.KeyboardAPI.Keys.LEFT_ARROW,
@@ -607,6 +604,7 @@
         gi.Schema.KeyboardAPI.Keys.KEY_E,
         gi.Schema.KeyboardAPI.Keys.KEY_R
     );
+    gi.Schema.KeyboardAPI.Standard.QWERTY.name = "QWERTY";
 
     gi.Schema.KeyboardAPI.Standard.AZERTY = new gi.Schema.KeyboardAPI(
         "AZERTY",
@@ -626,6 +624,7 @@
         gi.Schema.KeyboardAPI.Keys.KEY_E,
         gi.Schema.KeyboardAPI.Keys.KEY_R
     );
+    gi.Schema.KeyboardAPI.Standard.AZERTY.name = "AZERTY";
 
     gi.Schema.KeyboardAPI.Standard.Dvorak = new gi.Schema.KeyboardAPI(
         "Dvorak",
@@ -645,6 +644,7 @@
         gi.Schema.KeyboardAPI.Keys.PERIOD,
         gi.Schema.KeyboardAPI.Keys.KEY_P
     );
+    gi.Schema.KeyboardAPI.Standard.Dvorak.name = "QWEDvorakRTY";
 
     gi.Type = function(name, theme, themeSchemaNames)
     {
