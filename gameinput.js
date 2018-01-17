@@ -607,7 +607,6 @@
     gi.Schema.KeyboardAPI.Standard.QWERTY.name = "QWERTY";
 
     gi.Schema.KeyboardAPI.Standard.AZERTY = new gi.Schema.KeyboardAPI(
-        "AZERTY",
         gi.Schema.KeyboardAPI.Keys.UP_ARROW,
         gi.Schema.KeyboardAPI.Keys.DOWN_ARROW,
         gi.Schema.KeyboardAPI.Keys.LEFT_ARROW,
@@ -627,7 +626,6 @@
     gi.Schema.KeyboardAPI.Standard.AZERTY.name = "AZERTY";
 
     gi.Schema.KeyboardAPI.Standard.Dvorak = new gi.Schema.KeyboardAPI(
-        "Dvorak",
         gi.Schema.KeyboardAPI.Keys.UP_ARROW,
         gi.Schema.KeyboardAPI.Keys.DOWN_ARROW,
         gi.Schema.KeyboardAPI.Keys.LEFT_ARROW,
@@ -644,7 +642,7 @@
         gi.Schema.KeyboardAPI.Keys.PERIOD,
         gi.Schema.KeyboardAPI.Keys.KEY_P
     );
-    gi.Schema.KeyboardAPI.Standard.Dvorak.name = "QWEDvorakRTY";
+    gi.Schema.KeyboardAPI.Standard.Dvorak.name = "Dvorak";
 
     gi.Type = function(name, theme, themeSchemaNames)
     {
