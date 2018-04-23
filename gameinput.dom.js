@@ -46,7 +46,7 @@
         for (var i = 0; i < gi.Players.length; i++)
         {
             var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + i);
-            for (var j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
+            for (let j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
         }
 
         setTimeout(function(){
@@ -57,10 +57,10 @@
 
                 if (typeof(player.type) !== "undefined" && typeof(player.model) !== "undefined") {
                     var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
-                    for (var j = 0; j < playerIcons.length; j++ ) playerIcons[j].setAttribute("src", "img/" + player.model.iconName + ".png");
+                    for (let j = 0; j < playerIcons.length; j++ ) playerIcons[j].setAttribute("src", "img/" + player.model.iconName + ".png");
 
                     var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + player.index);
-                    for (var j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('img/models/" + player.model.iconName + ".png')";
+                    for (let j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('img/models/" + player.model.iconName + ".png')";
 
                     var themeStyleElement = document.createElement('link');
                     themeStyleElement.classList.add("gameinput-theme-player" + player.index);
@@ -69,7 +69,7 @@
                     document.head.appendChild(themeStyleElement);
                 } else {
                     var previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
-                    for (var j = 0; j < previousPlayerIcons.length; j++ ) previousPlayerIcons[j].setAttribute("src", "");
+                    for (let j = 0; j < previousPlayerIcons.length; j++ ) previousPlayerIcons[j].setAttribute("src", "");
                 }
             }
         },1);

@@ -450,7 +450,7 @@
         player.type = type;
 
         var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + player.index);
-        for (var j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
+        for (let j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
 
         var themeStyleElement = document.createElement('link');
         themeStyleElement.classList.add("gameinput-theme-player" + player.index);

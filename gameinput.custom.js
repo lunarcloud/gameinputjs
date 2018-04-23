@@ -43,14 +43,14 @@
       */
     gi.CustomLearning.onDetectIgnorableBegin = function(handler) {
         detectIgnorableStartHandlers.push(handler);
-    }
+    };
     /**
       * @desc   Setup a function to fire when axes ignore detection event finds an item, used for display purposes.
       * @param  handler     the function to handle the event
       */
     gi.CustomLearning.onDetectIgnorableDiscover = function(handler) {
         detectIgnorableDiscoverHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Setup a function to fire when axes ignore detection event ends, used for display purposes.
@@ -58,7 +58,7 @@
       */
     gi.CustomLearning.onDetectIgnorableComplete = function(handler) {
         detectIgnorableCompleteHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Setup a function to fire when begin mapping event occurs, used for display purposes.
@@ -66,7 +66,7 @@
       */
     gi.CustomLearning.onBeginMapping = function(handler) {
         beginMappingHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Setup a function to fire when listening event occurs, used for display purposes.
@@ -74,7 +74,7 @@
       */
     gi.CustomLearning.onListeningForMappingItem = function(handler) {
         listeningForMappingHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Setup a function to fire when set event occurs, used for display purposes.
@@ -82,7 +82,7 @@
       */
     gi.CustomLearning.onSetMappingItem = function(handler) {
         setMappingHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Setup a function to fire when complete mapping event occurs, used for display purposes.
@@ -90,7 +90,7 @@
       */
     gi.CustomLearning.onCompleteMapping = function(handler) {
         completeMappingHandlers.push(handler);
-    }
+    };
 
     /**
       * @desc   Detects erratic / noisy items to ignore while mapping, such as accelerometers or broken sticks
@@ -109,7 +109,7 @@
         //TODO fire detectIgnorableDiscoverHandlers handlers with the player
 
         //TODO fire detectIgnorableCompleteHandlers handlers with the player
-    }
+    };
 
     /**
       * @desc   Creates a new Custom Mapping
@@ -124,7 +124,7 @@
         //TODO
         //TODO listen for each item
         //TODO fire beginMappingHandlers handlers with the player
-    }
+    };
 
     /**
       * @desc   Listens for a mapping item
@@ -140,7 +140,7 @@
         //TODO
         //TODO if threshold oof an axis (not in ignorable) is above 0.5 or if a button is true, setMappingItem to that
         //TODO fire listeningForMappingHandlers handlers with the player and schemaName
-    }
+    };
 
     /**
       * @desc   Sets an item in the custom mapping being made
@@ -156,7 +156,7 @@
 
         //TODO
         //TODO fire setMappingHandlers handlers with the player, schemaName, and button
-    }
+    };
 
     /**
       * @desc   Finalized and assigns mapping
@@ -170,7 +170,7 @@
 
         //TODO
         //TODO fire completeMappingHandlers handlers with the player
-    }
+    };
 
     return gi;
 }));

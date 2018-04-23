@@ -29,7 +29,7 @@
         },
 
         clone: function() {
-            return new Vector2(this.x, this.y)
+            return new Vector2(this.x, this.y);
         },
 
         add: function(vector) {
@@ -129,7 +129,9 @@
     gi.handleKeyboard = true; // disable to deal with keyboard on your own
 
     /* Helper function */
-    function toASCII(text) { return text.replace(/[^\x00-\x7F]/g, ""); }
+    function toASCII(text) { 
+        return text.replace(/[^\x00-\x7F]/g, ""); /* eslint-disable-line no-control-regex */
+    }
 
 
     gi.Schema = {};
@@ -165,7 +167,7 @@
     gi.canUseGamepadAPI = function()
     {
         return "getGamepads" in navigator;
-    }
+    };
 
     gi.buttonDownActions = [];
     gi.buttonUpActions = [];
@@ -184,13 +186,13 @@
         for ( var action in gi.buttonDownActions) {
             if (typeof(gi.buttonDownActions[action]) === "function") gi.buttonDownActions[action](player, schemaName);
         }
-    }
+    };
 
     gi.buttonUp = function(player, schemaName) {
         for ( var action in gi.buttonUpActions) {
             if (typeof(gi.buttonUpActions[action]) === "function") gi.buttonUpActions[action](player, schemaName);
         }
-    }
+    };
 
     gi.Player = function(number)
     {
@@ -220,21 +222,21 @@
             this.buttonDownActions[ gi.Schema.Names[i] ] = [];
             this.buttonUpActions[ gi.Schema.Names[i] ] = [];
         }
-    }
+    };
 
     gi.Player.prototype.buttonDown = function(schemaName)
     {
         gi.buttonDown(this.index, schemaName);
         for ( var action in this.buttonDownActions[schemaName])
             this.buttonDownActions[schemaName][action]();
-    }
+    };
 
     gi.Player.prototype.buttonUp = function(schemaName)
     {
         gi.buttonUp(this.index, schemaName);
         for ( var action in this.buttonUpActions[schemaName])
             this.buttonUpActions[schemaName][action]();
-    }
+    };
 
     gi.Player.prototype.onButtonDown = function(schemaName, action)
     {
@@ -384,7 +386,7 @@
                     return text;
             }
         }
-    }
+    };
 
     gi.Players = [
         new gi.Player(1),
@@ -400,11 +402,11 @@
         1 : 1,
         2 : 2,
         3 : 3
-    }
+    };
 
     gi.getPlayer = function(index) {
         return gi.Players[gi.Connection.GamePadMapping[index]];
-    }
+    };
 
     gi.Connection.Gamepads = [undefined, undefined, undefined, undefined];
 
@@ -474,7 +476,7 @@
             }
             else if (schema[i] == key) return i;
         }
-    }
+    };
 
     gi.Schema.GamePadAPI = function(d_up, d_down, d_left, d_right,
                                 menu, button0, button1, button2, button3,
@@ -746,7 +748,7 @@
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.QWERTY;
 
             /* Treat this like a player reshuffle */
-            for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+            for (let i = 0; i < gi.reshufflePlayersActions.length; i++)
             {
                 if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
             }
@@ -764,7 +766,7 @@
             gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.Dvorak;
 
             /* Treat this like a player reshuffle */
-            for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+            for (let i = 0; i < gi.reshufflePlayersActions.length; i++)
             {
                 if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
             }
@@ -893,7 +895,6 @@
 
     gi.KeyboardWatcher = new function()
     {
-        var watcher = this;
         this.PlayerToWatch = undefined;
 
         //setup keydown/keyup events
@@ -932,19 +933,19 @@
     {
         gi.loopingUpdate = true;
         gi.nextUpdateLoop();
-    }
+    };
 
     gi.stopUpdateLoop = function()
     {
         gi.loopingUpdate = false;
-    }
+    };
 
     gi.nextUpdateLoop = function()
     {
         if (gi.loopingUpdate === false) return;
         gi.update();
          requestAnimationFrame(gi.nextUpdateLoop); // way too slow!
-    }
+    };
 
     gi.update = function()
     {
@@ -952,7 +953,7 @@
         {
             gi.Connection.Gamepads = navigator.getGamepads();
 
-            for (var i = 0; i < gi.Connection.Gamepads.length; i++)
+            for (let i = 0; i < gi.Connection.Gamepads.length; i++)
             {
                 gi.Players[i].previous.state = gi.Players[i].state;
                 gi.Players[i].state = {};
@@ -964,7 +965,7 @@
 
                 if (typeof(currentGamepad) === "undefined" || currentGamepad === null) continue;
 
-                for (var j in currentSchema)
+                for (let j in currentSchema)
                 {
                     if (typeof(currentSchema[j]) === "undefined")
                     {
@@ -988,9 +989,9 @@
             }
 
             // Keydown / Keyup
-            for (var i = 0; i < gi.Players.length; i++)
+            for (let i = 0; i < gi.Players.length; i++)
             {
-                for (var j in gi.Players[i].state)
+                for (let j in gi.Players[i].state)
                 {
                     if (gi.firstPress !== true)
                     {
@@ -1018,12 +1019,12 @@
         var gamepads = navigator.getGamepads();
         var count = 0;
 
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             count += typeof gamepads[i] === "object" && gamepads[i] !== null ? 1 : 0;
         }
 
         return count;
-    }
+    };
 
     var lastCheckedNumberOfGamepads = -1;
     function connectionWatchLoop() {
@@ -1042,13 +1043,13 @@
     gi.initialGamePadSetup = function()
     {
         // Pause Game or similar
-        for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
+        for (let i = 0; i < gi.reshufflePlayersActions.length; i++)
         {
             if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
         }
 
         //clear gamepad information
-        for (var i = 0; i < gi.Players.length; i++)
+        for (let i = 0; i < gi.Players.length; i++)
         {
             gi.Players[i].type = undefined;
             gi.Players[i].model = undefined;
@@ -1068,12 +1069,12 @@
                 gi.firstPress = false;
             }
 
-            for (var i in gi.Connection.Gamepads)
+            for (let i in gi.Connection.Gamepads)
             {
                 if (gi.Connection.Gamepads[i] instanceof Gamepad)
                 {
                     //Translate into Type -  Players order is gamepad order
-                    for (var j = 0; j < gi.Models.Specific.length; j++)
+                    for (let j = 0; j < gi.Models.Specific.length; j++)
                     {
                         if ( toASCII(gi.Models.Specific[j].id) === toASCII(gi.Connection.Gamepads[i].id)
                             && gi.os === gi.Models.Specific[j].os )
@@ -1092,7 +1093,7 @@
 
                     if (typeof(gi.Players[i].model) === "undefined")
                     {
-                        for (var j = 0; j < gi.Models.Generic.length; j++)
+                        for (let j = 0; j < gi.Models.Generic.length; j++)
                         {
                             if (gi.Connection.Gamepads[i].id.match(gi.Models.Generic[j].id) !== null)
                             {
@@ -1151,7 +1152,7 @@
         if (gi.handleKeyboard)
         {
             gi.KeyboardWatcher.PlayerToWatch = undefined;
-            for (var i = 0; i < gi.Players.length; i++)
+            for (let i = 0; i < gi.Players.length; i++)
             {
                 // last player is keyboard
                 if (gi.Players[i].type === undefined)
@@ -1170,14 +1171,14 @@
         {
             gi.KeyboardWatcher.PlayerToWatch = undefined;
         }
-    }
+    };
 
     gi.reshufflePlayersActions = [];
 
     gi.onReshufflePlayers = function(action)
     {
         gi.reshufflePlayersActions.push(action);
-    }
+    };
 
     /* Initial Configuration */
 
