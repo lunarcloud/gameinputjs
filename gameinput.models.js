@@ -18,30 +18,32 @@
     "use strict";
     if (typeof(gi) == "undefined") throw "GameInput JS must be included first!";
 
+	var frenchVRStickDeadzone = 0.6;
+	var frenchVRStickThreshold = 0.8;
 
     gi.Schema.GravisGamepadPro = new gi.Schema.GamePadAPI(
-                /* d_up */  new gi.Schema.AxisButton(-2),
-                /* d_down */  new gi.Schema.AxisButton(2),
-                /* d_left */  new gi.Schema.AxisButton(-1),
-                /* d_right */  new gi.Schema.AxisButton(1),
-                /* menu */  10,
-                /* button0 */  2,
-                /* button1 */  3,
-                /* button2 */  1,
-                /* button3 */  4,
-                /* l_up */  undefined,
-                /* l_down */  undefined,
-                /* l_left */  undefined,
-                /* l_right */  undefined,
-                /* r_up */  new gi.Schema.AxisButton(-4),
-                /* r_down */  new gi.Schema.AxisButton(4),
-                /* r_left */  new gi.Schema.AxisButton(-3),
-                /* r_right */  new gi.Schema.AxisButton(3),
-                /* l_button */  5,
-                /* r_button */  6,
-                /* l_trigger */  7,
-                /* r_trigger */  8
-        );
+		/* d_up */  new gi.Schema.AxisButton(-2),
+		/* d_down */  new gi.Schema.AxisButton(2),
+		/* d_left */  new gi.Schema.AxisButton(-1),
+		/* d_right */  new gi.Schema.AxisButton(1),
+		/* menu */  10,
+		/* button0 */  2,
+		/* button1 */  3,
+		/* button2 */  1,
+		/* button3 */  4,
+		/* l_up */  undefined,
+		/* l_down */  undefined,
+		/* l_left */  undefined,
+		/* l_right */  undefined,
+		/* r_up */  new gi.Schema.AxisButton(-4),
+		/* r_down */  new gi.Schema.AxisButton(4),
+		/* r_left */  new gi.Schema.AxisButton(-3),
+		/* r_right */  new gi.Schema.AxisButton(3),
+		/* l_button */  5,
+		/* r_button */  6,
+		/* l_trigger */  7,
+		/* r_trigger */  8
+	);
 
     /*
      * "HuiJia  PS/SS/N64 Joypad to USB BOX (Vendor: 0925 Product: 1700)"
@@ -1088,7 +1090,63 @@
                 /* r_button */  6,
                 /* l_trigger */  7,
                 /* r_trigger */  8
-            ))
+            )),
+		new gi.Model(
+			gi.Type.Hedgehog,
+			"joystick",
+			"Innovative Produtcs VR Pro 2000 USB Joystick (Vendor: 04b4 Product: 2774)",
+			"Linux",
+			new gi.Schema.GamePadAPI(
+				/* d_up */  13,
+				/* d_down */  14,
+				/* d_left */  15,
+				/* d_right */  16,
+				/* menu */  4,
+				/* button0 */  1,
+				/* button1 */  2,
+				/* button2 */  3,
+				/* button3 */  new gi.Schema.AxisButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_up */  new gi.Schema.AxisButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_down */  new gi.Schema.AxisButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_left */  new gi.Schema.AxisButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_right */  new gi.Schema.AxisButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_up */  new gi.Schema.AxisButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_down */  new gi.Schema.AxisButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_left */  new gi.Schema.AxisButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_right */  new gi.Schema.AxisButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_button */  5,
+				/* r_button */  6,
+				/* l_trigger */  7,
+				/* r_trigger */  8
+			)),
+		new gi.Model(
+			gi.Type.Hedgehog,
+			"joystick",
+			"04b4-2774-Innovative Produtcs VR Pro 2000 USB Joystick",
+			"Linux",
+			new gi.Schema.GamePadAPI(
+				/* d_up */  13,
+				/* d_down */  14,
+				/* d_left */  15,
+				/* d_right */  16,
+				/* menu */  4,
+				/* button0 */  1,
+				/* button1 */  2,
+				/* button2 */  3,
+				/* button3 */  new gi.Schema.AxisButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_up */  new gi.Schema.AxisButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_down */  new gi.Schema.AxisButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_left */  new gi.Schema.AxisButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_right */  new gi.Schema.AxisButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_up */  new gi.Schema.AxisButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_down */  new gi.Schema.AxisButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_left */  new gi.Schema.AxisButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* r_right */  new gi.Schema.AxisButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
+				/* l_button */  5,
+				/* r_button */  6,
+				/* l_trigger */  7,
+				/* r_trigger */  8
+			)),
     ];
 
     gi.initialGamePadSetup(); // re-detect gamepads
