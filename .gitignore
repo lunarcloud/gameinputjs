@@ -1,4 +1,5 @@
 *.min.js
+*.min.js.map
 .brackets.json
 *~
 node_modules

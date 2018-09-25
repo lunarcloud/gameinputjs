@@ -129,7 +129,7 @@
     gi.handleKeyboard = true; // disable to deal with keyboard on your own
 
     /* Helper function */
-    function toASCII(text) { 
+    function toASCII(text) {
         return text.replace(/[^\x00-\x7F]/g, ""); /* eslint-disable-line no-control-regex */
     }
 
@@ -732,45 +732,41 @@
 
     gi.Type.Keyboard.StandardThemes = {
         QWERTY: new gi.Theme("QWERTY"),
+        Dvorak: new gi.Theme("AZERTY"),
         Dvorak: new gi.Theme("Dvorak"),
         Blank: new gi.Theme("Blank")
     };
 
-
-    gi.Type.Keyboard.setQWERTY = function()
-    {
-        gi.Type.Keyboard.schema = gi.Schema.KeyboardAPI.Standard.QWERTY;
-        gi.Type.Keyboard.theme = gi.Type.Keyboard.StandardThemes.QWERTY;
+	gi.Type.Keyboard.set = function(standardType) {
+		gi.Type.Keyboard.schema = gi.Schema.KeyboardAPI.Standard[standardType];
+        gi.Type.Keyboard.theme = gi.Type.Keyboard.StandardThemes[standardType];
 
         if (typeof(gi.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(gi.Players[gi.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
         {
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.QWERTY;
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.QWERTY;
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard[standardType];
+            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes[standardType];
 
             /* Treat this like a player reshuffle */
-            for (let i = 0; i < gi.reshufflePlayersActions.length; i++)
+            for (var i = 0; i < gi.reshufflePlayersActions.length; i++)
             {
                 if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
             }
         }
+	}
+
+    gi.Type.Keyboard.setQWERTY = function()
+    {
+        gi.Type.Keyboard.set('QWERTY');
+    };
+
+    gi.Type.Keyboard.setAZERTY = function()
+    {
+        gi.Type.Keyboard.set('AZERTY');
     };
 
     gi.Type.Keyboard.setDvorak = function()
     {
-        gi.Type.Keyboard.schema = gi.Schema.KeyboardAPI.Standard.Dvorak;
-        gi.Type.Keyboard.theme = gi.Type.Keyboard.StandardThemes.Dvorak;
-
-        if (typeof(gi.KeyboardWatcher.PlayerToWatch) !== "undefined" && typeof(gi.Players[gi.KeyboardWatcher.PlayerToWatch]) !== "undefined" )
-        {
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].schema = gi.Schema.KeyboardAPI.Standard.Dvorak;
-            gi.Players[gi.KeyboardWatcher.PlayerToWatch].theme = gi.Type.Keyboard.StandardThemes.Dvorak;
-
-            /* Treat this like a player reshuffle */
-            for (let i = 0; i < gi.reshufflePlayersActions.length; i++)
-            {
-                if (typeof(gi.reshufflePlayersActions[i]) === "function") gi.reshufflePlayersActions[i]();
-            }
-        }
+        gi.Type.Keyboard.set('Dvorak');
     };
 
     /**
