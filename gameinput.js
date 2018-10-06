@@ -365,7 +365,7 @@
         {
             return this.schema[schemaName].text;
         }
-        else
+        else if (this.model && this.model.type)
         {
             var text = this.model.type.schemaNames[schemaName];
 
