@@ -1207,19 +1207,19 @@
     {
         connectionWatchLoop();
 
-            // warning, these are very unreliable!
-            window.addEventListener("gamepadconnected", function(e) {
-                if (gi.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-                    e.gamepad.index, e.gamepad.id,
-                    e.gamepad.buttons.length, e.gamepad.axes.length);
-                //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
-            }, false);
+        // warning, these are very unreliable!
+        window.addEventListener("gamepadconnected", function(e) {
+            if (gi.debug) console.debug("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                e.gamepad.index, e.gamepad.id,
+                e.gamepad.buttons.length, e.gamepad.axes.length);
+            //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
+        }, false);
 
-            window.addEventListener("gamepaddisconnected", function(e) {
-                if (gi.debug) console.debug("Gamepad disconnected from index %d: %s",
-                    e.gamepad.index, e.gamepad.id);
-                //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
-            }, false);
+        window.addEventListener("gamepaddisconnected", function(e) {
+            if (gi.debug) console.debug("Gamepad disconnected from index %d: %s",
+                e.gamepad.index, e.gamepad.id);
+            //gi.initialGamePadSetup(); // replaced with connectionWatchLoop
+        }, false);
     }
 
     return gi;
