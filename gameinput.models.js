@@ -1147,6 +1147,64 @@
 				/* l_trigger */  7,
 				/* r_trigger */  8
 			)),
+        new gi.Model(
+            gi.Type.Plumber,
+            "nintendo-generic",
+            "20d6-a711-Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  new gi.Schema.AxisButton(-6),
+                /* d_down */  new gi.Schema.AxisButton(6),
+                /* d_left */  new gi.Schema.AxisButton(-5),
+                /* d_right */  new gi.Schema.AxisButton(5),
+                /* menu */  10,
+                /* button0 */  3,
+                /* button1 */  2,
+                /* button2 */  4,
+                /* button3 */  1,
+                /* l_up */  new gi.Schema.AxisButton(-2),
+                /* l_down */  new gi.Schema.AxisButton(2),
+                /* l_left */  new gi.Schema.AxisButton(-1),
+                /* l_right */  new gi.Schema.AxisButton(1),
+                /* r_up */  new gi.Schema.AxisButton(-4),
+                /* r_down */  new gi.Schema.AxisButton(4),
+                /* r_left */  new gi.Schema.AxisButton(-3),
+                /* r_right */  new gi.Schema.AxisButton(3),
+                /* l_button */  5,
+                /* r_button */  6,
+                /* l_trigger */  7,
+                /* r_trigger */  8
+            )
+        ),
+        new gi.Model(
+            gi.Type.Plumber,
+            "nintendo-generic",
+            "Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller (Vendor: 20d6 Product: a711)",
+            "Linux",
+            new gi.Schema.GamePadAPI(
+                /* d_up */  new gi.Schema.AxisButton(-6),
+                /* d_down */  new gi.Schema.AxisButton(6),
+                /* d_left */  new gi.Schema.AxisButton(-5),
+                /* d_right */  new gi.Schema.AxisButton(5),
+                /* menu */  10,
+                /* button0 */  3,
+                /* button1 */  2,
+                /* button2 */  4,
+                /* button3 */  1,
+                /* l_up */  new gi.Schema.AxisButton(-2),
+                /* l_down */  new gi.Schema.AxisButton(2),
+                /* l_left */  new gi.Schema.AxisButton(-1),
+                /* l_right */  new gi.Schema.AxisButton(1),
+                /* r_up */  new gi.Schema.AxisButton(-4),
+                /* r_down */  new gi.Schema.AxisButton(4),
+                /* r_left */  new gi.Schema.AxisButton(-3),
+                /* r_right */  new gi.Schema.AxisButton(3),
+                /* l_button */  5,
+                /* r_button */  6,
+                /* l_trigger */  7,
+                /* r_trigger */  8
+            )
+        ),
     ];
 
     gi.initialGamePadSetup(); // re-detect gamepads
