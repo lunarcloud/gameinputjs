@@ -1,6 +1,6 @@
 /**
  * @preserve
- * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/vector2.js
+ * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.types.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
 
