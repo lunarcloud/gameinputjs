@@ -3,7 +3,7 @@
  * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.dom.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
-import { GameInput, Vector2 } from './gameinput'
+import { GameInput } from './gameinput'
 
 class GameInputDom {
 
@@ -16,14 +16,14 @@ class GameInputDom {
         commonStyleElement.innerHTML = '<link rel="stylesheet" href="css/gameinput-common.css">';
         document.head.appendChild(commonStyleElement);
 
-        gi.onButtonDown(function(playerIndex, schemaName) {
+        gi.onButtonDown((playerIndex, schemaName) => {
             var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
             for (var i = 0; i < buttonElements.length; i++) {
                 buttonElements[i].classList.add("gameinput-button-active");
             }
         });
 
-        gi.onButtonUp(function(playerIndex, schemaName) {
+        gi.onButtonUp((playerIndex, schemaName) => {
             var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
             for (var i = 0; i < buttonElements.length; i++) {
                 buttonElements[i].classList.remove("gameinput-button-active");

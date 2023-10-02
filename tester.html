@@ -45,6 +45,11 @@
       <div class="nine columns">
         <table>
             <tr>
+                <td colspan="12">
+                    <div class="player-id"><span class='text'></span></div>
+                </td>
+            </tr>
+            <tr>
                 <td>digital</td>
                 <td>
                     <div class='gameinput-player-template-up gameinput-player-template-d_up gameinput-button'><span class='text'></span></div>
@@ -147,7 +152,12 @@
             row.classList.remove("template");
 
             var playerNumberReferences = row.querySelectorAll(".player-number");
-            for (var k = 0; k < playerNumberReferences.length; k++) playerNumberReferences[k].textContent = (i+1);
+            for (var k = 0; k < playerNumberReferences.length; k++)
+                playerNumberReferences[k].textContent = (i+1);
+
+            var playerIdReferences = row.querySelectorAll(".player-id");
+            for (var k = 0; k < playerIdReferences.length; k++)
+                playerIdReferences[k].textContent = gi.getPlayer(i).model.id;
 
             var iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
             for (var k = 0; k < iconPlayerReferences.length; k++) {

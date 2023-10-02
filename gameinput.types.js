@@ -124,14 +124,13 @@ export class GameInputModel {
     }
 }
 
-export class SchemaKey {
-    constructor (code, text)
-    {
-        this.index = code;
-        this.text = text;
-    }
-}
+/**
+ * @typedef {number|SchemaButton|SchemaAxisButton} SchemaButtonDef
+ */
 
+/**
+ * Schema Button
+ */
 export class SchemaButton {
     constructor (index)
     {
@@ -139,6 +138,9 @@ export class SchemaButton {
     }
 }
 
+/**
+ * Schema Axis-As-Button
+ */
 export class SchemaAxisButton {
     constructor (indexAndDirection, threshold, deadZone)
     {
@@ -150,6 +152,7 @@ export class SchemaAxisButton {
         this.deadZone = (this.direction === "positive" ? 1 : -1 ) * Math.abs(deadZone);
     }
 }
+
 
 export class GenericSchema {
     constructor(name,
@@ -209,6 +212,31 @@ export class GamepadAPI extends GenericSchema {
         5,6,7,8
     )
 
+    /**
+     *  Constructor
+     * @param {string|undefined} name Name of Schema
+     * @param {SchemaButtonDef} d_up
+     * @param {SchemaButtonDef} d_down
+     * @param {SchemaButtonDef} d_left
+     * @param {SchemaButtonDef} d_right
+     * @param {SchemaButtonDef} menu
+     * @param {SchemaButtonDef} button0
+     * @param {SchemaButtonDef} button1
+     * @param {SchemaButtonDef} button2
+     * @param {SchemaButtonDef} button3
+     * @param {SchemaButtonDef} l_up
+     * @param {SchemaButtonDef} l_down
+     * @param {SchemaButtonDef} l_left
+     * @param {SchemaButtonDef} l_right
+     * @param {SchemaButtonDef} r_up
+     * @param {SchemaButtonDef} r_down
+     * @param {SchemaButtonDef} r_left
+     * @param {SchemaButtonDef} r_right
+     * @param {SchemaButtonDef} l_button
+     * @param {SchemaButtonDef} r_button
+     * @param {SchemaButtonDef} l_trigger
+     * @param {SchemaButtonDef} r_trigger
+     */
     constructor(name,
         d_up, d_down, d_left, d_right,
         menu, button0, button1, button2, button3,

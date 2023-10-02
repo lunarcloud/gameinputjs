@@ -2,7 +2,7 @@
     "scripts": {
         "eslint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "eslint": "npx eslint --ignore-path .gitignore --ext .js .",
-        "uglify": "./minify.sh",
+        "minify": "./minify.sh",
         "serve": "serve"
     },
     "devDependencies": {
