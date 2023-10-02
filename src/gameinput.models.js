@@ -1200,6 +1200,26 @@ const GameInputModels = [
             /* r_trigger */  8
         )
     ),
+    new GameInputModel(
+        GameInputSchemaType.Plumber,
+        "nintendo-generic",
+        "Core (Plus) Wired Controller (Vendor: 20d6 Product: a711)",
+        "Windows",
+        new GamepadAPI(
+            undefined,undefined,undefined,undefined,
+            10,
+            3, 2, 4, 1,
+            new SchemaAxisButton(-2),
+            new SchemaAxisButton(2),
+            new SchemaAxisButton(-1),
+            new SchemaAxisButton(1),
+            new SchemaAxisButton(-6),
+            new SchemaAxisButton(6),
+            new SchemaAxisButton(-3),
+            new SchemaAxisButton(3),
+            5, 6, 7, 8
+        )
+    )
 ];
 
 
