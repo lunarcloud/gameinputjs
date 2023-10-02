@@ -155,13 +155,12 @@ export class SchemaAxisButton {
 
 
 export class GenericSchema {
-    constructor(name,
+    constructor(
         d_up, d_down, d_left, d_right,
         menu, button0, button1, button2, button3,
         l_up, l_down, l_left, l_right,
         r_up, r_down, r_left, r_right,
         l_button, r_button, l_trigger, r_trigger) {
-            this.name = name;
             this.d_up = d_up;
             this.d_down = d_down;
             this.d_left = d_left;
@@ -237,7 +236,7 @@ export class GamepadAPI extends GenericSchema {
      * @param {SchemaButtonDef} l_trigger
      * @param {SchemaButtonDef} r_trigger
      */
-    constructor(name,
+    constructor(
         d_up, d_down, d_left, d_right,
         menu, button0, button1, button2, button3,
         l_up, l_down, l_left, l_right,
@@ -250,7 +249,7 @@ export class GamepadAPI extends GenericSchema {
             if (typeof (arguments[i]) === "number") arguments[i] = new SchemaButton(arguments[i]);
         }
 
-        super(name, d_up, d_down, d_left, d_right,
+        super(d_up, d_down, d_left, d_right,
             menu, button0, button1, button2, button3,
             l_up, l_down, l_left, l_right,
             r_up, r_down, r_left, r_right,

@@ -8,7 +8,7 @@ import { GameInputModel, GamepadAPI, GameInputSchemaType, SchemaAxisButton } fro
 const frenchVRStickDeadzone = 0.6;
 const frenchVRStickThreshold = 0.8;
 
-const GravisGamepadProSchema = new GamepadAPI(undefined,
+const GravisGamepadProSchema = new GamepadAPI(
     /* d_up */  new SchemaAxisButton(-2),
     /* d_down */  new SchemaAxisButton(2),
     /* d_left */  new SchemaAxisButton(-1),
@@ -50,7 +50,7 @@ const GameInputModels = [
         "nintendo-generic",
         "0925-8866-SFC/USB Pad",
         "Windows",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-2),
             new SchemaAxisButton(2),
             new SchemaAxisButton(-1),
@@ -72,7 +72,7 @@ const GameInputModels = [
         "nintendo-generic",
         "SFC/USB Pad (Vendor: 0925 Product: 8866)",
         "Windows",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-2),
             new SchemaAxisButton(2),
             new SchemaAxisButton(-1),
@@ -94,7 +94,7 @@ const GameInputModels = [
         "xbox360",
         "Xbox 360 Wireless Receiver (Vendor: 0000 Product: 0000)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             16,17,14,15,
             10,
             2,1,4,3,
@@ -113,7 +113,7 @@ const GameInputModels = [
         "xbox360",
         "0000-0000-Xbox 360 Wireless Receiver",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             16,17,14,15,
             10,
             1,2,3,4,
@@ -146,7 +146,7 @@ const GameInputModels = [
         "ds4",
         "054c-05c4-Wireless Controller",
         "Windows",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             15, 16, 17, 18,
             10,
             2, 3, 1, 4,
@@ -172,26 +172,14 @@ const GameInputModels = [
         "xbox360",
         "Performance Designed Products Afterglow Gamepad for Xbox 360 (STANDARD GAMEPAD Vendor: 0e6f Product: 0213)",
         "Linux",
-        new GamepadAPI("Afterglow Gamepad for Xbox 360",
-            13,14,15,16,
-            10,
-            1,2,3,4,
-            new SchemaAxisButton(-2),
-            new SchemaAxisButton(2),
-            new SchemaAxisButton(-1),
-            new SchemaAxisButton(1),
-            new SchemaAxisButton(-4),
-            new SchemaAxisButton(4),
-            new SchemaAxisButton(-3),
-            new SchemaAxisButton(3),
-            5, 6, 7, 8
-    )),
+        GamepadAPI.Stardard
+    ),
     new GameInputModel(
         GameInputSchemaType.Hedgehog,
         "xbox360",
         "Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)",
         "Linux",
-        new GamepadAPI("Afterglow Gamepad for Xbox 360",
+        new GamepadAPI(
             new SchemaAxisButton(-8),
             new SchemaAxisButton(8),
             new SchemaAxisButton(-7),
@@ -216,7 +204,7 @@ const GameInputModels = [
         "xbox360",
         "0e6f-0213-Afterglow Gamepad for Xbox 360",
         "Linux",
-        new GamepadAPI("Afterglow Gamepad for Xbox 360",
+        new GamepadAPI(
             new SchemaAxisButton(-8),
             new SchemaAxisButton(8),
             new SchemaAxisButton(-7),
@@ -241,7 +229,7 @@ const GameInputModels = [
         "dc",
         "HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             13, 15, 16, 14,
             10,
             1,2,3,4,
@@ -260,7 +248,7 @@ const GameInputModels = [
         "dc",
         "USB GamePad (Vendor: 0e8f Product: 3013)",
         "Windows",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             13, 15, 16, 14,
             10,
             1,2,3,4,
@@ -279,7 +267,7 @@ const GameInputModels = [
         "dc",
         "USB GamePad (Vendor: 0e8f Product: 3013)",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
         13, 15, 16, 14,
         10,
         1, 2, 3, 4,
@@ -305,7 +293,7 @@ const GameInputModels = [
         "ds3",
         "054c-0268-Sony PLAYSTATION(R)3 Controller",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             5,7,8,6,
             4,
             15, 14, 16, 13,
@@ -331,7 +319,7 @@ const GameInputModels = [
         "ds4",
         "054c-05c4-Sony Computer Entertainment Wireless Controller",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-8),
             new SchemaAxisButton(8),
             new SchemaAxisButton(-7),
@@ -353,7 +341,7 @@ const GameInputModels = [
         "joystick",
         "Mayflash Arcade Stick (Vendor: 0e8f Product: 0003)",
         "Windows",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-2),
             new SchemaAxisButton(2),
             new SchemaAxisButton(-1),
@@ -375,7 +363,7 @@ const GameInputModels = [
         "joystick",
         "PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)", /* Mayflash Arcade Stick */
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
         13, 14, 15, 16,
         10,
         7, 1, 2, 8,
@@ -394,7 +382,7 @@ const GameInputModels = [
         "joystick",
         "MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-3),
             new SchemaAxisButton(3),
             new SchemaAxisButton(-4),
@@ -416,7 +404,7 @@ const GameInputModels = [
         "joystick",
         "0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-2),
             new SchemaAxisButton(2),
             new SchemaAxisButton(-1),
@@ -438,7 +426,7 @@ const GameInputModels = [
         "generic",
         "Logitech Logitech Dual Action (Vendor: 046d Product: c216)", // DirectInput (XInput uses 'standard' mapping)
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-6),
             /* d_down */  new SchemaAxisButton(6),
             /* d_left */  new SchemaAxisButton(-5),
@@ -466,7 +454,7 @@ const GameInputModels = [
         "generic",
         "Logitech Gamepad F310 (Vendor: 046d Product: c21d)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-8),
             /* d_down */  new SchemaAxisButton(8),
             /* d_left */  new SchemaAxisButton(-7),
@@ -494,7 +482,7 @@ const GameInputModels = [
         "generic",
         "046d-c21d-Logitech Gamepad F310", // XInput
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-8),
             /* d_down */  new SchemaAxisButton(8),
             /* d_left */  new SchemaAxisButton(-7),
@@ -522,7 +510,7 @@ const GameInputModels = [
         "generic",
         "046d-c216-Logitech Logitech Dual Action", // DirectInput (XInput uses 'standard' mapping)
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-6),
             /* d_down */  new SchemaAxisButton(6),
             /* d_left */  new SchemaAxisButton(-5),
@@ -550,7 +538,7 @@ const GameInputModels = [
         "joystick",
         "Logitech Logitech Extreme 3D Pro (Vendor: 046d Product: c215)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-6, 0.3),
             new SchemaAxisButton(6, 0.3),
             new SchemaAxisButton(-5, 0.3),
@@ -572,7 +560,7 @@ const GameInputModels = [
         "joystick",
         "046d-c215-Logitech Logitech Extreme 3D Pro",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-6, 0.3),
             new SchemaAxisButton(6, 0.3),
             new SchemaAxisButton(-5, 0.3),
@@ -594,7 +582,7 @@ const GameInputModels = [
         "generic",
         "Microsoft® Microsoft® SideWinder® Game Pad USB (Vendor: 045e Product: 0007)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
     /* d_up */  new SchemaAxisButton(-2),
     /* d_down */  new SchemaAxisButton(2),
     /* d_left */  new SchemaAxisButton(-1),
@@ -622,7 +610,7 @@ const GameInputModels = [
         "generic",
         "045e-0007-Microsoft® Microsoft® SideWinder® Game Pad USB",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
     /* d_up */  new SchemaAxisButton(-2),
     /* d_down */  new SchemaAxisButton(2),
     /* d_left */  new SchemaAxisButton(-1),
@@ -650,7 +638,7 @@ const GameInputModels = [
         "generic",
         "ASUS Gamepad",
         "Android",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             undefined,
             undefined,
             undefined,
@@ -672,7 +660,7 @@ const GameInputModels = [
         "generic",
         "NYKO PLAYPAD PRO",
         "Android",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-8),
             new SchemaAxisButton(8),
             new SchemaAxisButton(-7),
@@ -694,7 +682,7 @@ const GameInputModels = [
         "generic",
         "Moga 2 HID",
         "Android",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             undefined,
             undefined,
             undefined,
@@ -718,7 +706,7 @@ const GameInputModels = [
         "generic",
         "Moga 2 HID (Vendor: 20d6 Product: 89e5)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             new SchemaAxisButton(-8),
             new SchemaAxisButton(8),
             new SchemaAxisButton(-7),
@@ -742,7 +730,7 @@ const GameInputModels = [
         "nintendo-generic",
         "(null) usb gamepad            (Vendor: 0810 Product: e501)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -770,7 +758,7 @@ const GameInputModels = [
         "nintendo-generic",
         "0810-e501-usb gamepad           ",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -798,7 +786,7 @@ const GameInputModels = [
         "nintendo-generic",
         "usb gamepad            (Vendor: 0810 Product: e501)",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -826,7 +814,7 @@ const GameInputModels = [
         "nintendo-generic",
         "810-e501-usb gamepad           ",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-3),
             /* d_down */  new SchemaAxisButton(3),
             /* d_left */  new SchemaAxisButton(-2),
@@ -876,9 +864,16 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchemaType.Hedgehog,
         "xboxone",
+        "Performance Designed Products Afterglow Wired Controller for Xbox One (STANDARD GAMEPAD Vendor: 0e6f Product: 0139)",
+        "Linux",
+        GamepadAPI.Stardard
+    ),
+    new GameInputModel(
+        GameInputSchemaType.Hedgehog,
+        "xboxone",
         "Performance Designed Products Afterglow Wired Controller for Xbox One (Vendor: 0e6f Product: 0139)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-8),
             /* d_down */  new SchemaAxisButton(8),
             /* d_left */  new SchemaAxisButton(-7),
@@ -906,7 +901,7 @@ const GameInputModels = [
         "xboxone",
         "0e6f-0139-Afterglow Prismatic Wired Controller",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-8),
             /* d_down */  new SchemaAxisButton(8),
             /* d_left */  new SchemaAxisButton(-7),
@@ -934,7 +929,7 @@ const GameInputModels = [
         "nintendo-generic",
         "USB,2-axis 8-button gamepad   (STANDARD GAMEPAD Vendor: 0583 Product: 2060)",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  13,
             /* d_down */  14,
             /* d_left */  15,
@@ -962,7 +957,7 @@ const GameInputModels = [
         "nintendo-generic",
         "0583-2060-USB,2-axis 8-button gamepad   ",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  13,
             /* d_down */  14,
             /* d_left */  15,
@@ -990,7 +985,7 @@ const GameInputModels = [
         "nintendo-generic",
         "BUFFALO BGC-FC801 USB Gamepad (Vendor: 0411 Product: 00c6)",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -1018,7 +1013,7 @@ const GameInputModels = [
         "nintendo-generic",
         "0411-00c6-BUFFALO BGC-FC801 USB Gamepad ",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -1046,7 +1041,7 @@ const GameInputModels = [
         "generic",
         "USB  Joystick (Vendor: 1345 Product: 1030)",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -1074,7 +1069,7 @@ const GameInputModels = [
         "generic",
         "1345-1030-USB  Joystick ",
         "macOS",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-2),
             /* d_down */  new SchemaAxisButton(2),
             /* d_left */  new SchemaAxisButton(-1),
@@ -1102,7 +1097,7 @@ const GameInputModels = [
         "joystick",
         "Innovative Produtcs VR Pro 2000 USB Joystick (Vendor: 04b4 Product: 2774)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  13,
             /* d_down */  14,
             /* d_left */  15,
@@ -1130,7 +1125,7 @@ const GameInputModels = [
         "joystick",
         "04b4-2774-Innovative Produtcs VR Pro 2000 USB Joystick",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  13,
             /* d_down */  14,
             /* d_left */  15,
@@ -1158,7 +1153,7 @@ const GameInputModels = [
         "nintendo-generic",
         "20d6-a711-Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-6),
             /* d_down */  new SchemaAxisButton(6),
             /* d_left */  new SchemaAxisButton(-5),
@@ -1187,7 +1182,7 @@ const GameInputModels = [
         "nintendo-generic",
         "Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller (Vendor: 20d6 Product: a711)",
         "Linux",
-        new GamepadAPI(undefined,
+        new GamepadAPI(
             /* d_up */  new SchemaAxisButton(-6),
             /* d_down */  new SchemaAxisButton(6),
             /* d_left */  new SchemaAxisButton(-5),
