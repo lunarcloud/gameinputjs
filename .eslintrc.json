@@ -1,0 +1,16 @@
+{
+    "env": {
+        "browser": true,
+        "es2023": true
+    },
+    "extends": ["eslint-config-standard", "plugin:editorconfig/all", "plugin:jsdoc/recommended" ],
+    "plugins": [ "editorconfig", "jsdoc" ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "max-len": 0,
+        "curly": 0
+    }
+}
