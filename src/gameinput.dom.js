@@ -32,8 +32,6 @@ class GameInputDom {
 
         gi.onReshufflePlayers(function()
         {
-            "use strict";
-
             /* Remove Old Stuff */
             for (var i = 0; i < gi.Players.length; i++)
             {
