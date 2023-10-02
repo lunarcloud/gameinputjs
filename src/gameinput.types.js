@@ -101,28 +101,6 @@ export class GameInputTheme {
  * @typedef {'nintendo-generic'|'xbox360'|'xboxone'|'dc'|'ds3'|'ds4'|'ds5'|'joystick'|'generic'} GamepadIconName
  */
 
-/**
- * Game Input Model Definition
- */
-export class GameInputModel {
-
-    /**
-     * Define a GameInputModel.
-     * @param {GameInputSchemaType} type
-     * @param {GamepadIconName} iconName
-     * @param {string} id
-     * @param {OSName} os
-     * @param {GenericSchema} schema
-     */
-    constructor (type, iconName, id, os, schema)
-    {
-        this.type = type;
-        this.iconName = iconName;
-        this.id = id;
-        this.os = os;
-        this.schema = schema;
-    }
-}
 
 /**
  * @typedef {number|SchemaButton|SchemaAxisButton} SchemaButtonDef
@@ -196,21 +174,6 @@ export class GenericSchema {
 
 export class GamepadAPI extends GenericSchema {
 
-    static Stardard = new GamepadAPI(
-        13, 14, 15, 16,
-        10,
-        1,2,3,4,
-        new SchemaAxisButton(-2),
-        new SchemaAxisButton(2),
-        new SchemaAxisButton(-1),
-        new SchemaAxisButton(1),
-        new SchemaAxisButton(-4),
-        new SchemaAxisButton(4),
-        new SchemaAxisButton(-3),
-        new SchemaAxisButton(3),
-        5,6,7,8
-    )
-
     /**
      *  Constructor
      * @param {string|undefined} name Name of Schema
@@ -256,6 +219,26 @@ export class GamepadAPI extends GenericSchema {
             l_button, r_button, l_trigger, r_trigger);
     }
 }
+
+/**
+ * Standard mapping
+ * @type {GamepadAPI}
+ */
+export const StardardGamepadMapping = new GamepadAPI(
+    13, 14, 15, 16,
+    10,
+    1,2,3,4,
+    new SchemaAxisButton(-2),
+    new SchemaAxisButton(2),
+    new SchemaAxisButton(-1),
+    new SchemaAxisButton(1),
+    new SchemaAxisButton(-4),
+    new SchemaAxisButton(4),
+    new SchemaAxisButton(-3),
+    new SchemaAxisButton(3),
+    5,6,7,8
+)
+
 
 export class GameInputSchemaType {
 
@@ -335,9 +318,30 @@ export class GameInputSchemaType {
             if (i in this.schemaNames) this.schemaNames[i] = themeSchemaNames[i];
         }
     }
+}
 
-};
+/**
+ * Game Input Model Definition
+ */
+export class GameInputModel {
 
+    /**
+     * Define a GameInputModel.
+     * @param {GameInputSchemaType} type
+     * @param {GamepadIconName} iconName
+     * @param {string} id
+     * @param {OSName} os
+     * @param {GenericSchema} schema
+     */
+    constructor (type, iconName, id, os, schema)
+    {
+        this.type = type;
+        this.iconName = iconName;
+        this.id = id;
+        this.os = os;
+        this.schema = schema ?? StardardGamepadMapping;
+    }
+}
 
 /**
  * @preserve

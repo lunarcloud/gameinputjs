@@ -7,7 +7,8 @@
         "eslint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "eslint": "npx eslint --ignore-path .gitignore --ext .js .",
         "build": "npx webpack --config webpack.config.js --mode development",
-        "build-prod": "npx webpack --config webpack.config.js --mode production"
+        "build-prod": "npx webpack --config webpack.config.js --mode production",
+        "serve": "npx serve"
     },
     "devDependencies": {
         "eslint": "^8.49.0",
@@ -17,6 +18,7 @@
         "eslint-plugin-jsdoc": "^46.8.1",
         "eslint-plugin-n": "^16.1.0",
         "eslint-plugin-promise": "^6.1.1",
+        "serve": "^14.2.1",
         "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4"
     },

@@ -3,8 +3,8 @@
  * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
-import { Vector2, GamepadAPI, GameInputModel, GameInputSchemaType, SchemaAxisButton } from './gameinput.types'
-import { GameInputModels } from './gameinput.models'
+import { Vector2, GamepadAPI, GameInputModel, GameInputSchemaType, SchemaAxisButton } from './gameinput.types.js'
+import { GameInputModels } from './gameinput.models.js'
 
 
 const osStrings = [
@@ -280,7 +280,7 @@ class GameInput {
         r_trigger   :   "r_trigger"
     }
 
-    Models = {
+    static Models = {
         UnknownStandardMapping: new GameInputModel(
             GameInputSchemaType.Hedgehog,
             "generic",
@@ -511,15 +511,15 @@ class GameInput {
                 if (this.Connection.Gamepads[i] instanceof Gamepad)
                 {
                     //Translate into Type -  Players order is gamepad order
-                    for (let j = 0; j < this.Models.Specific.length; j++)
+                    for (let j = 0; j < GameInput.Models.Specific.length; j++)
                     {
-                        if ( GameInput.toASCII(this.Models.Specific[j].id) === GameInput.toASCII(this.Connection.Gamepads[i].id)
-                            && this.os === this.Models.Specific[j].os )
+                        if ( GameInput.toASCII(GameInput.Models.Specific[j].id) === GameInput.toASCII(this.Connection.Gamepads[i].id)
+                            && this.os === GameInput.Models.Specific[j].os )
                         {
-                            this.Players[i].type = this.Models.Specific[j].type;
-                            this.Players[i].model = this.Models.Specific[j];
-                            this.Players[i].schema = this.Models.Specific[j].schema;
-                            this.Players[i].theme = this.Models.Specific[j].type.theme;
+                            this.Players[i].type = GameInput.Models.Specific[j].type;
+                            this.Players[i].model = GameInput.Models.Specific[j];
+                            this.Players[i].schema = GameInput.Models.Specific[j].schema;
+                            this.Players[i].theme = GameInput.Models.Specific[j].type.theme;
 
                             if (this.debug) {
                                 console.debug("Gamepad of type " +  this.Players[i].type.name + " configured");
@@ -530,14 +530,14 @@ class GameInput {
 
                     if (typeof(this.Players[i].model) === "undefined")
                     {
-                        for (let j = 0; j < this.Models.Generic.length; j++)
+                        for (let j = 0; j < GameInput.Models.Generic.length; j++)
                         {
-                            if (this.Connection.Gamepads[i].id.match(this.Models.Generic[j].id) !== null)
+                            if (this.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null)
                             {
-                                this.Players[i].type = this.Models.Generic[j].type;
-                                this.Players[i].model = this.Models.Generic[j];
-                                this.Players[i].schema = this.Models.Generic[j].schema;
-                                this.Players[i].theme = this.Models.Generic[j].type.theme;
+                                this.Players[i].type = GameInput.Models.Generic[j].type;
+                                this.Players[i].model = GameInput.Models.Generic[j];
+                                this.Players[i].schema = GameInput.Models.Generic[j].schema;
+                                this.Players[i].theme = GameInput.Models.Generic[j].type.theme;
                                 if (this.debug) {
                                     console.debug("Gamepad of type " +  this.Players[i].type.name + " configured");
                                 }
@@ -554,10 +554,10 @@ class GameInput {
                                 }
                             }
 
-                            this.Players[i].type = this.Models.UnknownStandardMapping.type;
-                            this.Players[i].model = this.Models.UnknownStandardMapping;
-                            this.Players[i].schema = this.Models.UnknownStandardMapping.schema;
-                            this.Players[i].theme = this.Models.UnknownStandardMapping.theme;
+                            this.Players[i].type = GameInput.Models.UnknownStandardMapping.type;
+                            this.Players[i].model = GameInput.Models.UnknownStandardMapping;
+                            this.Players[i].schema = GameInput.Models.UnknownStandardMapping.schema;
+                            this.Players[i].theme = GameInput.Models.UnknownStandardMapping.theme;
 
                             if (this.debug) {
                                 console.debug("Gamepad of type " +  this.Players[i].type.name + " configured");

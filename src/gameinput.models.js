@@ -3,7 +3,7 @@
  * @source: https://raw.githubusercontent.com/lunarcloud/gameinputjs/master/gameinput.models.js
  * @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt MIT (Expat) License
  */
-import { GameInputModel, GamepadAPI, GameInputSchemaType, SchemaAxisButton } from './gameinput.types'
+import { GameInputModel, GamepadAPI, GameInputSchemaType, SchemaAxisButton } from './gameinput.types.js'
 
 const frenchVRStickDeadzone = 0.6;
 const frenchVRStickThreshold = 0.8;
@@ -42,8 +42,7 @@ const GameInputModels = [
         GameInputSchemaType.Hedgehog,
         "xbox360",
         "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
-        "Windows",
-        GamepadAPI.Standard
+        "Windows"
     ),
     new GameInputModel(
         GameInputSchemaType.Plumber,
@@ -131,15 +130,13 @@ const GameInputModels = [
         GameInputSchemaType.Ragdoll4,
         "ds4",
         "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
-        "Windows",
-        GamepadAPI.Standard
+        "Windows"
     ),
     new GameInputModel(
         GameInputSchemaType.Ragdoll4,
         "ds4",
         "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
-        "macOS",
-        GamepadAPI.Standard
+        "macOS"
     ),
     new GameInputModel(
         GameInputSchemaType.Ragdoll4,
@@ -164,8 +161,7 @@ const GameInputModels = [
         GameInputSchemaType.Hedgehog,
         "xbox360",
         "©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)",
-        "Linux",
-        GamepadAPI.Standard
+        "Linux"
     ),
     new GameInputModel(
         GameInputSchemaType.Hedgehog,
@@ -285,8 +281,7 @@ const GameInputModels = [
         GameInputSchemaType.Ragdoll,
         "ds3",
         "Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)",
-        "Linux",
-        GamepadAPI.Standard
+        "Linux"
     ),
     new GameInputModel(
         GameInputSchemaType.Ragdoll,
@@ -311,8 +306,7 @@ const GameInputModels = [
         GameInputSchemaType.Ragdoll4,
         "ds4",
         "Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)",
-        "Linux",
-        GamepadAPI.Standard
+        "Linux"
     ),
     new GameInputModel(
         GameInputSchemaType.Ragdoll4,
