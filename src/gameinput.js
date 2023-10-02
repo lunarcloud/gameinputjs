@@ -15,7 +15,7 @@ import { DetectedOS, DetectedBrowser } from './os-detect.js'
 export default class GameInput {
     /**
      * Current OS.
-     * @type {OSName}
+     * @type {import('./os-detect.js').OSName}
      */
     static os = DetectedOS
 
@@ -214,7 +214,7 @@ export default class GameInput {
      */
     onReshufflePlayers (action) {
         if (typeof (action) !== 'function') 
-            throw 'Action must be a function'
+            throw new Error('Action must be a function')
         this.reshufflePlayersActions.push(action)
     }
 
@@ -224,7 +224,7 @@ export default class GameInput {
      */
     onButtonDown (action) {
         if (typeof (action) !== 'function') 
-            throw 'Action must be a function'
+            throw new Error('Action must be a function')
         this.buttonDownActions.push(action)
     }
 
@@ -234,34 +234,30 @@ export default class GameInput {
      */
     onButtonUp (action) {
         if (typeof (action) !== 'function') 
-            throw 'Action must be a function'
+            throw new Error('Action must be a function')
         this.buttonUpActions.push(action)
     }
 
     /**
-     * Add an action to "button down" events for a particular player.
-     * @param {number} player   Player to add action for.
-     * @param {Function} action Action to add.
-     * @param schemaName
+     * Activate "button down" events for a particular player.
+     * @param {number} player       Player to add action for.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName   Button Name
      */
     buttonDown (player, schemaName) {
-        for (const action in this.buttonDownActions) {
+        for (const action in this.buttonDownActions) 
             if (typeof (this.buttonDownActions[action]) === 'function')
                 this.buttonDownActions[action](player, schemaName)
-        }
     }
 
     /**
-     * Add an action to "button up" events for a particular player.
-     * @param {number} player   Player to add action for.
-     * @param {Function} action Action to add.
-     * @param schemaName
+     * Activate "button up" events for a particular player.
+     * @param {number} player       Player to add action for.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName   Button Name
      */
     buttonUp (player, schemaName) {
-        for (const action in this.buttonUpActions) {
+        for (const action in this.buttonUpActions) 
             if (typeof (this.buttonUpActions[action]) === 'function')
                 this.buttonUpActions[action](player, schemaName)
-        }
     }
 
     /**
@@ -386,10 +382,7 @@ export default class GameInput {
     initialGamePadSetup () {
         // clear gamepad information
         for (let i = 0; i < this.Players.length; i++) {
-            this.Players[i].type = undefined
-            this.Players[i].model = undefined
-            this.Players[i].schema = undefined
-            this.Players[i].theme = undefined
+            this.Players[i].setModel(undefined)
         }
 
         if (GameInput.canUseGamepadAPI()) {
@@ -408,10 +401,7 @@ export default class GameInput {
                     for (let j = 0; j < GameInput.Models.Specific.length; j++) {
                         if (GameInput.toASCII(GameInput.Models.Specific[j].id) === GameInput.toASCII(this.Connection.Gamepads[i].id) &&
                             this.os === GameInput.Models.Specific[j].os) {
-                            this.Players[i].type = GameInput.Models.Specific[j].type
-                            this.Players[i].model = GameInput.Models.Specific[j]
-                            this.Players[i].schema = GameInput.Models.Specific[j].schema
-                            this.Players[i].theme = GameInput.Models.Specific[j].type.theme
+                            this.Players[i].setModel(GameInput.Models.Specific[j])
 
                             if (this.debug) {
                                 console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
@@ -423,10 +413,7 @@ export default class GameInput {
                     if (typeof (this.Players[i].model) === 'undefined') {
                         for (let j = 0; j < GameInput.Models.Generic.length; j++) {
                             if (this.Connection.Gamepads[i].id.match(GameInput.Models.Generic[j].id) !== null) {
-                                this.Players[i].type = GameInput.Models.Generic[j].type
-                                this.Players[i].model = GameInput.Models.Generic[j]
-                                this.Players[i].schema = GameInput.Models.Generic[j].schema
-                                this.Players[i].theme = GameInput.Models.Generic[j].type.theme
+                                this.Players[i].setModel(GameInput.Models.Generic[j])
                                 if (this.debug) {
                                     console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
                                 }
@@ -442,10 +429,7 @@ export default class GameInput {
                                 }
                             }
 
-                            this.Players[i].type = GameInput.Models.UnknownStandardMapping.type
-                            this.Players[i].model = GameInput.Models.UnknownStandardMapping
-                            this.Players[i].schema = GameInput.Models.UnknownStandardMapping.schema
-                            this.Players[i].theme = GameInput.Models.UnknownStandardMapping.theme
+                            this.Players[i].setModel(GameInput.Models.UnknownStandardMapping)
 
                             if (this.debug) {
                                 console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')

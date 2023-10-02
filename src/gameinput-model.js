@@ -1,3 +1,5 @@
+import GameInputSchema from './gameinput-schema.js'
+import GamepadAPI from './gamepad-api.js'
 import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
 
 /**
@@ -10,11 +12,11 @@ import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
 export default class GameInputModel {
     /**
      * Define a GameInputModel.
-     * @param {GameInputSchema} type
-     * @param {GamepadIconName} iconName
-     * @param {string} id
-     * @param {import('./os-detect.js').OSName} os
-     * @param {GamepadAPI} schema
+     * @param {GameInputSchema} type                    type of the schema
+     * @param {GamepadIconName} iconName                icon to use
+     * @param {string} id                               device id text
+     * @param {import('./os-detect.js').OSName?} os     for which OS ?
+     * @param {GamepadAPI} schema                       gamepad api schema
      */
     constructor (type, iconName, id, os, schema) {
         this.type = type

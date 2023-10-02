@@ -1,10 +1,15 @@
+import GameInputModel from './gameinput-model.js'
+import GameInputSchema from './gameinput-schema.js'
+import GamepadAPI from './gamepad-api.js'
 import { GamepadSchemaNames } from './gamepad-schema-names.js'
+import Vector2 from './vector2.js'
 
 /**
- *
- * @param val
- * @param min
- * @param max
+ * Normalize a value.
+ * @param {number} val  value
+ * @param {number} min  minimum
+ * @param {number} max  maximum
+ * @returns {number}    normalized value
  */
 function normalize (val, min, max) {
     return (val - min) / (max - min)
@@ -14,30 +19,68 @@ function normalize (val, min, max) {
  * Game Input Player.
  */
 export default class GameInputPlayer {
+    /**
+     * @type {import('./gameinput.js').GameInput}
+     */
     #gameInput
+
+    /**
+     * @type {GameInputSchema?}
+     */
+    type = undefined
+
+    /**
+     * @type {GameInputModel?}
+     */
+    model = undefined
+
+    /**
+     * @type {GamepadAPI?}
+     */
+    schema = undefined
+
+    /**
+     * @type {GameInputSchema?}
+     */
+    theme = undefined
+
+    /**
+     * @type {object?}
+     */
+    state = undefined
+
+    /**
+     * @type {object?}
+     */
+    analog = undefined
+
+    /**
+     * @type {{type: GameInputSchema?, model: GameInputModel?, schema: GamepadAPI?, state: object?, analog: object?}}
+     */
+    previous = {
+        type: undefined,
+        model: undefined,
+        schema: undefined,
+        state: undefined,
+        analog: undefined
+    }
+
+    /**
+     * Actions to perform on button down.
+     * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
+     */
+    buttonDownActions = {}
+    
+    /**
+     * Actions to perform on button up.
+     * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
+     */
+    buttonUpActions = {}
 
     constructor (gameInput, number) {
         this.#gameInput = gameInput
         this.number = number
         this.index = number - 1
-
-        this.type
-        this.model
-        this.schema
-        this.theme
-        this.state
-        this.analog
-
-        this.previous = {
-            type: undefined,
-            model: undefined,
-            schema: undefined,
-            state: undefined,
-            analog: undefined
-        }
-
-        this.buttonDownActions = {}
-        this.buttonUpActions = {}
 
         for (const i in GamepadSchemaNames) {
             this.buttonDownActions[GamepadSchemaNames[i]] = []
@@ -45,18 +88,42 @@ export default class GameInputPlayer {
         }
     }
 
+    /**
+     * Set player to a specific model.
+     * @param {GameInputModel?} model Model to set
+     */
+    setModel (model) {
+        this.type = model?.type
+        this.model = model
+        this.schema = model?.schema
+        this.theme = model?.theme
+    }
+
+    /**
+     * Activate 'Button down' actions for this player.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     */
     buttonDown (schemaName) {
         this.#gameInput.buttonDown(this.index, schemaName)
         for (const action in this.buttonDownActions[schemaName])
             this.buttonDownActions[schemaName][action]()
     }
 
+    /**
+     * Activate 'Button up' actions for this player.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     */
     buttonUp (schemaName) {
         this.#gameInput.buttonUp(this.index, schemaName)
         for (const action in this.buttonUpActions[schemaName])
             this.buttonUpActions[schemaName][action]()
     }
 
+    /**
+     * Add an action to "button down" events.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {Function} action Action to add.
+     */
     onButtonDown (schemaName, action) {
         if (schemaName in GamepadSchemaNames === false) throw 'Must be SchemaNames'
         if (typeof (action) !== 'function') throw 'Action must be a function'
@@ -64,6 +131,11 @@ export default class GameInputPlayer {
         this.buttonDownActions[schemaName].push(action)
     }
 
+    /**
+     * Add an action to "button up" events.
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {Function} action Action to add.
+     */
     onButtonUp (schemaName, action) {
         if (schemaName in GamepadSchemaNames === false) throw 'Must be SchemaNames'
         if (typeof (action) !== 'function') throw 'Action must be a function'
@@ -71,8 +143,14 @@ export default class GameInputPlayer {
         this.buttonUpActions[schemaName].push(action)
     }
 
+    /**
+     * Get vector for stick
+     * @param {'l'|'r'} stick Stick side
+     * @returns {Vector2} stick vector
+     */
     getStickVector (stick) {
-        if (stick != 'l' && stick != 'r') throw 'Must be l or r'
+        if (stick !== 'l' && stick !== 'r')
+            throw new Error('Must be l or r')
 
         let x = 0
         let y = 0
@@ -120,6 +198,11 @@ export default class GameInputPlayer {
         return new Vector2(x, y)
     }
 
+    /**
+     * Get normalized vector for stick
+     * @param {'l'|'r'} stick Stick side
+     * @returns {Vector2} normalized stick vector
+     */
     getNormalizedStickVector (stick) {
         const stickInput = this.getStickVector(stick)
         let radialDeadZone = 0
@@ -139,8 +222,15 @@ export default class GameInputPlayer {
         }
     }
 
+    /**
+     * Get normalized value for trigger
+     * @param {'l'|'r'} stick Trigger side
+     * @param trigger
+     * @returns {number} normalized trigger value
+     */
     getNormalizedTriggerValue (trigger) {
-        if (trigger != 'l' && trigger != 'r') throw 'Must be l or r'
+        if (trigger !== 'l' && trigger !== 'r')
+            throw new Error('Must be l or r')
         trigger += '_trigger'
 
         if (typeof (this.schema[trigger]) === 'number') {
@@ -155,7 +245,7 @@ export default class GameInputPlayer {
     }
 
     /**
-     * @description    Gets the button text
+     * Gets the button text.
      * @param   {string}    schemaName      name of the button or axisValue
      * @param   {boolean}   symbolsAsWords  whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      * @returns {string}    button text

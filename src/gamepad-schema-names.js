@@ -1,3 +1,11 @@
+/**
+ * @typedef {'d_up'|'d_down'|'d_left'|'d_right'|'menu'|'button0'|'button1'|'button2'|'button3'|'l_up'|'l_down'|'l_left'|'l_right'|'r_up'|'r_down'|'r_left'|'r_right'|'l_button'|'r_button'|'l_trigger'|'r_trigger'} GamepadSchemaName
+ */
+
+/**
+ * Schema Names
+ * @type {Object.<GamepadSchemaName,string>}
+ */
 const GamepadSchemaNames = {
     d_up: 'd_up',
     d_down: 'd_down',

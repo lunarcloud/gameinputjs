@@ -1,32 +1,31 @@
 /**
- * @typedef {number|SchemaAxisButton} SchemaButtonDef
+ * @typedef {number|import('./schema-axis-button.js').SchemaAxisButton} SchemaButtonDef
  */
 
 export default class GamepadAPI {
     /**
      *  Constructor
-     * @param {string|undefined} name Name of Schema
-     * @param {SchemaButtonDef} d_up
-     * @param {SchemaButtonDef} d_down
-     * @param {SchemaButtonDef} d_left
-     * @param {SchemaButtonDef} d_right
-     * @param {SchemaButtonDef} menu
-     * @param {SchemaButtonDef} button0
-     * @param {SchemaButtonDef} button1
-     * @param {SchemaButtonDef} button2
-     * @param {SchemaButtonDef} button3
-     * @param {SchemaButtonDef} l_up
-     * @param {SchemaButtonDef} l_down
-     * @param {SchemaButtonDef} l_left
-     * @param {SchemaButtonDef} l_right
-     * @param {SchemaButtonDef} r_up
-     * @param {SchemaButtonDef} r_down
-     * @param {SchemaButtonDef} r_left
-     * @param {SchemaButtonDef} r_right
-     * @param {SchemaButtonDef} l_button
-     * @param {SchemaButtonDef} r_button
-     * @param {SchemaButtonDef} l_trigger
-     * @param {SchemaButtonDef} r_trigger
+     * @param {SchemaButtonDef} d_up        Dpad Up Definition
+     * @param {SchemaButtonDef} d_down      Dpad Down Definition
+     * @param {SchemaButtonDef} d_left      Dpad Left Definition
+     * @param {SchemaButtonDef} d_right     Dpad Right Definition
+     * @param {SchemaButtonDef} menu        Menu Button
+     * @param {SchemaButtonDef} button0     Face Button 0 Definition
+     * @param {SchemaButtonDef} button1     Face Button 1 Definition
+     * @param {SchemaButtonDef} button2     Face Button 2 Definition
+     * @param {SchemaButtonDef} button3     Face Button 3 Definition
+     * @param {SchemaButtonDef} l_up        Left Stick Up Definition
+     * @param {SchemaButtonDef} l_down      Left Stick Down Definition
+     * @param {SchemaButtonDef} l_left      Left Stick Left Definition
+     * @param {SchemaButtonDef} l_right     Left Stick Right Definition
+     * @param {SchemaButtonDef} r_up        Right Stick Up Definition
+     * @param {SchemaButtonDef} r_down      Right Stick Down Definition
+     * @param {SchemaButtonDef} r_left      Right Stick Left Definition
+     * @param {SchemaButtonDef} r_right     Right Stick Right Definition
+     * @param {SchemaButtonDef} l_button    Left Shoulder Button Definition
+     * @param {SchemaButtonDef} r_button    Right Shoulder Button Definition
+     * @param {SchemaButtonDef} l_trigger   Left Trigger Definition
+     * @param {SchemaButtonDef} r_trigger   Right Trigger Definition
      */
     constructor (
         d_up, d_down, d_left, d_right,
@@ -59,12 +58,12 @@ export default class GamepadAPI {
 
     /**
      * Look up def by button name.
-     * @param {string} key button name.
-     * @returns SchemaButtonDef
+     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} key button name.
+     * @returns {SchemaButtonDef} button definition
      */
     lookup (key) {
         for (const i in this)
-            if (this[i] == key) 
+            if (this[i] === key) 
                 return i
     }
 }
