@@ -40,11 +40,7 @@
     <div id="player-template" class="row template player">
       <div class="one column"><h2 class="player-number">1</div>
       <div class="two columns">
-        <img class="gameinput-icon gameinput-icon-player-template" src="" style="">
-        <select class="keyboard-layout" onchange="changeKeyboardLayout(this);">
-            <option selected>QWERTY</option>
-            <option>Dvorak</option>
-        </select>
+        <img class="gameinput-icon gameinput-icon-player-template" >
       </div>
       <div class="nine columns">
         <table>
@@ -125,16 +121,15 @@
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-<script src="gameinput.js"></script>
-<script src="gameinput.models.js"></script>
-<script src="gameinput.dom.js"></script>
-<script>
-    "use strict";
+<script type="module">
+    import { Vector2, GamepadAPI, GameInputModel, GameInputSchemaType, SchemaAxisButton } from './gameinput.types'
+    import { GameInputDom, GameInput } from './gameinput.dom'
 
+    let gi = new GameInput();
     gi.debug = true;
-    gi.handleKeyboard = true;
-    gi.onReshufflePlayers(setupPlayers);
-    gi.initialGamePadSetup();
+    GameInputDom.setupDom(gi);
+    gi.onReshufflePlayers(() => setupPlayers());
+    setTimeout(()=> gi.initialGamePadSetup(), 10); // TODO?
 
     function setupPlayers()
     {
@@ -154,23 +149,13 @@
             var playerNumberReferences = row.querySelectorAll(".player-number");
             for (var k = 0; k < playerNumberReferences.length; k++) playerNumberReferences[k].textContent = (i+1);
 
-            var keyboardLayoutReferences = row.querySelectorAll(".keyboard-layout");
-            for (var k = 0; k < keyboardLayoutReferences.length; k++)
-            {
-                if (gi.getPlayer(i).type === gi.Type.Keyboard) {
-                    keyboardLayoutReferences[k].value = gi.getPlayer(i).schema === gi.Schema.KeyboardAPI.Standard.Dvorak ? "Dvorak" : "QWERTY";
-                } else {
-                    keyboardLayoutReferences[k].parentElement.removeChild(keyboardLayoutReferences[k]);
-                }
-            }
-
             var iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
             for (var k = 0; k < iconPlayerReferences.length; k++) {
                 iconPlayerReferences[k].classList.add("gameinput-icon-player" + i);
                 iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
             }
 
-            for (var j in gi.Schema.Names)
+            for (var j in GameInput.SchemaNames)
             {
                 var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
                 for (var k = 0; k < templateUpReferences.length; k++) {
@@ -193,19 +178,19 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                if (typeof(gi.getPlayer(i).schema[gi.Schema.Names[j]]) === "undefined")
+                if (typeof(gi.getPlayer(i).schema[GameInput.SchemaNames[j]]) === "undefined")
                 {
-                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + gi.Schema.Names[j]);
+                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.SchemaNames[j]);
                     for (var k = 0; k < unmappedReferences.length; k++) {
                         unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
                     }
                 }
                 else
                 {
-                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + gi.Schema.Names[j]);
+                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInput.SchemaNames[j]);
                     for (var k = 0; k < templateReferences.length; k++) {
-                        templateReferences[k].classList.add("gameinput-player" + i + "-" + gi.Schema.Names[j]);
-                        templateReferences[k].classList.remove("gameinput-player-template-" + gi.Schema.Names[j]);
+                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInput.SchemaNames[j]);
+                        templateReferences[k].classList.remove("gameinput-player-template-" + GameInput.SchemaNames[j]);
                     }
                 }
             }
@@ -213,12 +198,7 @@
         }
     }
 
-    function changeKeyboardLayout() {
-        if ( document.querySelector(".keyboard-layout").value === "Dvorak") gi.Type.Keyboard.setDvorak();
-        else gi.Type.Keyboard.setQWERTY();
-    }
-
-    function findAncestor (el, cls) {
+    globalThis.findAncestor = function(el, cls) {
         if (typeof(el.closest)) return el.closest("." + cls);
 
         while ((el = el.parentElement) && !el.classList.contains(cls));

@@ -3,3 +3,5 @@
 .brackets.json
 *~
 node_modules
+dist
+.vs
