@@ -99,6 +99,23 @@ class GameInputPlayer {
     }
 
     /**
+     * Get the player's current gamepad.
+     * @returns {Gamepad} the gamepad.
+     */
+    getGamepad () {
+        return this.#gameInput.getGamepad(this.index)
+    }
+
+    /**
+     * Rumble the player's gamepad.
+     * @param {{ duration: number, strongMagnitude: number, weakMagnitude: number }} gamepadEffectParameters parameters for the rumble
+     * @returns {Promise<string>} result promise
+     */
+    rumble (gamepadEffectParameters = { duration: 300, strongMagnitude: 0.5, weakMagnitude: 0.5 }) {
+        return this.getGamepad()?.vibrationActuator?.playEffect('dual-rumble', gamepadEffectParameters)
+    }
+
+    /**
      * Activate 'Button down' actions for this player.
      * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
      */

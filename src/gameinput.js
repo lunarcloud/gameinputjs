@@ -111,7 +111,7 @@ class GameInput {
      * Get if the browser supports the Gamepad API
      * @returns {boolean} if the browser supports the Gamepad API
      */
-    static canUseGamepadMapping () {
+    static canUseGamepadAPI () {
         return 'getGamepads' in navigator
     }
 
@@ -184,7 +184,7 @@ class GameInput {
         this.startUpdateLoop()
 
         // Start watching for gamepads joining and leaving
-        if (GameInput.canUseGamepadMapping()) {
+        if (GameInput.canUseGamepadAPI()) {
             if (this.debug)
                 console.debug('Gamepad connection loop beginning')
             this.connectionWatchLoop()
@@ -260,11 +260,24 @@ class GameInput {
 
     /**
      * Get player for gamepad number.
-     * @param {0|1|2|3} index gamepad index
+     * @param {number} index gamepad index
      * @returns {GameInputPlayer} Player
      */
     getPlayer (index) {
+        if (index < 0 || index > 3)
+            throw new Error('Index out of the 0-3 range!')
         return this.Players[this.Connection.GamePadMapping[index]]
+    }
+
+    /**
+     * Get gamepad for a player.
+     * @param {number} player player index
+     * @returns {Gamepad} Player's gamepad
+     */
+    getGamepad (player) {
+        if (player < 0 || player > 3)
+            throw new Error('Index out of the 0-3 range!')
+        return this.Connection.Gamepads[this.Connection.GamePadMapping[player]]
     }
 
     /**
@@ -297,7 +310,7 @@ class GameInput {
      * Gamepad state update.
      */
     update () {
-        if (!GameInput.canUseGamepadMapping())
+        if (!GameInput.canUseGamepadAPI())
             return
 
         this.Connection.Gamepads = navigator.getGamepads()
@@ -385,7 +398,7 @@ class GameInput {
             this.Players[i].setModel(undefined)
         }
 
-        if (GameInput.canUseGamepadMapping()) {
+        if (GameInput.canUseGamepadAPI()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
             if (this.Connection.Gamepads.filter(Boolean).length === 0) {
@@ -465,8 +478,3 @@ export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
     GameInputPlayer, GamepadMappingKeys, Vector2, DetectedOS, DetectedBrowser
 }
-
-if (module?.exports)
-    module.exports = {
-        GameInput
-    }
