@@ -18,16 +18,21 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 18.x
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 18.x
+        cache: 'npm'
 
     - name: Build
       run: |
         npm ci
-        npx webpack --config webpack.config.js --mode production
+        npm run build-prod
 
-    - uses: actions/upload-artifact@v3
+    - name: Package
+      uses: actions/upload-artifact@v3
       with:
-        path: dist/gameinput.js
+        path: |
+          LICENSE
+          dist
+          docs

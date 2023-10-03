@@ -11,6 +11,7 @@
     },
     "rules": {
         "max-len": 0,
-        "curly": 0
+        "curly": 0,
+        "jsdoc/check-types": 0
     }
 }

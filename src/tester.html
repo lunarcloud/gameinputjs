@@ -129,7 +129,7 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script type="module">
-    import { GameInput, GamepadSchemaNames } from './gameinput.js'
+    import { GameInput, GamepadMappingKeys } from './gameinput.js'
 
     globalThis.gi = new GameInput();
     gi.debug = true;
@@ -218,7 +218,7 @@
                 iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
             }
 
-            for (var j in GamepadSchemaNames)
+            for (var j in GamepadMappingKeys)
             {
                 var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
                 for (var k = 0; k < templateUpReferences.length; k++) {
@@ -241,19 +241,19 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                if (typeof(gi.getPlayer(i).schema[GamepadSchemaNames[j]]) === "undefined")
+                if (typeof(gi.getPlayer(i).schema[GamepadMappingKeys[j]]) === "undefined")
                 {
-                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadSchemaNames[j]);
+                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadMappingKeys[j]);
                     for (var k = 0; k < unmappedReferences.length; k++) {
                         unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
                     }
                 }
                 else
                 {
-                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadSchemaNames[j]);
+                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadMappingKeys[j]);
                     for (var k = 0; k < templateReferences.length; k++) {
-                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GamepadSchemaNames[j]);
-                        templateReferences[k].classList.remove("gameinput-player-template-" + GamepadSchemaNames[j]);
+                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GamepadMappingKeys[j]);
+                        templateReferences[k].classList.remove("gameinput-player-template-" + GamepadMappingKeys[j]);
                     }
                 }
             }

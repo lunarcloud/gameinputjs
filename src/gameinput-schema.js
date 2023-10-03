@@ -1,7 +1,7 @@
 /**
  * Defines what each button is displayed as, what should be on the physical device for each button.
  */
-export default class GameInputSchema {
+class GameInputSchema {
     /**
      * The default values that can be overridden.
      */
