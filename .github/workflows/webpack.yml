@@ -33,3 +33,7 @@ jobs:
         path: |
           dist/gameinput.js
           LICENSE
+          docs
+          src/css
+          src/img
+          src/tester.html
