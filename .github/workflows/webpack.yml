@@ -30,4 +30,6 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        path: dist/gameinput.js
+        path: |
+          dist/gameinput.js
+          LICENSE
