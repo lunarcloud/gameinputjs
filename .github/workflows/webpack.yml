@@ -27,7 +27,7 @@ jobs:
     - name: Build
       run: |
         npm ci
-        npm run build
+        npm run build-prod
 
     - name: Package
       uses: actions/upload-artifact@v3
