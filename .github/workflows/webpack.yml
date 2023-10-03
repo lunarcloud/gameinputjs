@@ -1,12 +1,11 @@
 name: NodeJS with Webpack
 
 on:
-  workflow_dispatch:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
   release:
     types: [ "published" ]
+  workflow_dispatch:
     
 jobs:
   build:
@@ -28,3 +27,7 @@ jobs:
       run: |
         npm ci
         npx webpack --config webpack.config.js --mode production
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: dist/gameinput.js
