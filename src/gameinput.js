@@ -1,68 +1,64 @@
-import { GamepadAPI } from './gamepad-api.js'
+import { GamepadMapping } from './gamepad-mapping.js'
 import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
-import { SchemaAxisButton } from './schema-axis-button.js'
-import { GameInputModels } from './gameinput.models.js'
+import { AxisAsButton } from './axis-as-button.js'
+import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GamepadSchemaNames } from './gamepad-schema-names.js'
+import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS, DetectedBrowser } from './os-detect.js'
+import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+/**
+ * @module GameInput
+ */
 
 /**
  * Game Input System
+ * @class GameInput
  * @description    System for using a gamepad control scheme for games
  */
-export default class GameInput {
+class GameInput {
     /**
      * Gamepad Models.
      */
     static Models = {
         UnknownStandardMapping: new GameInputModel(
             GameInputSchema.Hedgehog,
-            'generic',
-            undefined,
-            undefined,
-            GamepadAPI.Stardard),
+            'generic'),
 
         Generic: [
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'xbox360',
-                'XInput',
-                undefined,
-                GamepadAPI.Stardard
+                'XInput'
             ),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'xbox360',
-                'xinput',
-                undefined,
-                GamepadAPI.Stardard
+                'xinput'
             ),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'xbox360',
-                'XBox 360',
-                undefined,
-                GamepadAPI.Stardard
+                'XBox 360'
             ),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'generic',
                 'Logitech Rumblepad 2',
                 undefined,
-                new GamepadAPI(
+                new GamepadMapping(
                     12, 13, 14, 15,
                     10,
                     2, 3, 1, 4,
-                    new SchemaAxisButton(-2),
-                    new SchemaAxisButton(2),
-                    new SchemaAxisButton(-1),
-                    new SchemaAxisButton(1),
-                    new SchemaAxisButton(-4),
-                    new SchemaAxisButton(4),
-                    new SchemaAxisButton(-3),
-                    new SchemaAxisButton(3)//,
+                    new AxisAsButton(-2),
+                    new AxisAsButton(2),
+                    new AxisAsButton(-1),
+                    new AxisAsButton(1),
+                    new AxisAsButton(-4),
+                    new AxisAsButton(4),
+                    new AxisAsButton(-3),
+                    new AxisAsButton(3)//,
                     // TODO leftShoulder,
                     // TODO rightShoulder,
                     // TODO leftTrigger,
@@ -73,18 +69,18 @@ export default class GameInput {
                 'generic',
                 'Logitech Dual Action',
                 undefined,
-                new GamepadAPI(
+                new GamepadMapping(
                     12, 13, 14, 15,
                     10,
                     2, 3, 1, 4,
-                    new SchemaAxisButton(-2),
-                    new SchemaAxisButton(2),
-                    new SchemaAxisButton(-1),
-                    new SchemaAxisButton(1),
-                    new SchemaAxisButton(-4),
-                    new SchemaAxisButton(4),
-                    new SchemaAxisButton(-3),
-                    new SchemaAxisButton(3)//,
+                    new AxisAsButton(-2),
+                    new AxisAsButton(2),
+                    new AxisAsButton(-1),
+                    new AxisAsButton(1),
+                    new AxisAsButton(-4),
+                    new AxisAsButton(4),
+                    new AxisAsButton(-3),
+                    new AxisAsButton(3)//,
                     // TODO leftShoulder,
                     // TODO rightShoulder,
                     // TODO leftTrigger,
@@ -95,7 +91,7 @@ export default class GameInput {
                 'generic',
                 'STANDARD GAMEPAD',
                 undefined,
-                GamepadAPI.Stardard
+                StardardGamepadMapping
             )
         ],
 
@@ -115,7 +111,7 @@ export default class GameInput {
      * Get if the browser supports the Gamepad API
      * @returns {boolean} if the browser supports the Gamepad API
      */
-    static canUseGamepadAPI () {
+    static canUseGamepadMapping () {
         return 'getGamepads' in navigator
     }
 
@@ -188,21 +184,22 @@ export default class GameInput {
         this.startUpdateLoop()
 
         // Start watching for gamepads joining and leaving
-        if (GameInput.canUseGamepadAPI()) {
+        if (GameInput.canUseGamepadMapping()) {
             if (this.debug)
                 console.debug('Gamepad connection loop beginning')
             this.connectionWatchLoop()
 
+            const gameInput = this
             // warning, these are very unreliable!
             window.addEventListener('gamepadconnected', function (e) {
-                if (this.debug)
+                if (gameInput.debug)
                     console.debug('Gamepad connected at index %d: %s. %d buttons, %d axes.',
                         e.gamepad.index, e.gamepad.id,
                         e.gamepad.buttons.length, e.gamepad.axes.length)
             }, false)
 
             window.addEventListener('gamepaddisconnected', function (e) {
-                if (this.debug)
+                if (gameInput.debug)
                     console.debug('Gamepad disconnected from index %d: %s',
                         e.gamepad.index, e.gamepad.id)
             }, false)
@@ -242,7 +239,7 @@ export default class GameInput {
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName   Button Name
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
      */
     buttonDown (player, schemaName) {
         for (const action in this.buttonDownActions)
@@ -253,7 +250,7 @@ export default class GameInput {
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName   Button Name
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
      */
     buttonUp (player, schemaName) {
         for (const action in this.buttonUpActions)
@@ -300,7 +297,7 @@ export default class GameInput {
      * Gamepad state update.
      */
     update () {
-        if (!GameInput.canUseGamepadAPI())
+        if (!GameInput.canUseGamepadMapping())
             return
 
         this.Connection.Gamepads = navigator.getGamepads()
@@ -340,12 +337,15 @@ export default class GameInput {
                     this.firstPress = true
                     return
                 }
-
+                
                 if (this.Players[i].previous.state[j] === false &&
                     this.Players[i].state[j] === true) {
+                    // @ts-ignore
                     this.Players[i].buttonDown(j)
+                    
                 } else if (this.Players[i].previous.state[j] === true &&
                     this.Players[i].state[j] === false) {
+                    // @ts-ignore
                     this.Players[i].buttonUp(j)
                 }
             }
@@ -386,7 +386,7 @@ export default class GameInput {
             this.Players[i].setModel(undefined)
         }
 
-        if (GameInput.canUseGamepadAPI()) {
+        if (GameInput.canUseGamepadMapping()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
             if (this.Connection.Gamepads.filter(Boolean).length === 0) {
@@ -443,7 +443,6 @@ export default class GameInput {
                     this.Players[i].previous.type = this.Players[i].type
                     this.Players[i].previous.model = this.Players[i].model
                     this.Players[i].previous.schema = this.Players[i].schema
-                    this.Players[i].previous.theme = this.Players[i].theme
                     this.Players[i].previous.state = this.Players[i].state
                     this.Players[i].previous.analog = this.Players[i].analog
                 }
@@ -464,6 +463,11 @@ export default class GameInput {
  * Export everything but GameInputModels (because it's inside GameInput already)
  */
 export {
-    GameInput, GamepadAPI, GameInputModel, GameInputSchema, SchemaAxisButton,
-    GameInputPlayer, GamepadSchemaNames, Vector2, DetectedOS, DetectedBrowser
+    GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
+    GameInputPlayer, GamepadMappingKeys, Vector2, DetectedOS, DetectedBrowser
 }
+
+if (module?.exports)
+    module.exports = {
+        GameInput
+    }

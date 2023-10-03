@@ -1,7 +1,7 @@
 /**
  * Schema Axis-As-Button
  */
-export default class SchemaAxisButton {
+class AxisAsButton {
     /**
      * Axis index.
      * @type {number}
@@ -29,10 +29,10 @@ export default class SchemaAxisButton {
     /**
      * Constructor.
      * @param {number} indexAndDirection The button index, sign is direction
-     * @param {number} threshold threshold to activate as button
-     * @param {number} deadZone axis dead zone
+     * @param {number|undefined} threshold threshold to activate as button
+     * @param {number|undefined} deadZone axis dead zone
      */
-    constructor (indexAndDirection, threshold, deadZone) {
+    constructor (indexAndDirection, threshold = undefined, deadZone = undefined) {
         this.index = Math.abs(indexAndDirection)
         this.direction = indexAndDirection < 0 ? 'negative' : 'positive'
 
@@ -46,4 +46,4 @@ export default class SchemaAxisButton {
     }
 }
 
-export { SchemaAxisButton }
+export { AxisAsButton }

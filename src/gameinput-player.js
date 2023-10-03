@@ -1,27 +1,17 @@
-import GameInputModel from './gameinput-model.js'
-import GameInputSchema from './gameinput-schema.js'
-import GamepadAPI from './gamepad-api.js'
-import { GamepadSchemaNames } from './gamepad-schema-names.js'
-import SchemaAxisButton from './schema-axis-button.js'
-import Vector2 from './vector2.js'
-
-/**
- * Normalize a value.
- * @param {number} val  value
- * @param {number} min  minimum
- * @param {number} max  maximum
- * @returns {number}    normalized value
- */
-function normalize (val, min, max) {
-    return (val - min) / (max - min)
-}
+import { GameInputModel } from './gameinput-model.js'
+import { GameInputSchema } from './gameinput-schema.js'
+import { GameInput } from './gameinput.js'
+import { GamepadMapping } from './gamepad-mapping.js'
+import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
+import { AxisAsButton } from './axis-as-button.js'
+import { Vector2 } from './vector2.js'
 
 /**
  * Game Input Player.
  */
-export default class GameInputPlayer {
+class GameInputPlayer {
     /**
-     * @type {import('./gameinput.js').GameInput}
+     * @type {GameInput}
      */
     #gameInput
 
@@ -36,7 +26,7 @@ export default class GameInputPlayer {
     model = undefined
 
     /**
-     * @type {GamepadAPI|undefined}
+     * @type {GamepadMapping|undefined}
      */
     schema = undefined
 
@@ -46,7 +36,7 @@ export default class GameInputPlayer {
     theme = undefined
 
     /**
-     * @type {object|undefined}
+     * @type {Object.<import('./gamepad-mapping-keys.js').GamepadMappingKey,boolean>|undefined}
      */
     state = undefined
 
@@ -59,7 +49,7 @@ export default class GameInputPlayer {
      * @type {{
      *  type: GameInputSchema|undefined,
      *  model: GameInputModel|undefined,
-     *  schema: GamepadAPI|undefined,
+     *  schema: GamepadMapping|undefined,
      *  state: object|undefined,
      *  analog: object|undefined
      * }}
@@ -92,9 +82,9 @@ export default class GameInputPlayer {
         this.number = number
         this.index = number - 1
 
-        for (const i in GamepadSchemaNames) {
-            this.buttonDownActions[GamepadSchemaNames[i]] = []
-            this.buttonUpActions[GamepadSchemaNames[i]] = []
+        for (const i in GamepadMappingKeys) {
+            this.buttonDownActions[GamepadMappingKeys[i]] = []
+            this.buttonUpActions[GamepadMappingKeys[i]] = []
         }
     }
 
@@ -106,12 +96,11 @@ export default class GameInputPlayer {
         this.type = model?.type
         this.model = model
         this.schema = model?.schema
-        this.theme = model?.theme
     }
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
      */
     buttonDown (schemaName) {
         this.#gameInput.buttonDown(this.index, schemaName)
@@ -121,7 +110,7 @@ export default class GameInputPlayer {
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
      */
     buttonUp (schemaName) {
         this.#gameInput.buttonUp(this.index, schemaName)
@@ -131,11 +120,11 @@ export default class GameInputPlayer {
 
     /**
      * Add an action to "button down" events.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
      * @param {Function} action Action to add.
      */
     onButtonDown (schemaName, action) {
-        if (schemaName in GamepadSchemaNames === false)
+        if (schemaName in GamepadMappingKeys === false)
             throw new Error('Must be SchemaNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -145,11 +134,11 @@ export default class GameInputPlayer {
 
     /**
      * Add an action to "button up" events.
-     * @param {import('./gamepad-schema-names.js').GamepadSchemaName} schemaName Name of button
+     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
      * @param {Function} action Action to add.
      */
     onButtonUp (schemaName, action) {
-        if (schemaName in GamepadSchemaNames === false)
+        if (schemaName in GamepadMappingKeys === false)
             throw new Error('Must be SchemaNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -169,7 +158,7 @@ export default class GameInputPlayer {
         const vector = new Vector2(0, 0)
 
         let item = stick + 'StickUp'
-        if (this.schema[item] instanceof SchemaAxisButton) {
+        if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
                 vector.y -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
@@ -180,7 +169,7 @@ export default class GameInputPlayer {
         }
 
         item = stick + 'StickDown'
-        if (this.schema[item] instanceof SchemaAxisButton) {
+        if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
                 vector.y += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
@@ -191,7 +180,7 @@ export default class GameInputPlayer {
         }
 
         item = stick + 'StickLeft'
-        if (this.schema[item] instanceof SchemaAxisButton) {
+        if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
                 vector.x -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
@@ -202,7 +191,7 @@ export default class GameInputPlayer {
         }
 
         item = stick + 'StickRight'
-        if (this.schema[item] instanceof SchemaAxisButton) {
+        if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
                 vector.x += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
@@ -225,18 +214,29 @@ export default class GameInputPlayer {
         let radialDeadZone = 0
 
         for (const direction in ['Up', 'Down', 'Left', 'Right']) {
-            if (this.schema[stick + 'Stick' + direction] instanceof SchemaAxisButton) {
+            if (this.schema[stick + 'Stick' + direction] instanceof AxisAsButton) {
                 if (this.schema[stick + 'Stick' + direction].deadZone > radialDeadZone) {
                     radialDeadZone = this.schema[stick + 'Stick' + direction].deadZone
                 }
             }
         }
 
-        if (stickInput.magnitude < radialDeadZone) {
+        if (stickInput.magnitude() < radialDeadZone) {
             return new Vector2(0, 0)
         } else {
             return stickInput.normalize().scale((stickInput.magnitude() - radialDeadZone) / (1 - radialDeadZone))
         }
+    }
+        
+    /**
+     * Normalize a value.
+     * @param {number} val  value
+     * @param {number} min  minimum
+     * @param {number} max  maximum
+     * @returns {number}    normalized value
+     */
+    #normalize (val, min, max) {
+        return (val - min) / (max - min)
     }
 
     /**
@@ -252,8 +252,8 @@ export default class GameInputPlayer {
         if (typeof (this.schema[trigger]) === 'number') {
             return this.state[trigger] ? 1 : 0
         }
-        // else  this.schema[trigger] instanceof SchemaAxisButton
-        return normalize(
+        // else  this.schema[trigger] instanceof AxisAsButton
+        return this.#normalize(
         /* val */ this.state[trigger],
             /* min */ this.schema[trigger].deadZone,
             /* max */ 1
