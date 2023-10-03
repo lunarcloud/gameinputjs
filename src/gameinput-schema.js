@@ -68,6 +68,8 @@ export default class GameInputSchema {
             r_trigger: 'R2'
     })
 
+    name = ''
+
     schemaNames = {}
 
     /**

@@ -4,8 +4,8 @@
     "description": "",
     "private": true,
     "scripts": {
-        "eslint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
-        "eslint": "npx eslint --ignore-path .gitignore --ext .js .",
+        "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
+        "lint": "npx eslint --ignore-path .gitignore --ext .js .",
         "build": "npx webpack --config webpack.config.js --mode development",
         "build-prod": "npx webpack --config webpack.config.js --mode production",
         "serve": "npx serve"

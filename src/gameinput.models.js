@@ -855,6 +855,12 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)',
+        'Linux'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
         'Performance Designed Products Afterglow Wired Controller for Xbox One (STANDARD GAMEPAD Vendor: 0e6f Product: 0139)',
         'Linux'
     ),

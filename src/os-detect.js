@@ -17,20 +17,25 @@ const osStrings = [
 let _detectedOS = 'Other'
 for (const id in osStrings) {
     if (osStrings[id].r.test(navigator.userAgent)) {
-        _detectedOS = osStrings[id].s 
-        break 
+        _detectedOS = osStrings[id].s
+        break
     }
 }
 const DetectedOS = _detectedOS
 
 /**
  * Detected Browser.
- * @type {'Chrome'|'Firefox'|'Other'} 
+ * @type {'Chrome'|'Firefox'|'Other'}
  */
-const DetectedBrowser = /Chrome/.test(navigator.userAgent) 
-                    ? 'Chrome' 
-                    : /Firefox/.test(navigator.userAgent) 
+const DetectedBrowser = /Chrome/.test(navigator.userAgent)
+                    ? 'Chrome'
+                    : /Firefox/.test(navigator.userAgent)
                         ? 'Firefox'
                         : 'Other'
+
+globalThis.Detected = {
+    OS: DetectedOS,
+    Browser: DetectedBrowser
+}
 
 export { DetectedOS, DetectedBrowser }

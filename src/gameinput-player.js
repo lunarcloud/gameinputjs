@@ -2,6 +2,7 @@ import GameInputModel from './gameinput-model.js'
 import GameInputSchema from './gameinput-schema.js'
 import GamepadAPI from './gamepad-api.js'
 import { GamepadSchemaNames } from './gamepad-schema-names.js'
+import SchemaAxisButton from './schema-axis-button.js'
 import Vector2 from './vector2.js'
 
 /**
@@ -70,7 +71,7 @@ export default class GameInputPlayer {
      * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
      */
     buttonDownActions = {}
-    
+
     /**
      * Actions to perform on button up.
      * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
@@ -125,8 +126,10 @@ export default class GameInputPlayer {
      * @param {Function} action Action to add.
      */
     onButtonDown (schemaName, action) {
-        if (schemaName in GamepadSchemaNames === false) throw 'Must be SchemaNames'
-        if (typeof (action) !== 'function') throw 'Action must be a function'
+        if (schemaName in GamepadSchemaNames === false)
+            throw new Error('Must be SchemaNames')
+        if (typeof (action) !== 'function')
+            throw new Error('Action must be a function')
 
         this.buttonDownActions[schemaName].push(action)
     }
@@ -137,8 +140,10 @@ export default class GameInputPlayer {
      * @param {Function} action Action to add.
      */
     onButtonUp (schemaName, action) {
-        if (schemaName in GamepadSchemaNames === false) throw 'Must be SchemaNames'
-        if (typeof (action) !== 'function') throw 'Action must be a function'
+        if (schemaName in GamepadSchemaNames === false)
+            throw new Error('Must be SchemaNames')
+        if (typeof (action) !== 'function')
+            throw new Error('Action must be a function')
 
         this.buttonUpActions[schemaName].push(action)
     }
@@ -156,7 +161,7 @@ export default class GameInputPlayer {
         let y = 0
 
         if (this.schema[stick + '_up'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_up'].direction == 'negative') {
+            if (this.schema[stick + '_up'].direction === 'negative') {
                 y -= this.analog[stick + '_up'] < this.schema[stick + '_up'].deadZone ? Math.abs(this.analog[stick + '_up']) : 0
             } else {
                 y -= this.analog[stick + '_up'] > this.schema[stick + '_up'].deadZone ? Math.abs(this.analog[stick + '_up']) : 0
@@ -166,7 +171,7 @@ export default class GameInputPlayer {
         }
 
         if (this.schema[stick + '_down'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_down'].direction == 'negative') {
+            if (this.schema[stick + '_down'].direction === 'negative') {
                 y += this.analog[stick + '_down'] < this.schema[stick + '_down'].deadZone ? Math.abs(this.analog[stick + '_down']) : 0
             } else {
                 y += this.analog[stick + '_down'] > this.schema[stick + '_down'].deadZone ? Math.abs(this.analog[stick + '_down']) : 0
@@ -176,7 +181,7 @@ export default class GameInputPlayer {
         }
 
         if (this.schema[stick + '_left'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_left'].direction == 'negative') {
+            if (this.schema[stick + '_left'].direction === 'negative') {
                 x -= this.analog[stick + '_left'] < this.schema[stick + '_left'].deadZone ? Math.abs(this.analog[stick + '_left']) : 0
             } else {
                 x -= this.analog[stick + '_left'] > this.schema[stick + '_left'].deadZone ? Math.abs(this.analog[stick + '_left']) : 0
@@ -186,7 +191,7 @@ export default class GameInputPlayer {
         }
 
         if (this.schema[stick + '_right'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_right'].direction == 'negative') {
+            if (this.schema[stick + '_right'].direction === 'negative') {
                 x += this.analog[stick + '_right'] < this.schema[stick + '_right'].deadZone ? Math.abs(this.analog[stick + '_right']) : 0
             } else {
                 x += this.analog[stick + '_right'] > this.schema[stick + '_right'].deadZone ? Math.abs(this.analog[stick + '_right']) : 0
@@ -224,8 +229,7 @@ export default class GameInputPlayer {
 
     /**
      * Get normalized value for trigger
-     * @param {'l'|'r'} stick Trigger side
-     * @param trigger
+     * @param {'l'|'r'} trigger Trigger side
      * @returns {number} normalized trigger value
      */
     getNormalizedTriggerValue (trigger) {

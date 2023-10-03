@@ -32,6 +32,7 @@
     <div class="row">
       <div class="twelve columns" style="margin-top: 5%">
         <h1>Game Input Tester</h1>
+        <p class="detected"></p>
       </div>
     </div>
 
@@ -130,8 +131,10 @@
 <script type="module">
     import { GameInput, GamepadSchemaNames } from './gameinput.js'
 
-    let gi = new GameInput();
+    globalThis.gi = new GameInput();
     gi.debug = true;
+
+    document.querySelector('p.detected').textContent = `${globalThis.Detected.Browser} on ${globalThis.Detected.OS}`
 
     // Setup
     gi.onButtonDown((playerIndex, schemaName) => {
@@ -173,7 +176,7 @@
                     var themeStyleElement = document.createElement('link');
                     themeStyleElement.classList.add("gameinput-theme-player" + player.index);
                     themeStyleElement.setAttribute("rel", "stylesheet");
-                    themeStyleElement.setAttribute("href", "css/" + player.type.theme.name.toLowerCase() + "/" + player.index + ".css");
+                    themeStyleElement.setAttribute("href", "css/" + player.type.name.toLowerCase() + "/" + player.index + ".css");
                     document.head.appendChild(themeStyleElement);
                 } else {
                     var previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
@@ -182,7 +185,7 @@
             }
         },1);
     });
-    
+
     gi.onReshufflePlayers(() => setupPlayers());
     setTimeout(()=> gi.initialGamePadSetup(), 100); // TODO?
 
