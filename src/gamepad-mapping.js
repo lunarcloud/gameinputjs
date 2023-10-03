@@ -1,4 +1,3 @@
-
 /**
  * @typedef {number|import('./axis-as-button.js').AxisAsButton} SchemaButtonDef
  */
@@ -33,26 +32,26 @@ class GamepadMapping {
      * @param {SchemaButtonDef|undefined} rightTrigger      Right Trigger Definition
      */
     constructor (
-        dpadUp = undefined, 
-        dpadDown = undefined, 
-        dpadLeft = undefined, 
+        dpadUp = undefined,
+        dpadDown = undefined,
+        dpadLeft = undefined,
         dpadRight = undefined,
-        menu = undefined, 
-        button0 = undefined, 
-        button1 = undefined, 
+        menu = undefined,
+        button0 = undefined,
+        button1 = undefined,
         button2 = undefined,
         button3 = undefined,
-        leftStickUp = undefined, 
-        leftStickDown = undefined, 
-        leftStickLeft = undefined, 
+        leftStickUp = undefined,
+        leftStickDown = undefined,
+        leftStickLeft = undefined,
         leftStickRight = undefined,
         rightStickUp = undefined,
-        rightStickDown = undefined, 
-        rightStickLeft = undefined, 
+        rightStickDown = undefined,
+        rightStickLeft = undefined,
         rightStickRight = undefined,
-        leftShoulder = undefined, 
-        rightShoulder = undefined, 
-        leftTrigger = undefined, 
+        leftShoulder = undefined,
+        rightShoulder = undefined,
+        leftTrigger = undefined,
         rightTrigger = undefined
     ) {
         this.dpadUp = dpadUp

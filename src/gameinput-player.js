@@ -227,7 +227,7 @@ class GameInputPlayer {
             return stickInput.normalize().scale((stickInput.magnitude() - radialDeadZone) / (1 - radialDeadZone))
         }
     }
-        
+
     /**
      * Normalize a value.
      * @param {number} val  value
@@ -276,18 +276,18 @@ class GameInputPlayer {
             return text
 
         switch (text) {
-            case '▶':
-                return 'start'
-            case 'x':
-                return 'cross'
-            case 'o':
-                return 'circle'
-            case '□':
-                return 'square'
-            case '△':
-                return 'triangle'
-            default:
-                return text
+        case '▶':
+            return 'start'
+        case 'x':
+            return 'cross'
+        case 'o':
+            return 'circle'
+        case '□':
+            return 'square'
+        case '△':
+            return 'triangle'
+        default:
+            return text
         }
     }
 };

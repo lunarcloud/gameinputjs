@@ -63,7 +63,7 @@ const GameInputModels = [
             undefined,
             undefined,
             5, 6, undefined, undefined
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Plumber,
         'nintendo-generic',
@@ -85,7 +85,7 @@ const GameInputModels = [
             undefined,
             undefined,
             5, 6, undefined, undefined
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
@@ -104,7 +104,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
@@ -123,7 +123,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds4',
@@ -154,7 +154,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
@@ -191,7 +191,7 @@ const GameInputModels = [
             6,
             new AxisAsButton(3),
             new AxisAsButton(6)
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
@@ -216,7 +216,7 @@ const GameInputModels = [
             6,
             new AxisAsButton(3),
             new AxisAsButton(6)
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'dc',
@@ -235,7 +235,7 @@ const GameInputModels = [
             undefined,
             undefined,
             undefined, undefined, 5, 6
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'dc',
@@ -254,26 +254,26 @@ const GameInputModels = [
             undefined,
             undefined,
             undefined, undefined, 5, 6
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'dc',
         'USB GamePad (Vendor: 0e8f Product: 3013)',
         'macOS',
         new GamepadMapping(
-        13, 15, 16, 14,
-        10,
-        1, 2, 3, 4,
-        new AxisAsButton(-2),
-        new AxisAsButton(2),
-        new AxisAsButton(-1),
-        new AxisAsButton(1),
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined, undefined, 5, 6
-    )),
+            13, 15, 16, 14,
+            10,
+            1, 2, 3, 4,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined, undefined, 5, 6
+        )),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'ds3',
@@ -298,7 +298,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             11, 12, 9, 10
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds4',
@@ -326,7 +326,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'joystick',
@@ -348,26 +348,26 @@ const GameInputModels = [
             undefined,
             undefined,
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'joystick',
         'PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)', /* Mayflash Arcade Stick */
         'macOS',
         new GamepadMapping(
-        13, 14, 15, 16,
-        10,
-        7, 1, 2, 8,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        5, 3, 4, 6
-    )),
+            13, 14, 15, 16,
+            10,
+            7, 1, 2, 8,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            5, 3, 4, 6
+        )),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
@@ -389,7 +389,7 @@ const GameInputModels = [
             undefined,
             undefined,
             7, 8, 5, 6
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
@@ -411,7 +411,7 @@ const GameInputModels = [
             undefined,
             undefined,
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -439,7 +439,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ 7,
             /* rightTrigger */ 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -467,7 +467,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ new AxisAsButton(3),
             /* rightTrigger */ new AxisAsButton(6)
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -495,7 +495,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ new AxisAsButton(3),
             /* rightTrigger */ new AxisAsButton(6)
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -523,7 +523,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ 7,
             /* rightTrigger */ 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
@@ -545,7 +545,7 @@ const GameInputModels = [
             new AxisAsButton(-3, 0.3),
             new AxisAsButton(3, 0.2),
             5, 6, 9, 11
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
@@ -567,22 +567,22 @@ const GameInputModels = [
             new AxisAsButton(-3, 0.3),
             new AxisAsButton(3, 0.2),
             5, 6, 9, 11
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
         'Microsoft® Microsoft® SideWinder® Game Pad USB (Vendor: 045e Product: 0007)',
         'Linux',
         new GamepadMapping(
-    /* dpadUp */ new AxisAsButton(-2),
-    /* dpadDown */ new AxisAsButton(2),
-    /* dpadLeft */ new AxisAsButton(-1),
-    /* dpadRight */ new AxisAsButton(1),
-    /* menu */ 10,
-    /* button0 */ 1,
-    /* button1 */ 2,
-    /* button2 */ 4,
-    /* button3 */ 5,
+            /* dpadUp */ new AxisAsButton(-2),
+            /* dpadDown */ new AxisAsButton(2),
+            /* dpadLeft */ new AxisAsButton(-1),
+            /* dpadRight */ new AxisAsButton(1),
+            /* menu */ 10,
+            /* button0 */ 1,
+            /* button1 */ 2,
+            /* button2 */ 4,
+            /* button3 */ 5,
             undefined,
             undefined,
             undefined,
@@ -591,26 +591,26 @@ const GameInputModels = [
             undefined,
             undefined,
             undefined,
-    /* leftShoulder */ 6,
-    /* rightShoulder */ 3,
-    /* leftTrigger */ 7,
-    /* rightTrigger */ 8
-    )),
+            /* leftShoulder */ 6,
+            /* rightShoulder */ 3,
+            /* leftTrigger */ 7,
+            /* rightTrigger */ 8
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
         '045e-0007-Microsoft® Microsoft® SideWinder® Game Pad USB',
         'Linux',
         new GamepadMapping(
-    /* dpadUp */ new AxisAsButton(-2),
-    /* dpadDown */ new AxisAsButton(2),
-    /* dpadLeft */ new AxisAsButton(-1),
-    /* dpadRight */ new AxisAsButton(1),
-    /* menu */ 10,
-    /* button0 */ 1,
-    /* button1 */ 2,
-    /* button2 */ 4,
-    /* button3 */ 5,
+            /* dpadUp */ new AxisAsButton(-2),
+            /* dpadDown */ new AxisAsButton(2),
+            /* dpadLeft */ new AxisAsButton(-1),
+            /* dpadRight */ new AxisAsButton(1),
+            /* menu */ 10,
+            /* button0 */ 1,
+            /* button1 */ 2,
+            /* button2 */ 4,
+            /* button3 */ 5,
             undefined,
             undefined,
             undefined,
@@ -619,11 +619,11 @@ const GameInputModels = [
             undefined,
             undefined,
             undefined,
-    /* leftShoulder */ 6,
-    /* rightShoulder */ 3,
-    /* leftTrigger */ 7,
-    /* rightTrigger */ 8
-    )),
+            /* leftShoulder */ 6,
+            /* rightShoulder */ 3,
+            /* leftTrigger */ 7,
+            /* rightTrigger */ 8
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -645,7 +645,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             7, 8, 5, 6
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -667,7 +667,7 @@ const GameInputModels = [
             new AxisAsButton(-3),
             new AxisAsButton(3),
             5, 6, 7, 8
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -691,7 +691,7 @@ const GameInputModels = [
             7, 8,
             undefined,
             undefined
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
@@ -715,7 +715,7 @@ const GameInputModels = [
             5, 6,
             new AxisAsButton(6),
             new AxisAsButton(5)
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Plumber,
         'nintendo-generic',
@@ -743,9 +743,9 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ undefined,
             /* rightTrigger */ undefined
-    )),
+        )),
     new GameInputModel(
-    GameInputSchema.Plumber,
+        GameInputSchema.Plumber,
         'nintendo-generic',
         '0810-e501-usb gamepad           ',
         'Linux',
@@ -771,7 +771,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ undefined,
             /* rightTrigger */ undefined
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Plumber,
         'nintendo-generic',
@@ -799,9 +799,9 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ undefined,
             /* rightTrigger */ undefined
-    )),
+        )),
     new GameInputModel(
-    GameInputSchema.Plumber,
+        GameInputSchema.Plumber,
         'nintendo-generic',
         '810-e501-usb gamepad           ',
         'macOS',
@@ -827,7 +827,7 @@ const GameInputModels = [
             /* rightShoulder */ 6,
             /* leftTrigger */ undefined,
             /* rightTrigger */ undefined
-    )),
+        )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',

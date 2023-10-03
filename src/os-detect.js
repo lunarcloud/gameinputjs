@@ -31,10 +31,10 @@ const DetectedOS = _detectedOS || 'Other'
  * @type {'Chrome'|'Firefox'|'Other'}
  */
 const DetectedBrowser = /Chrome/.test(navigator.userAgent)
-                    ? 'Chrome'
-                    : /Firefox/.test(navigator.userAgent)
-                        ? 'Firefox'
-                        : 'Other'
+    ? 'Chrome'
+    : /Firefox/.test(navigator.userAgent)
+        ? 'Firefox'
+        : 'Other'
 
 /* Provide this globally */
 globalThis.Detected = {
