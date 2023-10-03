@@ -1,16 +1,25 @@
 GameInput JS
 =============
 
-Import [gameinput.js](https://github.com/lunarcloud/gameinputjs/blob/master/gameinput.js) in your project and hook it up to your game or other gamepad-powered application.
+A client-side javascript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
-All other files in the repository are to test and create mappings and to show example usage.
+You'll need at minimum: 
+```js
+import { GameInput } from './gameinput.js'
 
-Mappings
-----------
-Feel free to test your favorite controller out with any online gamepad API tester and submit it to the [issue tracker](https://github.com/lunarcloud/gameinputjs/issues)
+const gameInput = new GameInput()
+```
 
-License
+Building
 ---------
-MIT - do what you like
+Build works on all platforms, simple as any other npm-powered project.
+```bash
+npm i
+npm run build
+```
+Docs are built via the npm `docs` script and is also done in the `build-prod` script.
 
-I do not care if the license is accidentally missing from your minified source, although most minifiers should preserve the license comments.
+Code Style & Quality
+------------------------
+Editors should pick up the `jsconfig.json` and `.eslintrc.json` to automatically check code style and type-related issues.
+Check the code issues with the linter via `npm run lint` or try to automatically cleanup with `npm run lint-fix`.
