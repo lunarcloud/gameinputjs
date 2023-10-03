@@ -1,6 +1,8 @@
 name: NodeJS with Webpack
 
 on:
+  workflow_dispatch:
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
   release:
