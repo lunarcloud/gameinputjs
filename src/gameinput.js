@@ -63,7 +63,7 @@ class GameInput {
                     // TODO rightShoulder,
                     // TODO leftTrigger,
                     // TODO rightTrigger
-            )),
+                )),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'generic',
@@ -85,7 +85,7 @@ class GameInput {
                     // TODO rightShoulder,
                     // TODO leftTrigger,
                     // TODO rightTrigger
-            )),
+                )),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'generic',
@@ -337,12 +337,11 @@ class GameInput {
                     this.firstPress = true
                     return
                 }
-                
+
                 if (this.Players[i].previous.state[j] === false &&
                     this.Players[i].state[j] === true) {
                     // @ts-ignore
                     this.Players[i].buttonDown(j)
-                    
                 } else if (this.Players[i].previous.state[j] === true &&
                     this.Players[i].state[j] === false) {
                     // @ts-ignore

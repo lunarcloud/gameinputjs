@@ -33,57 +33,57 @@ class GameInputSchema {
      * Sega/Xbox style
      */
     static Hedgehog = new GameInputSchema('Hedgehog', {
-            button0: 'A',
-            button1: 'B',
-            button2: 'X',
-            button3: 'Y',
-            leftShoulder: 'LB',
-            rightShoulder: 'RB',
-            leftTrigger: 'LT',
-            rightTrigger: 'RT'
+        button0: 'A',
+        button1: 'B',
+        button2: 'X',
+        button3: 'Y',
+        leftShoulder: 'LB',
+        rightShoulder: 'RB',
+        leftTrigger: 'LT',
+        rightTrigger: 'RT'
     })
 
     /**
      * Nintendo style
      */
     static Plumber = new GameInputSchema('Plumber', {
-            button0: 'A',
-            button1: 'B',
-            button2: 'X',
-            button3: 'Y',
-            leftShoulder: 'LB',
-            rightShoulder: 'RB',
-            leftTrigger: 'LT',
-            rightTrigger: 'RT'
+        button0: 'A',
+        button1: 'B',
+        button2: 'X',
+        button3: 'Y',
+        leftShoulder: 'LB',
+        rightShoulder: 'RB',
+        leftTrigger: 'LT',
+        rightTrigger: 'RT'
     })
 
     /**
      * Older Sony style
      */
     static RagdollOld = new GameInputSchema('Ragdoll', {
-            button0: 'x',
-            button1: 'o',
-            button2: '□',
-            button3: '△',
-            leftShoulder: 'L1',
-            rightShoulder: 'R1',
-            leftTrigger: 'L2',
-            rightTrigger: 'R2'
+        button0: 'x',
+        button1: 'o',
+        button2: '□',
+        button3: '△',
+        leftShoulder: 'L1',
+        rightShoulder: 'R1',
+        leftTrigger: 'L2',
+        rightTrigger: 'R2'
     })
 
     /**
      * Newer Sony style
      */
     static Ragdoll = new GameInputSchema('Ragdoll', {
-            menu: 'options',
-            button0: 'x',
-            button1: 'o',
-            button2: '□',
-            button3: '△',
-            leftShoulder: 'L1',
-            rightShoulder: 'R1',
-            leftTrigger: 'L2',
-            rightTrigger: 'R2'
+        menu: 'options',
+        button0: 'x',
+        button1: 'o',
+        button2: '□',
+        button3: '△',
+        leftShoulder: 'L1',
+        rightShoulder: 'R1',
+        leftTrigger: 'L2',
+        rightTrigger: 'R2'
     })
 
     /**
