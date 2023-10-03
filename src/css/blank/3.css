@@ -1,0 +1,39 @@
+
+.gameinput-button.gameinput-player3-button0 .text:before {
+	content: "1";
+}
+
+.gameinput-button.gameinput-player3-button1 .text:before {
+	content: "2";
+}
+
+.gameinput-button.gameinput-player3-button2 .text:before {
+	content: "3";
+}
+
+.gameinput-button.gameinput-player3-button3 .text:before {
+	content: "4";
+}
+
+.gameinput-button.gameinput-player3-leftShoulder .text:before {
+	content: '5';
+}
+
+ .gameinput-button.gameinput-player3-rightShoulder .text:before {
+	content: "6";
+}
+
+.gameinput-button.gameinput-player3-leftTrigger .text:before {
+	content: "7";
+}
+
+.gameinput-button.gameinput-player3-rightTrigger .text:before {
+	content: "8";
+}
+
+.gameinput-button.gameinput-player3-button
+{
+	color: black;
+	text-shadow: 0 0 4px white;
+	background-color: white;
+}

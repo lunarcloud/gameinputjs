@@ -1,0 +1,59 @@
+.gameinput-button.gameinput-player0-button0
+{
+    color: white;
+    text-shadow: 0 0 4px black;
+    background-color: green;
+}
+
+.gameinput-button.gameinput-player0-button1
+{
+    color: white;
+    text-shadow: 0 0 4px black;
+    background-color: red;
+}
+
+.gameinput-button.gameinput-player0-button2
+{
+    color: white;
+    text-shadow: 0 0 4px black;
+    background-color: blue;
+}
+
+.gameinput-button.gameinput-player0-button3
+{
+    color: black;
+    text-shadow: 0 0 4px white;
+    background-color: yellow;
+}
+
+.gameinput-button.gameinput-player0-button0 .text:before {
+    content: "A";
+}
+
+.gameinput-button.gameinput-player0-button1 .text:before {
+    content: "B";
+}
+
+.gameinput-button.gameinput-player0-button2 .text:before {
+    content: "X";
+}
+
+.gameinput-button.gameinput-player0-button3 .text:before {
+    content: "Y";
+}
+
+.gameinput-button.gameinput-player0-leftShoulder .text:before {
+    content: "LB";
+}
+
+.gameinput-button.gameinput-player0-rightShoulder .text:before {
+    content: "RB";
+}
+
+.gameinput-button.gameinput-player0-leftTrigger .text:before {
+    content: "LT";
+}
+
+.gameinput-button.gameinput-player0-rightTrigger .text:before {
+    content: "RT";
+}

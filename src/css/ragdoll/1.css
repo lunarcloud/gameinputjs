@@ -1,0 +1,58 @@
+.gameinput-button.gameinput-player1
+{
+    text-shadow: 0 0 4px #585858;
+    background-color: black;
+    border-color: #585858;
+    font-size: x-large;
+}
+
+.gameinput-button.gameinput-player1-button0 {
+    color: #9595F7; /* blue */
+}
+
+.gameinput-button.gameinput-player1-button1 {
+    color: red;
+}
+
+.gameinput-button.gameinput-player1-button2
+{
+    color: #F9DBDB; /* pink */
+    /*text-shadow: 0 0 4px black;
+    background-color: pink;*/
+}
+
+.gameinput-button.gameinput-player1-button3 {
+    color: #9FD49F; /* green */
+}
+
+.gameinput-button.gameinput-player1-button0 .text:before {
+    content: "x";
+}
+
+.gameinput-button.gameinput-player1-button1 .text:before {
+    content: "o";
+}
+
+.gameinput-button.gameinput-player1-button2 .text:before {
+    content: "□";
+}
+
+.gameinput-button.gameinput-player1-button3 .text:before {
+    content: "△";
+}
+
+.gameinput-button.gameinput-player1-leftShoulder .text:before {
+    content: "L1";
+}
+
+.gameinput-button.gameinput-player1-rightShoulder .text:before {
+    content: "R1";
+}
+
+.gameinput-button.gameinput-player1-leftTrigger .text:before {
+    content: "L2";
+}
+
+.gameinput-button.gameinput-player1-rightTrigger .text:before {
+    content: "R2";
+}
