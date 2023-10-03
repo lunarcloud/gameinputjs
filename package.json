@@ -6,8 +6,9 @@
     "scripts": {
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
-        "build": "npx webpack --config webpack.config.js --mode development",
-        "build-prod": "npx webpack --config webpack.config.js --mode production",
+        "pre-build": "rm -r dist && mkdir dist && cp src/tester.html dist/ && cp -r src/css dist/ && cp -r src/img dist/",
+        "build": "npx pre-build && npx webpack --config webpack.config.js --mode development",
+        "build-prod": "npm run pre-build && npx webpack --config webpack.config.js --mode production",
         "serve": "npx serve"
     },
     "devDependencies": {
