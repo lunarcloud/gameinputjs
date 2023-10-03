@@ -1,8 +1,10 @@
+# EditorConfig: https://EditorConfig.org
 root = true
 
 # All files
 [*]
 charset = utf-8
+max_line_length = off
 
 # Source files
 [*.{js,ts,html,css}]
@@ -17,8 +19,19 @@ end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-
 # CI files
 [{*.{yml}]
 indent_size = 2
 tab_width = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{css}]
+quote_type = single
+
+[*.bat]
+end_of_line = crlf
+
+[*.tsv]
+indent_style = tab
