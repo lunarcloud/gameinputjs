@@ -125,19 +125,19 @@ const GameInputModels = [
             5, 6, 7, 8
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll4,
+        GameInputSchema.Ragdoll,
         'ds4',
         'Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)',
         'Windows'
     ),
     new GameInputModel(
-        GameInputSchema.Ragdoll4,
+        GameInputSchema.Ragdoll,
         'ds4',
         'Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)',
         'macOS'
     ),
     new GameInputModel(
-        GameInputSchema.Ragdoll4,
+        GameInputSchema.Ragdoll,
         'ds4',
         '054c-05c4-Wireless Controller',
         'Windows',
@@ -275,13 +275,13 @@ const GameInputModels = [
         undefined, undefined, 5, 6
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'ds3',
         'Sony PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)',
         'Linux'
     ),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'ds3',
         '054c-0268-Sony PLAYSTATION(R)3 Controller',
         'Linux',
@@ -300,13 +300,13 @@ const GameInputModels = [
             11, 12, 9, 10
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll4,
+        GameInputSchema.Ragdoll,
         'ds4',
         'Sony Computer Entertainment Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 05c4)',
         'Linux'
     ),
     new GameInputModel(
-        GameInputSchema.Ragdoll4,
+        GameInputSchema.Ragdoll,
         'ds4',
         '054c-05c4-Sony Computer Entertainment Wireless Controller',
         'Linux',
@@ -369,7 +369,7 @@ const GameInputModels = [
         5, 3, 4, 6
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'joystick',
         'MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)',
         'Linux',
@@ -391,7 +391,7 @@ const GameInputModels = [
             7, 8, 5, 6
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'joystick',
         '0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick',
         'Linux',
@@ -525,7 +525,7 @@ const GameInputModels = [
             /* rightTrigger */ 8
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'joystick',
         'Logitech Logitech Extreme 3D Pro (Vendor: 046d Product: c215)',
         'Linux',
@@ -547,7 +547,7 @@ const GameInputModels = [
             5, 6, 9, 11
     )),
     new GameInputModel(
-        GameInputSchema.Ragdoll,
+        GameInputSchema.RagdollOld,
         'joystick',
         '046d-c215-Logitech Logitech Extreme 3D Pro',
         'Linux',

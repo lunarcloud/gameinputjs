@@ -102,14 +102,27 @@ export default class GameInput {
         Specific: GameInputModels // imported
     }
 
+    /**
+     * Get just ASCII text.
+     * @param {string} text input text
+     * @returns {string} input minus non-ASCII
+     */
     static toASCII (text) {
         return text.replace(/[^\x00-\x7F]/g, '') /* eslint-disable-line no-control-regex */
     }
 
+    /**
+     * Get if the browser supports the Gamepad API
+     * @returns {boolean} if the browser supports the Gamepad API
+     */
     static canUseGamepadAPI () {
         return 'getGamepads' in navigator
     }
 
+    /**
+     * The players.
+     * @type {Array<GameInputPlayer>}
+     */
     Players = [
         new GameInputPlayer(this, 1),
         new GameInputPlayer(this, 2),
@@ -323,7 +336,7 @@ export default class GameInput {
         // Keydown / Keyup
         for (let i = 0; i < this.Players.length; i++) {
             for (const j in this.Players[i].state) {
-                if (this.firstPress !== true) {
+                if (!this.firstPress) {
                     this.firstPress = true
                     return
                 }
@@ -376,10 +389,7 @@ export default class GameInput {
         if (GameInput.canUseGamepadAPI()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
-            if (this.Connection.Gamepads[0] === undefined &&
-                this.Connection.Gamepads[1] === undefined &&
-                this.Connection.Gamepads[2] === undefined &&
-                this.Connection.Gamepads[3] === undefined) {
+            if (this.Connection.Gamepads.filter(Boolean).length === 0) {
                 this.firstPress = false
             }
 

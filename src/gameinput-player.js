@@ -82,6 +82,11 @@ export default class GameInputPlayer {
      */
     buttonUpActions = {}
 
+    /**
+     * Constuctor.
+     * @param {import('./gameinput.js').GameInput} gameInput Game Input manager
+     * @param {number} number Player number (1-based)
+     */
     constructor (gameInput, number) {
         this.#gameInput = gameInput
         this.number = number

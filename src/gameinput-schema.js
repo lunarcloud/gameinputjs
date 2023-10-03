@@ -1,4 +1,10 @@
+/**
+ * Defines what each button is displayed as, what should be on the physical device for each button.
+ */
 export default class GameInputSchema {
+    /**
+     * The default values that can be overridden.
+     */
     static Defaults = {
         dpadUp: '↑',
         dpadDown: '↓',
@@ -23,6 +29,9 @@ export default class GameInputSchema {
         rightTrigger: 'rightTrigger'
     }
 
+    /**
+     * Sega/Xbox style
+     */
     static Hedgehog = new GameInputSchema('Hedgehog', {
             button0: 'A',
             button1: 'B',
@@ -34,6 +43,9 @@ export default class GameInputSchema {
             rightTrigger: 'RT'
     })
 
+    /**
+     * Nintendo style
+     */
     static Plumber = new GameInputSchema('Plumber', {
             button0: 'A',
             button1: 'B',
@@ -45,7 +57,10 @@ export default class GameInputSchema {
             rightTrigger: 'RT'
     })
 
-    static Ragdoll = new GameInputSchema('Ragdoll', {
+    /**
+     * Older Sony style
+     */
+    static RagdollOld = new GameInputSchema('Ragdoll', {
             button0: 'x',
             button1: 'o',
             button2: '□',
@@ -56,7 +71,10 @@ export default class GameInputSchema {
             rightTrigger: 'R2'
     })
 
-    static Ragdoll4 = new GameInputSchema('Ragdoll', {
+    /**
+     * Newer Sony style
+     */
+    static Ragdoll = new GameInputSchema('Ragdoll', {
             menu: 'options',
             button0: 'x',
             button1: 'o',
@@ -68,8 +86,14 @@ export default class GameInputSchema {
             rightTrigger: 'R2'
     })
 
+    /**
+     * Schema name
+     */
     name = ''
 
+    /**
+     * Button/Axes names-to-text
+     */
     schemaNames = {}
 
     /**
