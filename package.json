@@ -6,7 +6,7 @@
     "scripts": {
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
-        "pre-build": "rm -r dist; mkdir dist && cp src/tester.html dist/ && cp -r src/css dist/ && cp -r src/img dist/",
+        "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp  src/tester.html dist/ && shx cp -r src/css dist/ && shx cp -r src/img dist/",
         "build": "npm run pre-build && npx webpack --config webpack.config.js --mode development",
         "build-prod": "npm run pre-build && npx webpack --config webpack.config.js --mode production",
         "serve": "npx serve"
@@ -20,6 +20,7 @@
         "eslint-plugin-n": "^16.1.0",
         "eslint-plugin-promise": "^6.1.1",
         "serve": "^14.2.1",
+        "shx": "^0.3.4",
         "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4"
     },
