@@ -6,11 +6,11 @@
     "scripts": {
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
+        "serve": "npx serve",
+        "docs": "shx rm -rf docs && npx jsdoc -c jsdoc.conf.json",
         "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp  src/tester.html dist/ && shx cp -r src/css dist/ && shx cp -r src/img dist/",
         "build": "npm run pre-build && npx webpack --config webpack.config.js --mode development",
-        "build-prod": "npm run pre-build && npx webpack --config webpack.config.js --mode production",
-        "serve": "npx serve",
-        "docs": "shx rm -rf docs &&npx jsdoc -c jsdoc.conf.json"
+        "build-prod": "npm run pre-build && npx webpack --config webpack.config.js --mode production && npm run docs"
     },
     "devDependencies": {
         "eslint": "^8.49.0",

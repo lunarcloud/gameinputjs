@@ -26,14 +26,11 @@ jobs:
     - name: Build
       run: |
         npm ci
-        npx webpack --config webpack.config.js --mode production
+        npm run build
 
     - uses: actions/upload-artifact@v3
       with:
         path: |
-          dist/gameinput.js
           LICENSE
+          dist
           docs
-          src/css
-          src/img
-          src/tester.html
