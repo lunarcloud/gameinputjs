@@ -42,19 +42,19 @@
     content: "Y";
 }
 
-.gameinput-button.gameinput-player2-l_button .text:before {
+.gameinput-button.gameinput-player2-leftShoulder .text:before {
     content: "LB";
 }
 
-.gameinput-button.gameinput-player2-r_button .text:before {
+.gameinput-button.gameinput-player2-rightShoulder .text:before {
     content: "RB";
 }
 
-.gameinput-button.gameinput-player2-l_trigger .text:before {
+.gameinput-button.gameinput-player2-leftTrigger .text:before {
     content: "LT";
 }
 
-.gameinput-button.gameinput-player2-r_trigger .text:before {
+.gameinput-button.gameinput-player2-rightTrigger .text:before {
     content: "RT";
 }
 

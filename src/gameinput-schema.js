@@ -1,26 +1,26 @@
 export default class GameInputSchema {
     static Defaults = {
-        d_up: '↑',
-        d_down: '↓',
-        d_left: '←',
-        d_right: '→',
+        dpadUp: '↑',
+        dpadDown: '↓',
+        dpadLeft: '←',
+        dpadRight: '→',
         menu: '▶',
         button0: 'button0',
         button1: 'button1',
         button2: 'button2',
         button3: 'button3',
-        l_up: '↑',
-        l_down: '↓',
-        l_left: '←',
-        l_right: '→',
-        r_up: '↑',
-        r_down: '↓',
-        r_left: '←',
-        r_right: '→',
-        l_button: 'l_button',
-        r_button: 'r_button',
-        l_trigger: 'l_trigger',
-        r_trigger: 'r_trigger'
+        leftStickUp: '↑',
+        leftStickDown: '↓',
+        leftStickLeft: '←',
+        leftStickRight: '→',
+        rightStickUp: '↑',
+        rightStickDown: '↓',
+        rightStickLeft: '←',
+        rightStickRight: '→',
+        leftShoulder: 'leftShoulder',
+        rightShoulder: 'rightShoulder',
+        leftTrigger: 'leftTrigger',
+        rightTrigger: 'rightTrigger'
     }
 
     static Hedgehog = new GameInputSchema('Hedgehog', {
@@ -28,10 +28,10 @@ export default class GameInputSchema {
             button1: 'B',
             button2: 'X',
             button3: 'Y',
-            l_button: 'LB',
-            r_button: 'RB',
-            l_trigger: 'LT',
-            r_trigger: 'RT'
+            leftShoulder: 'LB',
+            rightShoulder: 'RB',
+            leftTrigger: 'LT',
+            rightTrigger: 'RT'
     })
 
     static Plumber = new GameInputSchema('Plumber', {
@@ -39,10 +39,10 @@ export default class GameInputSchema {
             button1: 'B',
             button2: 'X',
             button3: 'Y',
-            l_button: 'LB',
-            r_button: 'RB',
-            l_trigger: 'LT',
-            r_trigger: 'RT'
+            leftShoulder: 'LB',
+            rightShoulder: 'RB',
+            leftTrigger: 'LT',
+            rightTrigger: 'RT'
     })
 
     static Ragdoll = new GameInputSchema('Ragdoll', {
@@ -50,10 +50,10 @@ export default class GameInputSchema {
             button1: 'o',
             button2: '□',
             button3: '△',
-            l_button: 'L1',
-            r_button: 'R1',
-            l_trigger: 'L2',
-            r_trigger: 'R2'
+            leftShoulder: 'L1',
+            rightShoulder: 'R1',
+            leftTrigger: 'L2',
+            rightTrigger: 'R2'
     })
 
     static Ragdoll4 = new GameInputSchema('Ragdoll', {
@@ -62,10 +62,10 @@ export default class GameInputSchema {
             button1: 'o',
             button2: '□',
             button3: '△',
-            l_button: 'L1',
-            r_button: 'R1',
-            l_trigger: 'L2',
-            r_trigger: 'R2'
+            leftShoulder: 'L1',
+            rightShoulder: 'R1',
+            leftTrigger: 'L2',
+            rightTrigger: 'R2'
     })
 
     name = ''

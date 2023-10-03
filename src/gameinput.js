@@ -63,10 +63,10 @@ export default class GameInput {
                     new SchemaAxisButton(4),
                     new SchemaAxisButton(-3),
                     new SchemaAxisButton(3)//,
-                    // TODO l_button,
-                    // TODO r_button,
-                    // TODO l_trigger,
-                    // TODO r_trigger
+                    // TODO leftShoulder,
+                    // TODO rightShoulder,
+                    // TODO leftTrigger,
+                    // TODO rightTrigger
             )),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
@@ -85,10 +85,10 @@ export default class GameInput {
                     new SchemaAxisButton(4),
                     new SchemaAxisButton(-3),
                     new SchemaAxisButton(3)//,
-                    // TODO l_button,
-                    // TODO r_button,
-                    // TODO l_trigger,
-                    // TODO r_trigger
+                    // TODO leftShoulder,
+                    // TODO rightShoulder,
+                    // TODO leftTrigger,
+                    // TODO rightTrigger
             )),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
@@ -387,8 +387,8 @@ export default class GameInput {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
                     // Translate into Type -  Players order is gamepad order
                     for (const gamepad of GameInput.Models.Specific) {
-                        if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id)
-                            && DetectedOS === gamepad.os) {
+                        if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id) &&
+                            DetectedOS === gamepad.os) {
                             this.Players[i].setModel(gamepad)
 
                             if (this.debug) {

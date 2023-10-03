@@ -26,37 +26,43 @@ export default class GameInputPlayer {
     #gameInput
 
     /**
-     * @type {GameInputSchema?}
+     * @type {GameInputSchema|undefined}
      */
     type = undefined
 
     /**
-     * @type {GameInputModel?}
+     * @type {GameInputModel|undefined}
      */
     model = undefined
 
     /**
-     * @type {GamepadAPI?}
+     * @type {GamepadAPI|undefined}
      */
     schema = undefined
 
     /**
-     * @type {GameInputSchema?}
+     * @type {GameInputSchema|undefined}
      */
     theme = undefined
 
     /**
-     * @type {object?}
+     * @type {object|undefined}
      */
     state = undefined
 
     /**
-     * @type {object?}
+     * @type {object|undefined}
      */
     analog = undefined
 
     /**
-     * @type {{type: GameInputSchema?, model: GameInputModel?, schema: GamepadAPI?, state: object?, analog: object?}}
+     * @type {{
+     *  type: GameInputSchema|undefined,
+     *  model: GameInputModel|undefined,
+     *  schema: GamepadAPI|undefined,
+     *  state: object|undefined,
+     *  analog: object|undefined
+     * }}
      */
     previous = {
         type: undefined,
@@ -68,13 +74,11 @@ export default class GameInputPlayer {
 
     /**
      * Actions to perform on button down.
-     * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
      */
     buttonDownActions = {}
 
     /**
      * Actions to perform on button up.
-     * @type {Object.<import('./gamepad-schema-names.js').GamepadSchemaName,Function>}
      */
     buttonUpActions = {}
 
@@ -91,7 +95,7 @@ export default class GameInputPlayer {
 
     /**
      * Set player to a specific model.
-     * @param {GameInputModel?} model Model to set
+     * @param {GameInputModel|undefined} model Model to set
      */
     setModel (model) {
         this.type = model?.type
@@ -150,72 +154,75 @@ export default class GameInputPlayer {
 
     /**
      * Get vector for stick
-     * @param {'l'|'r'} stick Stick side
+     * @param {'left'|'right'} stick Stick side
      * @returns {Vector2} stick vector
      */
     getStickVector (stick) {
-        if (stick !== 'l' && stick !== 'r')
-            throw new Error('Must be l or r')
+        if (stick !== 'left' && stick !== 'right')
+            throw new Error('Must be left or right')
 
-        let x = 0
-        let y = 0
+        const vector = new Vector2(0, 0)
 
-        if (this.schema[stick + '_up'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_up'].direction === 'negative') {
-                y -= this.analog[stick + '_up'] < this.schema[stick + '_up'].deadZone ? Math.abs(this.analog[stick + '_up']) : 0
+        let item = stick + 'StickUp'
+        if (this.schema[item] instanceof SchemaAxisButton) {
+            if (this.schema[item].direction === 'negative') {
+                vector.y -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
-                y -= this.analog[stick + '_up'] > this.schema[stick + '_up'].deadZone ? Math.abs(this.analog[stick + '_up']) : 0
+                vector.y -= this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             }
         } else {
-            y -= 0.7
+            vector.y -= 0.7
         }
 
-        if (this.schema[stick + '_down'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_down'].direction === 'negative') {
-                y += this.analog[stick + '_down'] < this.schema[stick + '_down'].deadZone ? Math.abs(this.analog[stick + '_down']) : 0
+        item = stick + 'StickDown'
+        if (this.schema[item] instanceof SchemaAxisButton) {
+            if (this.schema[item].direction === 'negative') {
+                vector.y += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
-                y += this.analog[stick + '_down'] > this.schema[stick + '_down'].deadZone ? Math.abs(this.analog[stick + '_down']) : 0
+                vector.y += this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             }
         } else {
-            x += 0.7
+            vector.y += 0.7
         }
 
-        if (this.schema[stick + '_left'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_left'].direction === 'negative') {
-                x -= this.analog[stick + '_left'] < this.schema[stick + '_left'].deadZone ? Math.abs(this.analog[stick + '_left']) : 0
+        item = stick + 'StickLeft'
+        if (this.schema[item] instanceof SchemaAxisButton) {
+            if (this.schema[item].direction === 'negative') {
+                vector.x -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
-                x -= this.analog[stick + '_left'] > this.schema[stick + '_left'].deadZone ? Math.abs(this.analog[stick + '_left']) : 0
+                vector.x -= this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             }
         } else {
-            x -= 0.7
+            vector.x -= 0.7
         }
 
-        if (this.schema[stick + '_right'] instanceof SchemaAxisButton) {
-            if (this.schema[stick + '_right'].direction === 'negative') {
-                x += this.analog[stick + '_right'] < this.schema[stick + '_right'].deadZone ? Math.abs(this.analog[stick + '_right']) : 0
+        item = stick + 'StickRight'
+        if (this.schema[item] instanceof SchemaAxisButton) {
+            if (this.schema[item].direction === 'negative') {
+                vector.x += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             } else {
-                x += this.analog[stick + '_right'] > this.schema[stick + '_right'].deadZone ? Math.abs(this.analog[stick + '_right']) : 0
+                vector.x += this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
             }
         } else {
-            x += 0.7
+            vector.x += 0.7
         }
 
-        return new Vector2(x, y)
+        return vector
     }
 
     /**
      * Get normalized vector for stick
-     * @param {'l'|'r'} stick Stick side
+     * @param {'left'|'right'} stick Stick side
      * @returns {Vector2} normalized stick vector
      */
     getNormalizedStickVector (stick) {
         const stickInput = this.getStickVector(stick)
         let radialDeadZone = 0
 
-        for (const direction in ['up', 'down', 'left', 'right']) {
-            if (this.schema[stick + '_' + direction] instanceof SchemaAxisButton) {
-                if (this.schema[stick + '_' + direction].deadZone > radialDeadZone) {
-                    radialDeadZone = this.schema[stick + '_' + direction].deadZone
+        for (const direction in ['Up', 'Down', 'Left', 'Right']) {
+            if (this.schema[stick + 'Stick' + direction] instanceof SchemaAxisButton) {
+                if (this.schema[stick + 'Stick' + direction].deadZone > radialDeadZone) {
+                    radialDeadZone = this.schema[stick + 'Stick' + direction].deadZone
                 }
             }
         }
@@ -229,13 +236,13 @@ export default class GameInputPlayer {
 
     /**
      * Get normalized value for trigger
-     * @param {'l'|'r'} trigger Trigger side
+     * @param {'left'|'right'} trigger Trigger side
      * @returns {number} normalized trigger value
      */
     getNormalizedTriggerValue (trigger) {
-        if (trigger !== 'l' && trigger !== 'r')
-            throw new Error('Must be l or r')
-        trigger += '_trigger'
+        if (trigger !== 'left' && trigger !== 'right')
+            throw new Error('Must be left or right')
+        trigger += 'Trigger'
 
         if (typeof (this.schema[trigger]) === 'number') {
             return this.state[trigger] ? 1 : 0

@@ -1,33 +1,32 @@
 /**
- * @typedef {'d_up'|'d_down'|'d_left'|'d_right'|'menu'|'button0'|'button1'|'button2'|'button3'|'l_up'|'l_down'|'l_left'|'l_right'|'r_up'|'r_down'|'r_left'|'r_right'|'l_button'|'r_button'|'l_trigger'|'r_trigger'} GamepadSchemaName
+ * @typedef {'dpadUp'|'dpadDown'|'dpadLeft'|'dpadRight'|'menu'|'button0'|'button1'|'button2'|'button3'|'leftStickUp'|'leftStickDown'|'leftStickLeft'|'leftStickRight'|'rightStickUp'|'rightStickDown'|'rightStickLeft'|'rightStickRight'|'leftShoulder'|'rightShoulder'|'leftTrigger'|'rightTrigger'} GamepadSchemaName
  */
 
 /**
  * Schema Names
- * @type {Object.<GamepadSchemaName,string>}
  */
 const GamepadSchemaNames = {
-    d_up: 'd_up',
-    d_down: 'd_down',
-    d_left: 'd_left',
-    d_right: 'd_right',
+    dpadUp: 'dpadUp',
+    dpadDown: 'dpadDown',
+    dpadLeft: 'dpadLeft',
+    dpadRight: 'dpadRight',
     menu: 'menu',
     button0: 'button0',
     button1: 'button1',
     button2: 'button2',
     button3: 'button3',
-    l_up: 'l_up',
-    l_down: 'l_down',
-    l_left: 'l_left',
-    l_right: 'l_right',
-    r_up: 'r_up',
-    r_down: 'r_down',
-    r_left: 'r_left',
-    r_right: 'r_right',
-    l_button: 'l_button',
-    r_button: 'r_button',
-    l_trigger: 'l_trigger',
-    r_trigger: 'r_trigger'
+    leftStickUp: 'leftStickUp',
+    leftStickDown: 'leftStickDown',
+    leftStickLeft: 'leftStickLeft',
+    leftStickRight: 'leftStickRight',
+    rightStickUp: 'rightStickUp',
+    rightStickDown: 'rightStickDown',
+    rightStickLeft: 'rightStickLeft',
+    rightStickRight: 'rightStickRight',
+    leftShoulder: 'leftShoulder',
+    rightShoulder: 'rightShoulder',
+    leftTrigger: 'leftTrigger',
+    rightTrigger: 'rightTrigger'
 }
 
 export default GamepadSchemaNames

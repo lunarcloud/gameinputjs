@@ -15,19 +15,19 @@
 	content: "4";
 }
 
-.gameinput-button.gameinput-player2-l_button .text:before {
+.gameinput-button.gameinput-player2-leftShoulder .text:before {
 	content: '5';
 }
 
- .gameinput-button.gameinput-player2-r_button .text:before {
+ .gameinput-button.gameinput-player2-rightShoulder .text:before {
 	content: "6";
-} 
+}
 
-.gameinput-button.gameinput-player2-l_trigger .text:before {
+.gameinput-button.gameinput-player2-leftTrigger .text:before {
 	content: "7";
-} 
+}
 
-.gameinput-button.gameinput-player2-r_trigger .text:before {
+.gameinput-button.gameinput-player2-rightTrigger .text:before {
 	content: "8";
 }
 

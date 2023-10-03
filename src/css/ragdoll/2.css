@@ -41,18 +41,18 @@
     content: "△";
 }
 
-.gameinput-button.gameinput-player2-l_button .text:before {
+.gameinput-button.gameinput-player2-leftShoulder .text:before {
     content: "L1";
 }
 
-.gameinput-button.gameinput-player2-r_button .text:before {
+.gameinput-button.gameinput-player2-rightShoulder .text:before {
     content: "R1";
 }
 
-.gameinput-button.gameinput-player2-l_trigger .text:before {
+.gameinput-button.gameinput-player2-leftTrigger .text:before {
     content: "L2";
 }
 
-.gameinput-button.gameinput-player2-r_trigger .text:before {
+.gameinput-button.gameinput-player2-rightTrigger .text:before {
     content: "R2";
 }
