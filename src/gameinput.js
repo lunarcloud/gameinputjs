@@ -4,10 +4,11 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
+import { GamepadButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS, DetectedBrowser } from './os-detect.js'
 import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+import { GameInputOptions } from './gameinput-options.js'
 /**
  * @module GameInput
  */
@@ -126,13 +127,23 @@ class GameInput {
         new GameInputPlayer(this, 4)
     ]
 
+    /**
+     * Connection info
+     */
     Connection = {
+        /**
+         * Mapping of player to gamepad index
+         */
         GamePadMapping: {
             0: 0,
             1: 1,
             2: 2,
             3: 3
         },
+        /**
+         * Actual gamepads.
+         * @type {Array<Gamepad>}
+         */
         Gamepads: [undefined, undefined, undefined, undefined]
     }
 
@@ -154,14 +165,19 @@ class GameInput {
     firstPress = false
 
     /**
+     * Callback providing player index and button name.
+     * @typedef {function(number, import('./gamepad-buttons.js').GamepadButton):void} ButtonActionFunc
+     */
+
+    /**
      * Actions to perform on button down.
-     * @type {Array<Function>}
+     * @type {Array<ButtonActionFunc>}
      */
     buttonDownActions = []
 
     /**
      * Actions to perform on button up.
-     * @type {Array<Function>}
+     * @type {Array<ButtonActionFunc>}
      */
     buttonUpActions = []
 
@@ -175,12 +191,15 @@ class GameInput {
      * Actions to perform after players reshuffled.
      * @type {Array<Function>}
      */
-    reshufflePlayersActions = []
+    reinitializeActions = []
 
     /**
      * Constructor.
+     * @param {GameInputOptions} options    constructor options
      */
-    constructor () {
+    constructor (options = undefined) {
+        this.debug = options?.debugStatements || false
+
         this.startUpdateLoop()
 
         // Start watching for gamepads joining and leaving
@@ -207,55 +226,65 @@ class GameInput {
     }
 
     /**
-     * Add an action to "reshuffle players" events.
+     * Add action to "reinitialized" events.
      * @param {Function} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
-    onReshufflePlayers (action) {
+    onReinitialize (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
-        this.reshufflePlayersActions.push(action)
+        this.reinitializeActions.push(action)
+        return this
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {Function} action Action to add.
+     * @param {ButtonActionFunc} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
     onButtonDown (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonDownActions.push(action)
+        return this
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {Function} action Action to add.
+     * @param {ButtonActionFunc} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
     onButtonUp (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonUpActions.push(action)
+        return this
     }
 
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName   Button Name
+     * @returns {GameInput}     self, for chaining statements.
      */
-    buttonDown (player, schemaName) {
+    buttonDown (player, buttonName) {
         for (const action in this.buttonDownActions)
             if (typeof (this.buttonDownActions[action]) === 'function')
-                this.buttonDownActions[action](player, schemaName)
+                this.buttonDownActions[action](player, buttonName)
+        return this
     }
 
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName   Button Name
+     * @returns {GameInput}     self, for chaining statements.
      */
-    buttonUp (player, schemaName) {
+    buttonUp (player, buttonName) {
         for (const action in this.buttonUpActions)
             if (typeof (this.buttonUpActions[action]) === 'function')
-                this.buttonUpActions[action](player, schemaName)
+                this.buttonUpActions[action](player, buttonName)
+        return this
     }
 
     /**
@@ -316,10 +345,7 @@ class GameInput {
         this.Connection.Gamepads = navigator.getGamepads()
 
         for (let i = 0; i < this.Connection.Gamepads.length; i++) {
-            this.Players[i].previous.state = this.Players[i].state
-            this.Players[i].state = {}
-            this.Players[i].previous.analog = this.Players[i].analog
-            this.Players[i].analog = {}
+            this.Players[i].updatePrevious()
 
             const currentGamepad = this.Connection.Gamepads[i]
             const currentSchema = this.Players[i].schema
@@ -334,33 +360,34 @@ class GameInput {
 
                     const axisValue = this.Players[i].analog[j] = currentGamepad.axes[currentSchema[j].index - 1]
 
-                    this.Players[i].state[j] = (negativeAxis && axisValue < currentSchema[j].threshold) || (!negativeAxis && axisValue > currentSchema[j].threshold)
+                    this.Players[i].state.set(j, (negativeAxis && axisValue < currentSchema[j].threshold) ||
+                                                (!negativeAxis && axisValue > currentSchema[j].threshold))
                 } else {
-                    this.Players[i].state[j] = currentGamepad.buttons[currentSchema[j] - 1].pressed
+                    this.Players[i].state.set(j, currentGamepad.buttons[currentSchema[j] - 1].pressed)
 
-                    this.Players[i].analog[j] = this.Players[i].state[j] ? 1 : 0
+                    this.Players[i].analog.set(j, this.Players[i].state[j] ? 1 : 0)
                 }
             }
         }
 
         // Keydown / Keyup
         for (let i = 0; i < this.Players.length; i++) {
-            for (const j in this.Players[i].state) {
+            this.Players[i].state.forEach((value, j, _) => {
                 if (!this.firstPress) {
                     this.firstPress = true
                     return
                 }
 
-                if (this.Players[i].previous.state[j] === false &&
-                    this.Players[i].state[j] === true) {
+                if (this.Players[i].previous.state.get(j) === false &&
+                    this.Players[i].state.get(j) === true) {
                     // @ts-ignore
                     this.Players[i].buttonDown(j)
-                } else if (this.Players[i].previous.state[j] === true &&
-                    this.Players[i].state[j] === false) {
+                } else if (this.Players[i].previous.state.get(j) === true &&
+                    this.Players[i].state.get(j) === false) {
                     // @ts-ignore
                     this.Players[i].buttonUp(j)
                 }
-            }
+            })
         }
     }
 
@@ -383,7 +410,7 @@ class GameInput {
                 console.debug('Now have ' + currentNumberOfGamepads + ' gamepad(s).')
 
             this.lastCheckedNumberOfGamepads = currentNumberOfGamepads
-            this.initialGamePadSetup()
+            this.reinitialize()
         }
 
         requestAnimationFrame(() => this.connectionWatchLoop())
@@ -392,7 +419,7 @@ class GameInput {
     /**
      * Setup gamepads info.
      */
-    initialGamePadSetup () {
+    reinitialize () {
         // clear gamepad information
         for (let i = 0; i < this.Players.length; i++) {
             this.Players[i].setModel(undefined)
@@ -448,15 +475,11 @@ class GameInput {
                     }
 
                     // blank state to start
-                    this.Players[i].state = {}
-                    this.Players[i].analog = {}
+                    this.Players[i].state.clear()
+                    this.Players[i].analog.clear()
 
                     // setup Previous as current
-                    this.Players[i].previous.type = this.Players[i].type
-                    this.Players[i].previous.model = this.Players[i].model
-                    this.Players[i].previous.schema = this.Players[i].schema
-                    this.Players[i].previous.state = this.Players[i].state
-                    this.Players[i].previous.analog = this.Players[i].analog
+                    this.Players[i].updatePrevious()
                 }
             }
         } else if (this.debug) {
@@ -464,9 +487,9 @@ class GameInput {
         }
 
         // Pause Game or similar
-        for (let i = 0; i < this.reshufflePlayersActions.length; i++) {
-            if (typeof (this.reshufflePlayersActions[i]) === 'function')
-                this.reshufflePlayersActions[i]()
+        for (let i = 0; i < this.reinitializeActions.length; i++) {
+            if (typeof (this.reinitializeActions[i]) === 'function')
+                this.reinitializeActions[i]()
         }
     }
 }
@@ -476,5 +499,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GamepadMappingKeys, Vector2, DetectedOS, DetectedBrowser
+    GameInputPlayer, GamepadButtons, Vector2, DetectedOS, DetectedBrowser
 }

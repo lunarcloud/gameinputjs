@@ -1,13 +1,45 @@
-GameInput JS
+Game-Input (JavaScript) Library
 =============
 
-A client-side javascript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
+A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
-You'll need at minimum: 
 ```js
 import { GameInput } from './gameinput.js'
 
 const gameInput = new GameInput()
+// Events style
+    .onReinitialize(() => {
+        console.debug("Players updated")
+    })
+    .onButtonDown((index, button) => {
+        const player = this.gameInput.getPlayer(index)
+        console.debug(`Player ${player} pushed ${player.getButtonText(button)} (${button})`)
+        switch (button) {
+        case GamepadButtons.menu:
+            break
+        default:
+            break
+        }
+    })
+    .onButtonUp((index, button) => {
+        const player = this.gameInput.getPlayer(index)
+        console.debug(`Player ${player} released ${player.getButtonText(button)} (${button})`)
+    })
+
+// Game-Loop Style
+const gameLoop = function () {
+    for (let i = 0; i < 4; i++) {
+        const player = gameInput.getPlayer(4)
+        if (!player)
+            continue
+        if (player.state[GamepadButtons.button0])
+            console.debug(`Player ${player} pushed ${player.getButtonText(GamepadButtons.button0)} (${GamepadButtons.button0})`)
+        const leftStick = player.getStickVector('left')
+        console.debug(`Player left stick vector is ${leftStick.toString()}`)
+        requestAnimationFrame(() => gameLoop())
+    }
+}
+requestAnimationFrame(() => gameLoop()) // kick off
 ```
 
 Building

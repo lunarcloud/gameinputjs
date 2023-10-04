@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { GameInput } from './gameinput.js'
 import { GamepadMapping } from './gamepad-mapping.js'
-import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
+import { GamepadButtons } from './gamepad-buttons.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { Vector2 } from './vector2.js'
 
@@ -36,41 +36,45 @@ class GameInputPlayer {
     theme = undefined
 
     /**
-     * @type {Object.<import('./gamepad-mapping-keys.js').GamepadMappingKey,boolean>|undefined}
+     * Current button values
+     * @type {Map<string,boolean>}
      */
-    state = undefined
+    state = new Map()
 
     /**
-     * @type {object|undefined}
+     * Current analog values
+     * @type {Map<string, number>}
      */
-    analog = undefined
+    analog = new Map()
 
     /**
      * @type {{
      *  type: GameInputSchema|undefined,
      *  model: GameInputModel|undefined,
      *  schema: GamepadMapping|undefined,
-     *  state: object|undefined,
-     *  analog: object|undefined
+     *  state: Map<string,boolean>,
+     *  analog: Map<string, number>
      * }}
      */
     previous = {
         type: undefined,
         model: undefined,
         schema: undefined,
-        state: undefined,
-        analog: undefined
+        state: new Map(),
+        analog: new Map()
     }
 
     /**
      * Actions to perform on button down.
+     * @type {Map<import('./gamepad-buttons.js').GamepadButton, Array<Function>>}
      */
-    buttonDownActions = {}
+    buttonDownActions = new Map()
 
     /**
      * Actions to perform on button up.
+     * @type {Map<import('./gamepad-buttons.js').GamepadButton, Array<Function>>}
      */
-    buttonUpActions = {}
+    buttonUpActions = new Map()
 
     /**
      * Constuctor.
@@ -82,10 +86,20 @@ class GameInputPlayer {
         this.number = number
         this.index = number - 1
 
-        for (const i in GamepadMappingKeys) {
-            this.buttonDownActions[GamepadMappingKeys[i]] = []
-            this.buttonUpActions[GamepadMappingKeys[i]] = []
+        for (const i in GamepadButtons) {
+            this.buttonDownActions.set(GamepadButtons[i], [])
+            this.buttonUpActions.set(GamepadButtons[i], [])
         }
+    }
+
+    updatePrevious () {
+        this.previous.type = this.type
+        this.previous.model = this.model
+        this.previous.schema = this.schema
+        this.previous.state = this.state
+        this.previous.analog = this.analog
+        this.state = new Map()
+        this.analog = new Map()
     }
 
     /**
@@ -117,50 +131,50 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
      */
-    buttonDown (schemaName) {
-        this.#gameInput.buttonDown(this.index, schemaName)
-        for (const action in this.buttonDownActions[schemaName])
-            this.buttonDownActions[schemaName][action]()
+    buttonDown (buttonName) {
+        this.#gameInput.buttonDown(this.index, buttonName)
+        for (const action in this.buttonDownActions.get(buttonName))
+            this.buttonDownActions.get(buttonName)[action]()
     }
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
      */
-    buttonUp (schemaName) {
-        this.#gameInput.buttonUp(this.index, schemaName)
-        for (const action in this.buttonUpActions[schemaName])
-            this.buttonUpActions[schemaName][action]()
+    buttonUp (buttonName) {
+        this.#gameInput.buttonUp(this.index, buttonName)
+        for (const action in this.buttonUpActions.get(buttonName))
+            this.buttonUpActions.get(buttonName)[action]()
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
      * @param {Function} action Action to add.
      */
-    onButtonDown (schemaName, action) {
-        if (schemaName in GamepadMappingKeys === false)
-            throw new Error('Must be SchemaNames')
+    onButtonDown (buttonName, action) {
+        if (buttonName in GamepadButtons === false)
+            throw new Error('Must be buttonNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonDownActions[schemaName].push(action)
+        this.buttonDownActions.get(buttonName).push(action)
     }
 
     /**
      * Add an action to "button up" events.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
      * @param {Function} action Action to add.
      */
-    onButtonUp (schemaName, action) {
-        if (schemaName in GamepadMappingKeys === false)
-            throw new Error('Must be SchemaNames')
+    onButtonUp (buttonName, action) {
+        if (buttonName in GamepadButtons === false)
+            throw new Error('Must be buttonNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonUpActions[schemaName].push(action)
+        this.buttonUpActions.get(buttonName).push(action)
     }
 
     /**
@@ -177,9 +191,9 @@ class GameInputPlayer {
         let item = stick + 'StickUp'
         if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
-                vector.y -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.y -= this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             } else {
-                vector.y -= this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.y -= this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             }
         } else {
             vector.y -= 0.7
@@ -188,9 +202,9 @@ class GameInputPlayer {
         item = stick + 'StickDown'
         if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
-                vector.y += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.y += this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             } else {
-                vector.y += this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.y += this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             }
         } else {
             vector.y += 0.7
@@ -199,9 +213,9 @@ class GameInputPlayer {
         item = stick + 'StickLeft'
         if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
-                vector.x -= this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.x -= this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             } else {
-                vector.x -= this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.x -= this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             }
         } else {
             vector.x -= 0.7
@@ -210,9 +224,9 @@ class GameInputPlayer {
         item = stick + 'StickRight'
         if (this.schema[item] instanceof AxisAsButton) {
             if (this.schema[item].direction === 'negative') {
-                vector.x += this.analog[item] < this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.x += this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             } else {
-                vector.x += this.analog[item] > this.schema[item].deadZone ? Math.abs(this.analog[item]) : 0
+                vector.x += this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
             }
         } else {
             vector.x += 0.7
@@ -267,27 +281,27 @@ class GameInputPlayer {
         trigger += 'Trigger'
 
         if (typeof (this.schema[trigger]) === 'number') {
-            return this.state[trigger] ? 1 : 0
+            return this.state.get(trigger) ? 1 : 0
         }
         // else  this.schema[trigger] instanceof AxisAsButton
         return this.#normalize(
-        /* val */ this.state[trigger],
-            /* min */ this.schema[trigger].deadZone,
-            /* max */ 1
+            this.analog.get(trigger),
+            this.schema[trigger].deadZone,
+            1
         )
     }
 
     /**
      * Gets the button text.
-     * @param   {string}    schemaName      name of the button or axisValue
+     * @param   {GamepadButton}    buttonName      name of the button or axisValue
      * @param   {boolean}   symbolsAsWords  whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      * @returns {string}    button text
      */
-    getButtonText (schemaName, symbolsAsWords) {
+    getButtonText (buttonName, symbolsAsWords = false) {
         if (!this.model?.type)
             return ''
 
-        const text = this.model.type.schemaNames[schemaName]
+        const text = this.model.type.buttonNames.get(buttonName)
 
         if (symbolsAsWords !== true)
             return text

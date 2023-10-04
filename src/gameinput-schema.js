@@ -1,3 +1,5 @@
+import { GamepadButtons } from './gamepad-buttons.js'
+
 /**
  * Defines what each button is displayed as, what should be on the physical device for each button.
  */
@@ -93,20 +95,20 @@ class GameInputSchema {
 
     /**
      * Button/Axes names-to-text
+     * @type {Map<GamepadButton, string>}
      */
-    schemaNames = {}
+    buttonNames = new Map()
 
     /**
      * Constructor.
      * @param {string} name schema/theme name
-     * @param {object} themeSchemaNames list of overrides for button names to text
+     * @param {Map|object} themebuttonNames list of overrides for button names to text
      */
-    constructor (name, themeSchemaNames) {
+    constructor (name, themebuttonNames) {
         this.name = name
 
-        for (const i in GameInputSchema.Defaults) {
-            this.schemaNames[i] = themeSchemaNames[i] ?? GameInputSchema.Defaults[i]
-        }
+        Object.keys(GameInputSchema.Defaults).forEach((/** @type {any} */key, _) =>
+            this.buttonNames.set(key, themebuttonNames[key] ?? GameInputSchema.Defaults[key]))
     }
 }
 
