@@ -36,10 +36,4 @@ const DetectedBrowser = /Chrome/.test(navigator.userAgent)
         ? 'Firefox'
         : 'Other'
 
-/* Provide this globally */
-globalThis.Detected = {
-    OS: DetectedOS,
-    Browser: DetectedBrowser
-}
-
 export { DetectedOS, DetectedBrowser }
