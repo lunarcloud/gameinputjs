@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+      "lib": ["ES2023", "DOM"],
+      "allowJs": true,
+      "checkJs": true,
+      "noEmit": true,
+      "strict": false,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "types": [],
+      "esModuleInterop": true
+    },
+    "include": ["src"]
+  }

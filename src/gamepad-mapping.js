@@ -79,7 +79,7 @@ class GamepadMapping {
 
     /**
      * Look up def by button name.
-     * @param {import('./gamepad-buttons.js').GamepadButton} key button name.
+     * @param {import('./gamepad-buttons.js').GameInputButton} key button name.
      * @returns {string} button definition
      */
     lookup (key) {

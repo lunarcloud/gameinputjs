@@ -4,7 +4,7 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GamepadButtons } from './gamepad-buttons.js'
+import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS, DetectedBrowser } from './os-detect.js'
 import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
@@ -166,7 +166,7 @@ class GameInput {
 
     /**
      * Callback providing player index and button name.
-     * @typedef {function(number, import('./gamepad-buttons.js').GamepadButton):void} ButtonActionFunc
+     * @typedef {function(number, import('./gamepad-buttons.js').GameInputButton):void} ButtonActionFunc
      */
 
     /**
@@ -264,7 +264,7 @@ class GameInput {
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName   Button Name
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
      * @returns {GameInput}     self, for chaining statements.
      */
     buttonDown (player, buttonName) {
@@ -277,7 +277,7 @@ class GameInput {
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName   Button Name
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
      * @returns {GameInput}     self, for chaining statements.
      */
     buttonUp (player, buttonName) {
@@ -499,5 +499,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GamepadButtons, Vector2, DetectedOS, DetectedBrowser
+    GameInputPlayer, GameInputButtons, Vector2, DetectedOS, DetectedBrowser
 }
