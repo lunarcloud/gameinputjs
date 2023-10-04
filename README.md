@@ -33,7 +33,7 @@ const gameLoop = function () {
         if (!player)
             continue
         if (player.state[GameInputButtons.button0])
-            console.debug(`Player ${player} pushed ${player.getButtonText(GameInputButtons.button0)} (${GameInputButtons.button0})`)
+            player.rumble({ duration: 200, weakMagnitude: 1.0, strongMagnitude: 0.25 })
         const leftStick = player.getStickVector('left')
         console.debug(`Player left stick vector is ${leftStick.toString()}`)
         requestAnimationFrame(() => gameLoop())
