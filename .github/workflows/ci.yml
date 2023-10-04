@@ -32,4 +32,5 @@ jobs:
     - name: Package
       uses: actions/upload-artifact@v3
       with:
+        name: release
         path: dist/*
