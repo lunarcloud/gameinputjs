@@ -3,6 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>GameInput Testing</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="manifest" href="./site.webmanifest">
+
     <meta name="description" content="">
     <meta name="author" content="Samuel Sarette">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +27,18 @@
         }
         .player table {
             margin: 0;
+        }
+        .icon-rumble-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 150px;
+            padding: 16px 0;
+        }
+        button[disabled] {
+            cursor: not-allowed;
+            background-color: rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
@@ -41,8 +59,9 @@
 
     <div id="player-template" class="row template player">
       <div class="one column"><h2 class="player-number">1</div>
-      <div class="two columns">
+      <div class="two columns icon-rumble-column">
         <img class="gameinput-icon gameinput-icon-player-template" >
+        <button class="player-rumble">rumble</button>
       </div>
       <div class="nine columns">
         <table>
@@ -129,7 +148,7 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script type="module">
-    import { GameInput, GamepadButtons, DetectedOS, DetectedBrowser } from './gameinput.js'
+    import { GameInput, GamepadButtons, DetectedOS, DetectedBrowser } from '../gameinput.js' // from '../src/gameinput.js'
 
     globalThis.gi = new GameInput();
 
@@ -137,15 +156,15 @@
 
     // Setup
     gi.onButtonDown((playerIndex, buttonName) => {
-        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
-        for (var i = 0; i < buttonElements.length; i++) {
+        let buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
+        for (let i = 0; i < buttonElements.length; i++) {
             buttonElements[i].classList.add("gameinput-button-active");
         }
     });
 
     gi.onButtonUp((playerIndex, buttonName) => {
-        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
-        for (var i = 0; i < buttonElements.length; i++) {
+        let buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
+        for (let i = 0; i < buttonElements.length; i++) {
             buttonElements[i].classList.remove("gameinput-button-active");
         }
     });
@@ -153,32 +172,32 @@
     gi.onReinitialize(function()
     {
         /* Remove Old Stuff */
-        for (var i = 0; i < gi.Players.length; i++)
+        for (let i = 0; i < gi.Players.length; i++)
         {
-            var previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + i);
+            let previousThemeStyleElements = document.head.querySelectorAll('.gameinput-theme-player' + i);
             for (let j = 0; j < previousThemeStyleElements.length; j++) document.head.removeChild(previousThemeStyleElements[j]);
         }
 
         setTimeout(function(){
             /* Add new stuff */
-            for (var i = 0; i < gi.Players.length; i++)
+            for (let i = 0; i < gi.Players.length; i++)
             {
-                var player = gi.getPlayer(i);
+                let player = gi.getPlayer(i);
 
                 if (typeof(player.type) !== "undefined" && typeof(player.model) !== "undefined") {
-                    var playerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
+                    let playerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
                     for (let j = 0; j < playerIcons.length; j++ ) playerIcons[j].setAttribute("src", "img/" + player.model.iconName + ".png");
 
-                    var backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + player.index);
+                    let backgroundIcons = document.querySelectorAll(".gameinput-icon-background-player" + player.index);
                     for (let j = 0; j < backgroundIcons.length; j++ ) backgroundIcons[j].style.backgroundImage = "url('img/models/" + player.model.iconName + ".png')";
 
-                    var themeStyleElement = document.createElement('link');
+                    let themeStyleElement = document.createElement('link');
                     themeStyleElement.classList.add("gameinput-theme-player" + player.index);
                     themeStyleElement.setAttribute("rel", "stylesheet");
                     themeStyleElement.setAttribute("href", "css/" + player.type.name.toLowerCase() + "/" + player.index + ".css");
                     document.head.appendChild(themeStyleElement);
                 } else {
-                    var previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
+                    let previousPlayerIcons = document.querySelectorAll("img.gameinput-icon-player" + player.index);
                     for (let j = 0; j < previousPlayerIcons.length; j++ ) previousPlayerIcons[j].setAttribute("src", "");
                 }
             }
@@ -192,65 +211,72 @@
     {
         document.querySelector("#players").innerHTML = '';
 
-        for (var i = 0; i < gi.Players.length; i++)
+        for (let i = 0; i < gi.Players.length; i++)
         {
             if (typeof(gi.getPlayer(i)) === "undefined"
             ||  typeof(gi.getPlayer(i).type) === "undefined"
             ||  typeof(gi.getPlayer(i).schema) === "undefined") continue;
 
-            var row = document.querySelector("#player-template").cloneNode(true);
+            /** @type {Element} */
+            let row = document.querySelector("#player-template").cloneNode(true);
             row.id = "";
-            row.setAttribute("number", (i+1));
+            row.setAttribute("number", `${i+1}`);
             row.classList.remove("template");
 
-            var playerNumberReferences = row.querySelectorAll(".player-number");
-            for (var k = 0; k < playerNumberReferences.length; k++)
-                playerNumberReferences[k].textContent = (i+1);
+            let playerNumberReferences = row.querySelectorAll(".player-number");
+            for (let k = 0; k < playerNumberReferences.length; k++)
+                playerNumberReferences[k].textContent = `${i+1}`
 
-            var playerIdReferences = row.querySelectorAll(".player-id");
-            for (var k = 0; k < playerIdReferences.length; k++)
+            let playerIdReferences = row.querySelectorAll(".player-id");
+            for (let k = 0; k < playerIdReferences.length; k++)
                 playerIdReferences[k].textContent = gi.getPlayer(i).model.id;
 
-            var iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
-            for (var k = 0; k < iconPlayerReferences.length; k++) {
+            /** @type {Button} */
+            let rumbleButton = row.querySelector(".player-rumble");
+            rumbleButton.onclick = () => gi.getPlayer(i).rumble();
+            rumbleButton.disabled = !gi.getPlayer(i).hasRumble()
+
+
+            let iconPlayerReferences = row.querySelectorAll(".gameinput-icon-player-template");
+            for (let k = 0; k < iconPlayerReferences.length; k++) {
                 iconPlayerReferences[k].classList.add("gameinput-icon-player" + i);
                 iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
             }
 
-            for (var j in GamepadButtons)
+            for (let j in GamepadButtons)
             {
-                var templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
-                for (var k = 0; k < templateUpReferences.length; k++) {
+                let templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
+                for (let k = 0; k < templateUpReferences.length; k++) {
                     templateUpReferences[k].classList.add("gameinput-player" + i + "-up");
                     templateUpReferences[k].classList.remove("gameinput-player-template-up");
                 }
-                var templateDownReferences = row.querySelectorAll(".gameinput-player-template-down");
-                for (var k = 0; k < templateDownReferences.length; k++) {
+                let templateDownReferences = row.querySelectorAll(".gameinput-player-template-down");
+                for (let k = 0; k < templateDownReferences.length; k++) {
                     templateDownReferences[k].classList.add("gameinput-player" + i + "-down");
                     templateDownReferences[k].classList.remove("gameinput-player-template-down");
                 }
-                var templateLeftReferences = row.querySelectorAll(".gameinput-player-template-left");
-                for (var k = 0; k < templateLeftReferences.length; k++) {
+                let templateLeftReferences = row.querySelectorAll(".gameinput-player-template-left");
+                for (let k = 0; k < templateLeftReferences.length; k++) {
                     templateLeftReferences[k].classList.add("gameinput-player" + i + "-left");
                     templateLeftReferences[k].classList.remove("gameinput-player-template-left");
                 }
-                var templateRightReferences = row.querySelectorAll(".gameinput-player-template-right");
-                for (var k = 0; k < templateRightReferences.length; k++) {
+                let templateRightReferences = row.querySelectorAll(".gameinput-player-template-right");
+                for (let k = 0; k < templateRightReferences.length; k++) {
                     templateRightReferences[k].classList.add("gameinput-player" + i + "-right");
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
                 if (typeof(gi.getPlayer(i).schema[GamepadButtons[j]]) === "undefined")
                 {
-                    var unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
-                    for (var k = 0; k < unmappedReferences.length; k++) {
+                    let unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
+                    for (let k = 0; k < unmappedReferences.length; k++) {
                         unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
                     }
                 }
                 else
                 {
-                    var templateReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
-                    for (var k = 0; k < templateReferences.length; k++) {
+                    let templateReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
+                    for (let k = 0; k < templateReferences.length; k++) {
                         templateReferences[k].classList.add("gameinput-player" + i + "-" + GamepadButtons[j]);
                         templateReferences[k].classList.remove("gameinput-player-template-" + GamepadButtons[j]);
                     }

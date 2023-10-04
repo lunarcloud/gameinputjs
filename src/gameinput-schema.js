@@ -1,5 +1,3 @@
-import { GamepadButtons } from './gamepad-buttons.js'
-
 /**
  * Defines what each button is displayed as, what should be on the physical device for each button.
  */

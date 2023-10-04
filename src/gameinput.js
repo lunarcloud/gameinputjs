@@ -487,10 +487,10 @@ class GameInput {
         }
 
         // Pause Game or similar
-        for (let i = 0; i < this.reinitializeActions.length; i++) {
-            if (typeof (this.reinitializeActions[i]) === 'function')
-                this.reinitializeActions[i]()
-        }
+        setTimeout(
+            () => this.reinitializeActions.forEach(action => action()),
+            100
+        )
     }
 }
 
