@@ -14,7 +14,8 @@
     "opts": {
         "encoding": "utf8",
         "destination": "./dist/docs/",
-        "recurse": true
+        "recurse": true,
+        "readme": "./README.md"
     },
     "tags": {
         "allowUnknownTags": true,
