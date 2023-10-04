@@ -121,6 +121,14 @@ class GameInputPlayer {
     }
 
     /**
+     * Gets if this player's gamepad has rumble.
+     * @returns {boolean} whether it has rumble support
+     */
+    hasRumble () {
+        return !!this.getGamepad()?.vibrationActuator
+    }
+
+    /**
      * Rumble the player's gamepad.
      * @param {{ duration: number, strongMagnitude: number, weakMagnitude: number }} gamepadEffectParameters parameters for the rumble
      * @returns {Promise<string>} result promise
@@ -293,9 +301,9 @@ class GameInputPlayer {
 
     /**
      * Gets the button text.
-     * @param   {GamepadButton}    buttonName      name of the button or axisValue
-     * @param   {boolean}   symbolsAsWords  whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
-     * @returns {string}    button text
+     * @param   {GamepadButton|string}  buttonName  name of the button or axisValue
+     * @param   {boolean} symbolsAsWords            whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
+     * @returns {string}                            button text
      */
     getButtonText (buttonName, symbolsAsWords = false) {
         if (!this.model?.type)

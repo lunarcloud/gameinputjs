@@ -13,7 +13,7 @@
     "sourceType": "module",
     "opts": {
         "encoding": "utf8",
-        "destination": "./docs/",
+        "destination": "./dist/docs/",
         "recurse": true
     },
     "tags": {

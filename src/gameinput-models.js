@@ -861,6 +861,12 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
+        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b12)',
+        'Linux'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
         'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)',
         'Android'
     ),
