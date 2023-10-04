@@ -129,12 +129,12 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script type="module">
-    import { GameInput, GamepadMappingKeys } from './gameinput.js'
+    import { GameInput, GamepadMappingKeys, DetectedOS, DetectedBrowser } from './gameinput.js'
 
     globalThis.gi = new GameInput();
     gi.debug = true;
 
-    document.querySelector('p.detected').textContent = `${globalThis.Detected.Browser} on ${globalThis.Detected.OS}`
+    document.querySelector('p.detected').textContent = `${DetectedBrowser} on ${DetectedOS}`
 
     // Setup
     gi.onButtonDown((playerIndex, schemaName) => {
