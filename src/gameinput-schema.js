@@ -6,31 +6,30 @@ import { GamepadButtons } from './gamepad-buttons.js'
 class GameInputSchema {
     /**
      * The default values that can be overridden.
-     * @type {Map<GamepadButton, string>}
      */
-    static Defaults = new Map([
-        [GamepadButtons.dpadUp, '↑'],
-        [GamepadButtons.dpadDown, '↓'],
-        [GamepadButtons.dpadLeft, '←'],
-        [GamepadButtons.dpadRight, '→'],
-        [GamepadButtons.menu, '▶'],
-        [GamepadButtons.button0, 'button0'],
-        [GamepadButtons.button1, 'button1'],
-        [GamepadButtons.button2, 'button2'],
-        [GamepadButtons.button3, 'button3'],
-        [GamepadButtons.leftStickUp, '↑'],
-        [GamepadButtons.leftStickDown, '↓'],
-        [GamepadButtons.leftStickLeft, '←'],
-        [GamepadButtons.leftStickRight, '→'],
-        [GamepadButtons.rightStickUp, '↑'],
-        [GamepadButtons.rightStickDown, '↓'],
-        [GamepadButtons.rightStickLeft, '←'],
-        [GamepadButtons.rightStickRight, '→'],
-        [GamepadButtons.leftShoulder, 'leftShoulder'],
-        [GamepadButtons.rightShoulder, 'rightShoulder'],
-        [GamepadButtons.leftTrigger, 'leftTrigger'],
-        [GamepadButtons.rightTrigger, 'rightTrigger']
-    ])
+    static Defaults = {
+        dpadUp: '↑',
+        dpadDown: '↓',
+        dpadLeft: '←',
+        dpadRight: '→',
+        menu: '▶',
+        button0: 'button0',
+        button1: 'button1',
+        button2: 'button2',
+        button3: 'button3',
+        leftStickUp: '↑',
+        leftStickDown: '↓',
+        leftStickLeft: '←',
+        leftStickRight: '→',
+        rightStickUp: '↑',
+        rightStickDown: '↓',
+        rightStickLeft: '←',
+        rightStickRight: '→',
+        leftShoulder: 'leftShoulder',
+        rightShoulder: 'rightShoulder',
+        leftTrigger: 'leftTrigger',
+        rightTrigger: 'rightTrigger'
+    }
 
     /**
      * Sega/Xbox style
@@ -108,15 +107,8 @@ class GameInputSchema {
     constructor (name, themebuttonNames) {
         this.name = name
 
-        // defaults
-        GameInputSchema.Defaults.forEach((value, key, _) => this.buttonNames.set(key, value))
-
-        // override
-        if (themebuttonNames instanceof Map)
-            themebuttonNames.forEach((value, key, _) => this.buttonNames.set(key, value))
-        else
-            Object.keys(themebuttonNames).forEach((/** @type {any} */key, _) =>
-                this.buttonNames.set(key, themebuttonNames[key]))
+        Object.keys(GameInputSchema.Defaults).forEach((/** @type {any} */key, _) =>
+            this.buttonNames.set(key, themebuttonNames[key] ?? GameInputSchema.Defaults[key]))
     }
 }
 
