@@ -148,7 +148,7 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script type="module">
-    import { GameInput, GamepadButtons, DetectedOS, DetectedBrowser } from '../gameinput.js' // from '../src/gameinput.js'
+    import { GameInput, GameInputButtons, DetectedOS, DetectedBrowser } from '../gameinput.js' // from '../src/gameinput.js'
 
     globalThis.gi = new GameInput();
 
@@ -243,7 +243,7 @@
                 iconPlayerReferences[k].classList.remove("gameinput-icon-player-template");
             }
 
-            for (let j in GamepadButtons)
+            for (let j in GameInputButtons)
             {
                 let templateUpReferences = row.querySelectorAll(".gameinput-player-template-up");
                 for (let k = 0; k < templateUpReferences.length; k++) {
@@ -266,19 +266,19 @@
                     templateRightReferences[k].classList.remove("gameinput-player-template-right");
                 }
 
-                if (typeof(gi.getPlayer(i).schema[GamepadButtons[j]]) === "undefined")
+                if (typeof(gi.getPlayer(i).schema[GameInputButtons[j]]) === "undefined")
                 {
-                    let unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
+                    let unmappedReferences = row.querySelectorAll(".gameinput-player-template-" + GameInputButtons[j]);
                     for (let k = 0; k < unmappedReferences.length; k++) {
                         unmappedReferences[k].parentElement.removeChild(unmappedReferences[k]);
                     }
                 }
                 else
                 {
-                    let templateReferences = row.querySelectorAll(".gameinput-player-template-" + GamepadButtons[j]);
+                    let templateReferences = row.querySelectorAll(".gameinput-player-template-" + GameInputButtons[j]);
                     for (let k = 0; k < templateReferences.length; k++) {
-                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GamepadButtons[j]);
-                        templateReferences[k].classList.remove("gameinput-player-template-" + GamepadButtons[j]);
+                        templateReferences[k].classList.add("gameinput-player" + i + "-" + GameInputButtons[j]);
+                        templateReferences[k].classList.remove("gameinput-player-template-" + GameInputButtons[j]);
                     }
                 }
             }

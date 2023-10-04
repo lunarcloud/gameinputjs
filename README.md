@@ -15,7 +15,7 @@ const gameInput = new GameInput()
         const player = this.gameInput.getPlayer(index)
         console.debug(`Player ${player} pushed ${player.getButtonText(button)} (${button})`)
         switch (button) {
-        case GamepadButtons.menu:
+        case GameInputButtons.menu:
             break
         default:
             break
@@ -32,8 +32,8 @@ const gameLoop = function () {
         const player = gameInput.getPlayer(4)
         if (!player)
             continue
-        if (player.state[GamepadButtons.button0])
-            console.debug(`Player ${player} pushed ${player.getButtonText(GamepadButtons.button0)} (${GamepadButtons.button0})`)
+        if (player.state[GameInputButtons.button0])
+            console.debug(`Player ${player} pushed ${player.getButtonText(GameInputButtons.button0)} (${GameInputButtons.button0})`)
         const leftStick = player.getStickVector('left')
         console.debug(`Player left stick vector is ${leftStick.toString()}`)
         requestAnimationFrame(() => gameLoop())

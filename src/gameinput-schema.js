@@ -93,7 +93,7 @@ class GameInputSchema {
 
     /**
      * Button/Axes names-to-text
-     * @type {Map<GamepadButton, string>}
+     * @type {Map<import("./gamepad-buttons").GameInputButton, string>}
      */
     buttonNames = new Map()
 

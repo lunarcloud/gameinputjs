@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { GameInput } from './gameinput.js'
 import { GamepadMapping } from './gamepad-mapping.js'
-import { GamepadButtons } from './gamepad-buttons.js'
+import { GameInputButtons } from './gamepad-buttons.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { Vector2 } from './vector2.js'
 
@@ -66,13 +66,13 @@ class GameInputPlayer {
 
     /**
      * Actions to perform on button down.
-     * @type {Map<import('./gamepad-buttons.js').GamepadButton, Array<Function>>}
+     * @type {Map<import('./gamepad-buttons.js').GameInputButton, Array<Function>>}
      */
     buttonDownActions = new Map()
 
     /**
      * Actions to perform on button up.
-     * @type {Map<import('./gamepad-buttons.js').GamepadButton, Array<Function>>}
+     * @type {Map<import('./gamepad-buttons.js').GameInputButton, Array<Function>>}
      */
     buttonUpActions = new Map()
 
@@ -86,9 +86,9 @@ class GameInputPlayer {
         this.number = number
         this.index = number - 1
 
-        for (const i in GamepadButtons) {
-            this.buttonDownActions.set(GamepadButtons[i], [])
-            this.buttonUpActions.set(GamepadButtons[i], [])
+        for (const i in GameInputButtons) {
+            this.buttonDownActions.set(GameInputButtons[i], [])
+            this.buttonUpActions.set(GameInputButtons[i], [])
         }
     }
 
@@ -139,7 +139,7 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
      */
     buttonDown (buttonName) {
         this.#gameInput.buttonDown(this.index, buttonName)
@@ -149,7 +149,7 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
      */
     buttonUp (buttonName) {
         this.#gameInput.buttonUp(this.index, buttonName)
@@ -159,11 +159,11 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button down" events.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
      * @param {Function} action Action to add.
      */
     onButtonDown (buttonName, action) {
-        if (buttonName in GamepadButtons === false)
+        if (buttonName in GameInputButtons === false)
             throw new Error('Must be buttonNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -173,11 +173,11 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button up" events.
-     * @param {import('./gamepad-buttons.js').GamepadButton} buttonName Name of button
+     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
      * @param {Function} action Action to add.
      */
     onButtonUp (buttonName, action) {
-        if (buttonName in GamepadButtons === false)
+        if (buttonName in GameInputButtons === false)
             throw new Error('Must be buttonNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -301,7 +301,7 @@ class GameInputPlayer {
 
     /**
      * Gets the button text.
-     * @param   {GamepadButton|string}  buttonName  name of the button or axisValue
+     * @param   {import('./gamepad-buttons.js').GameInputButton|string}  buttonName  name of the button or axisValue
      * @param   {boolean} symbolsAsWords            whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      * @returns {string}                            button text
      */

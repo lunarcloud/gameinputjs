@@ -4,13 +4,13 @@
     "description": "",
     "private": true,
     "scripts": {
-        "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
-        "serve": "npx serve",
+        "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "docs": "shx rm -rf ./dist/docs && npx jsdoc -c jsdoc.conf.json",
         "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp LICENSE dist/",
-        "build": "npm run pre-build && npx webpack --config webpack.config.js --mode development",
-        "build-prod": "npm run pre-build && npx webpack --config webpack.config.js --mode production && npm run docs"
+        "build": "npm run pre-build && shx cp -r src/* dist/ ",
+        "serve": "npm run build && npx serve dist",
+        "build-prod": "npm run build && npm run docs"
     },
     "devDependencies": {
         "eslint": "^8.49.0",
@@ -23,9 +23,7 @@
         "jsdoc": "^4.0.2",
         "jsdoc-tsimport-plugin": "^1.0.5",
         "serve": "^14.2.1",
-        "shx": "^0.3.4",
-        "webpack": "^5.88.2",
-        "webpack-cli": "^5.1.4"
+        "shx": "^0.3.4"
     },
     "license": "MIT",
     "author": "Samuel Sarette"
