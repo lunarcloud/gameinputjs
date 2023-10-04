@@ -136,15 +136,15 @@
     document.querySelector('p.detected').textContent = `${DetectedBrowser} on ${DetectedOS}`
 
     // Setup
-    gi.onButtonDown((playerIndex, schemaName) => {
-        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
+    gi.onButtonDown((playerIndex, buttonName) => {
+        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
         for (var i = 0; i < buttonElements.length; i++) {
             buttonElements[i].classList.add("gameinput-button-active");
         }
     });
 
-    gi.onButtonUp((playerIndex, schemaName) => {
-        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + schemaName);
+    gi.onButtonUp((playerIndex, buttonName) => {
+        var buttonElements = document.querySelectorAll(".gameinput-player" + playerIndex + "-" + buttonName);
         for (var i = 0; i < buttonElements.length; i++) {
             buttonElements[i].classList.remove("gameinput-button-active");
         }

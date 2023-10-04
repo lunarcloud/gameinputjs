@@ -4,6 +4,7 @@
 
 /**
  * Schema Names
+ * @type {Object.<GamepadButton, GamepadButton>}
  */
 const GamepadButtons = {
     dpadUp: 'dpadUp',
