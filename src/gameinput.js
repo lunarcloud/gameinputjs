@@ -4,10 +4,11 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
+import { GamepadButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS, DetectedBrowser } from './os-detect.js'
 import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+import { GameInputOptions } from './gameinput-options.js'
 /**
  * @module GameInput
  */
@@ -154,14 +155,19 @@ class GameInput {
     firstPress = false
 
     /**
+     * Callback providing player index and button name.
+     * @typedef {function(number, import('./gamepad-buttons.js').GamepadButton):void} ButtonActionFunc
+     */
+
+    /**
      * Actions to perform on button down.
-     * @type {Array<Function>}
+     * @type {Array<ButtonActionFunc>}
      */
     buttonDownActions = []
 
     /**
      * Actions to perform on button up.
-     * @type {Array<Function>}
+     * @type {Array<ButtonActionFunc>}
      */
     buttonUpActions = []
 
@@ -175,12 +181,15 @@ class GameInput {
      * Actions to perform after players reshuffled.
      * @type {Array<Function>}
      */
-    reshufflePlayersActions = []
+    reinitializeActions = []
 
     /**
      * Constructor.
+     * @param {GameInputOptions} options    constructor options
      */
-    constructor () {
+    constructor (options = undefined) {
+        this.debug = options?.debugStatements || false
+
         this.startUpdateLoop()
 
         // Start watching for gamepads joining and leaving
@@ -207,55 +216,65 @@ class GameInput {
     }
 
     /**
-     * Add an action to "reshuffle players" events.
+     * Add action to "reinitialized" events.
      * @param {Function} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
-    onReshufflePlayers (action) {
+    onReinitialize (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
-        this.reshufflePlayersActions.push(action)
+        this.reinitializeActions.push(action)
+        return this
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {Function} action Action to add.
+     * @param {ButtonActionFunc} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
     onButtonDown (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonDownActions.push(action)
+        return this
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {Function} action Action to add.
+     * @param {ButtonActionFunc} action Action to add.
+     * @returns {GameInput}     self, for chaining statements.
      */
     onButtonUp (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonUpActions.push(action)
+        return this
     }
 
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName   Button Name
+     * @returns {GameInput}     self, for chaining statements.
      */
     buttonDown (player, schemaName) {
         for (const action in this.buttonDownActions)
             if (typeof (this.buttonDownActions[action]) === 'function')
                 this.buttonDownActions[action](player, schemaName)
+        return this
     }
 
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName   Button Name
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName   Button Name
+     * @returns {GameInput}     self, for chaining statements.
      */
     buttonUp (player, schemaName) {
         for (const action in this.buttonUpActions)
             if (typeof (this.buttonUpActions[action]) === 'function')
                 this.buttonUpActions[action](player, schemaName)
+        return this
     }
 
     /**
@@ -383,7 +402,7 @@ class GameInput {
                 console.debug('Now have ' + currentNumberOfGamepads + ' gamepad(s).')
 
             this.lastCheckedNumberOfGamepads = currentNumberOfGamepads
-            this.initialGamePadSetup()
+            this.reinitialize()
         }
 
         requestAnimationFrame(() => this.connectionWatchLoop())
@@ -392,7 +411,7 @@ class GameInput {
     /**
      * Setup gamepads info.
      */
-    initialGamePadSetup () {
+    reinitialize () {
         // clear gamepad information
         for (let i = 0; i < this.Players.length; i++) {
             this.Players[i].setModel(undefined)
@@ -464,9 +483,9 @@ class GameInput {
         }
 
         // Pause Game or similar
-        for (let i = 0; i < this.reshufflePlayersActions.length; i++) {
-            if (typeof (this.reshufflePlayersActions[i]) === 'function')
-                this.reshufflePlayersActions[i]()
+        for (let i = 0; i < this.reinitializeActions.length; i++) {
+            if (typeof (this.reinitializeActions[i]) === 'function')
+                this.reinitializeActions[i]()
         }
     }
 }
@@ -476,5 +495,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GamepadMappingKeys, Vector2, DetectedOS, DetectedBrowser
+    GameInputPlayer, GamepadButtons, Vector2, DetectedOS, DetectedBrowser
 }

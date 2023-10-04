@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { GameInput } from './gameinput.js'
 import { GamepadMapping } from './gamepad-mapping.js'
-import { GamepadMappingKeys } from './gamepad-mapping-keys.js'
+import { GamepadButtons } from './gamepad-buttons.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { Vector2 } from './vector2.js'
 
@@ -36,7 +36,7 @@ class GameInputPlayer {
     theme = undefined
 
     /**
-     * @type {Object.<import('./gamepad-mapping-keys.js').GamepadMappingKey,boolean>|undefined}
+     * @type {Object.<import('./gamepad-buttons.js').GamepadButton,boolean>|undefined}
      */
     state = undefined
 
@@ -82,9 +82,9 @@ class GameInputPlayer {
         this.number = number
         this.index = number - 1
 
-        for (const i in GamepadMappingKeys) {
-            this.buttonDownActions[GamepadMappingKeys[i]] = []
-            this.buttonUpActions[GamepadMappingKeys[i]] = []
+        for (const i in GamepadButtons) {
+            this.buttonDownActions[GamepadButtons[i]] = []
+            this.buttonUpActions[GamepadButtons[i]] = []
         }
     }
 
@@ -117,7 +117,7 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName Name of button
      */
     buttonDown (schemaName) {
         this.#gameInput.buttonDown(this.index, schemaName)
@@ -127,7 +127,7 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName Name of button
      */
     buttonUp (schemaName) {
         this.#gameInput.buttonUp(this.index, schemaName)
@@ -137,11 +137,11 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button down" events.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName Name of button
      * @param {Function} action Action to add.
      */
     onButtonDown (schemaName, action) {
-        if (schemaName in GamepadMappingKeys === false)
+        if (schemaName in GamepadButtons === false)
             throw new Error('Must be SchemaNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -151,11 +151,11 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button up" events.
-     * @param {import('./gamepad-mapping-keys.js').GamepadMappingKey} schemaName Name of button
+     * @param {import('./gamepad-buttons.js').GamepadButton} schemaName Name of button
      * @param {Function} action Action to add.
      */
     onButtonUp (schemaName, action) {
-        if (schemaName in GamepadMappingKeys === false)
+        if (schemaName in GamepadButtons === false)
             throw new Error('Must be SchemaNames')
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
@@ -283,7 +283,7 @@ class GameInputPlayer {
      * @param   {boolean}   symbolsAsWords  whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
      * @returns {string}    button text
      */
-    getButtonText (schemaName, symbolsAsWords) {
+    getButtonText (schemaName, symbolsAsWords = false) {
         if (!this.model?.type)
             return ''
 

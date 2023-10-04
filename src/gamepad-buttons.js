@@ -1,11 +1,11 @@
 /**
- * @typedef {'dpadUp'|'dpadDown'|'dpadLeft'|'dpadRight'|'menu'|'button0'|'button1'|'button2'|'button3'|'leftStickUp'|'leftStickDown'|'leftStickLeft'|'leftStickRight'|'rightStickUp'|'rightStickDown'|'rightStickLeft'|'rightStickRight'|'leftShoulder'|'rightShoulder'|'leftTrigger'|'rightTrigger'} GamepadMappingKey
+ * @typedef {'dpadUp'|'dpadDown'|'dpadLeft'|'dpadRight'|'menu'|'button0'|'button1'|'button2'|'button3'|'leftStickUp'|'leftStickDown'|'leftStickLeft'|'leftStickRight'|'rightStickUp'|'rightStickDown'|'rightStickLeft'|'rightStickRight'|'leftShoulder'|'rightShoulder'|'leftTrigger'|'rightTrigger'} GamepadButton
  */
 
 /**
  * Schema Names
  */
-const GamepadMappingKeys = {
+const GamepadButtons = {
     dpadUp: 'dpadUp',
     dpadDown: 'dpadDown',
     dpadLeft: 'dpadLeft',
@@ -29,4 +29,4 @@ const GamepadMappingKeys = {
     rightTrigger: 'rightTrigger'
 }
 
-export { GamepadMappingKeys }
+export { GamepadButtons }
