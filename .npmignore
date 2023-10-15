@@ -1,0 +1,6 @@
+demo/
+dist/
+node_modules/
+*conf*.j*
+.*
+package*.json
