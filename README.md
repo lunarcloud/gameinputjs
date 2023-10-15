@@ -1,5 +1,6 @@
 Game-Input (JavaScript) Library
 =============
+![](demo/img/generic.png)
 
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
@@ -10,6 +11,13 @@ const gameInput = new GameInput()
 // Events style
     .onReinitialize(() => {
         console.debug("Players updated")
+        const firstPlayer = this.gameInput.getPlayer(0)
+        if (!firstPlayer?.model) {
+            noPlayers()
+            return
+        }
+        displayButtons(firstPlayer?.type.buttonNames)
+        document.querySelector('img.gamepad').src = `img/${firstPlayer?.model?.iconName || 'generic'}.png`
     })
     .onButtonDown((index, button) => {
         const player = this.gameInput.getPlayer(index)
