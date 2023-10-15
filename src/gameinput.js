@@ -436,8 +436,7 @@ class GameInput {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
                     // Translate into Type -  Players order is gamepad order
                     for (const gamepad of GameInput.Models.Specific) {
-                        if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id) &&
-                            DetectedOS === gamepad.os) {
+                        if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id) && [DetectedOS, undefined].includes(gamepad.os)) {
                             this.Players[i].setModel(gamepad)
 
                             if (this.debug) {
