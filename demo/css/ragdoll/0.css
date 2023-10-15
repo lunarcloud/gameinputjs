@@ -16,13 +16,13 @@
 
 .gameinput-button.gameinput-player0-button2
 {
-    color: #F9DBDB; /* pink */
+    color: #b15e5e; /* pink */
     /*text-shadow: 0 0 4px black;
     background-color: pink;*/
 }
 
 .gameinput-button.gameinput-player0-button3 {
-    color: #9FD49F; /* green */
+    color: #3ca23c; /* green */
 }
 
 .gameinput-button.gameinput-player0-button0 .text:before {

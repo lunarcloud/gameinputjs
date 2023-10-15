@@ -8,8 +8,8 @@
     text-align: center;
 
     /* Default text colors */
+    background-color: #ddd;
     color: black;
-    text-shadow: 0 0 4px white;
 }
 
 .gameinput-button.gameinput-player0-menu .text:before,

@@ -156,6 +156,68 @@ const GameInputModels = [
             5, 6, 7, 8
         )),
     new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'ds5',
+        'DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)',
+        'Linux'
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'ds5',
+        'Sony Interactive Entertainment DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)',
+        'Linux'
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'ds5',
+        '054c-0ce6-DualSense Wireless Controller',
+        'Linux',
+        new GamepadMapping(
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            10,
+            1, 2, 4, 3,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
+            5,
+            6,
+            new AxisAsButton(3),
+            new AxisAsButton(6)
+        )),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'ds5',
+        '054c-0ce6-Sony Interactive Entertainment DualSense Wireless Controller',
+        'Linux',
+        new GamepadMapping(
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            10,
+            1, 2, 4, 3,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
+            5,
+            6,
+            new AxisAsButton(3),
+            new AxisAsButton(6)
+        )),
+    new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
         '©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)',
