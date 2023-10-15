@@ -1,13 +1,19 @@
 {
-    "name": "gameinput",
-    "version": "10.0.0",
-    "description": "",
-    "private": true,
+    "name": "@lunarcloud/gameinputjs",
+    "repository": {
+        "url": "https://github.com/lunarcloud/gameinputjs.git"
+    },
+    "publishConfig": {
+        "@lunarcloud:registry": "https://npm.pkg.github.com"
+    },
+    "version": "12.2.0",
+    "description": "Browser library to upgrade the Gamepad API experience",
+    "private": false,
     "scripts": {
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "docs": "shx rm -rf ./dist/docs && npx jsdoc -c jsdoc.conf.json",
-        "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp LICENSE dist/",
+        "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp -r img dist/demo && shx cp LICENSE dist/ && shx cp README.md dist/",
         "build": "npm run pre-build && shx cp -r src/* dist/ ",
         "serve": "npm run build && npx serve dist",
         "build-prod": "npm run build && npm run docs"
