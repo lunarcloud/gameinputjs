@@ -31,11 +31,6 @@ class GameInputPlayer {
     schema = undefined
 
     /**
-     * @type {GameInputSchema|undefined}
-     */
-    theme = undefined
-
-    /**
      * Current button values
      * @type {Map<string,boolean>}
      */
