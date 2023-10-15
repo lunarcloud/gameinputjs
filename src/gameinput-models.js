@@ -158,14 +158,12 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds5',
-        'DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)',
-        'Linux'
+        'DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)'
     ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds5',
-        'Sony Interactive Entertainment DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)',
-        'Linux'
+        'Sony Interactive Entertainment DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)'
     ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
