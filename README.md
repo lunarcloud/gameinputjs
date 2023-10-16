@@ -1,6 +1,6 @@
 Game-Input (JavaScript) Library
 =============
-![](demo/img/generic.png)
+![](img/generic.png)
 
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
