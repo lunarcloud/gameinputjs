@@ -51,10 +51,34 @@ class GameInputSchema {
         button1: 'B',
         button2: 'X',
         button3: 'Y',
-        leftShoulder: 'LB',
-        rightShoulder: 'RB',
-        leftTrigger: 'LT',
-        rightTrigger: 'RT'
+        leftShoulder: 'L',
+        rightShoulder: 'R',
+        leftTrigger: 'ZL',
+        rightTrigger: 'ZR'
+    })
+
+    /**
+     * Nintendo style (Horizontal Right Joy-Con)
+     */
+    static PlumberRotatedRight = new GameInputSchema('Plumber', {
+        button0: 'A',
+        button1: 'X',
+        button2: 'B',
+        button3: 'Y',
+        leftShoulder: 'SL',
+        rightShoulder: 'SR'
+    })
+
+    /**
+     * Nintendo style (Horizontal Left Joy-Con)
+     */
+    static PlumberRotatedLeft = new GameInputSchema('Plumber', {
+        button0: '↑',
+        button1: '→',
+        button2: '←',
+        button3: '↓',
+        leftShoulder: 'SL',
+        rightShoulder: 'SR'
     })
 
     /**
