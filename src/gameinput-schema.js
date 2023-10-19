@@ -70,6 +70,18 @@ class GameInputSchema {
     })
 
     /**
+     * Nintendo style (Horizontal Left Joy-Con)
+     */
+    static PlumberRotatedLeft = new GameInputSchema('Plumber', {
+        button0: '↑',
+        button1: '→',
+        button2: '←',
+        button3: '↓',
+        leftShoulder: 'SL',
+        rightShoulder: 'SR'
+    })
+
+    /**
      * Older Sony style
      */
     static RagdollOld = new GameInputSchema('Ragdoll', {

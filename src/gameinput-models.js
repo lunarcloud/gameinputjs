@@ -1197,6 +1197,24 @@ const GameInputModels = [
             undefined, undefined
         )),
     new GameInputModel(
+        GameInputSchema.PlumberRotatedLeft,
+        'joycon-l',
+        '057e-2006-Nintendo Switch Left Joy-Con',
+        'Linux',
+        new GamepadMapping(
+            undefined, undefined, undefined, undefined,
+            6,
+            10, 9, 8, 11,
+            new AxisAsButton(1),
+            new AxisAsButton(-1),
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            undefined, undefined, undefined, undefined,
+            /* leftShoulder */ 3,
+            /* rightShoulder */ 5,
+            undefined, undefined
+        )),
+    new GameInputModel(
         GameInputSchema.Hedgehog, // should be numbers, see issue #16
         'generic',
         'USB  Joystick (Vendor: 1345 Product: 1030)',
