@@ -1197,6 +1197,24 @@ const GameInputModels = [
             undefined, undefined
         )),
     new GameInputModel(
+        GameInputSchema.PlumberRotatedRight,
+        'joycon-r',
+        'Wireless Gamepad (STANDARD GAMEPAD Vendor: 057e Product: 2007)',
+        'Windows',
+        new GamepadMapping(
+            undefined, undefined, undefined, undefined,
+            10,
+            1, 2, 3, 4,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            undefined, undefined, undefined, undefined,
+            /* leftShoulder */ 5,
+            /* rightShoulder */ 6,
+            undefined, undefined
+        )),
+    new GameInputModel(
         GameInputSchema.PlumberRotatedLeft,
         'joycon-l',
         '057e-2006-Nintendo Switch Left Joy-Con',
@@ -1215,23 +1233,26 @@ const GameInputModels = [
             undefined, undefined
         )),
     new GameInputModel(
-        GameInputSchema.PlumberRotatedRight,
-        'joycon-r',
-        'Wireless Gamepad (STANDARD GAMEPAD Vendor: 057e Product: 2007)',
+        GameInputSchema.PlumberRotatedLeft,
+        'joycon-l',
+        'Wireless Gamepad (STANDARD GAMEPAD Vendor: 057e Product: 2006)',
         'Windows',
         new GamepadMapping(
             undefined, undefined, undefined, undefined,
             10,
             1, 2, 3, 4,
+            new AxisAsButton(1),
+            new AxisAsButton(-1),
             new AxisAsButton(-2),
             new AxisAsButton(2),
-            new AxisAsButton(-1),
-            new AxisAsButton(1),
             undefined, undefined, undefined, undefined,
-            /* leftShoulder */ 5,
-            /* rightShoulder */ 6,
+            5, 6,
             undefined, undefined
         )),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'joycons',
+        'Joy-Con L+R (STANDARD GAMEPAD Vendor: 057e Product: 200e)'),
     new GameInputModel(
         GameInputSchema.Hedgehog, // should be numbers, see issue #16
         'generic',
