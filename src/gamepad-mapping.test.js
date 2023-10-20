@@ -1,8 +1,8 @@
 /* Test of Gamepad Mapping */
 
-import { test, expect } from '@jest/globals';
-import { StardardGamepadMapping } from './standard-gamepad-mapping.js';
-import { AxisAsButton } from './axis-as-button';
+import { test, expect } from '@jest/globals'
+import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+import { AxisAsButton } from './axis-as-button'
 
 const w3cStandardMapping = {
     buttons: [
