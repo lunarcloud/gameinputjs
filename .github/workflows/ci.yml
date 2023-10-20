@@ -27,6 +27,9 @@ jobs:
         npm ci
         npm run build-prod
 
+    - name: Test
+      run: npm test
+
     - name: Package
       uses: actions/upload-artifact@v3
       with:

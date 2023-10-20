@@ -13,7 +13,10 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run build-prod
+
+      - name: Build (Production)
+        run: npm build-prod
+
       - name: Package
         uses: actions/upload-artifact@v3
         with:
