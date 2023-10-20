@@ -36,5 +36,14 @@
         "shx": "^0.3.4"
     },
     "license": "MIT",
-    "author": "Samuel Sarette"
+    "author": "Samuel Sarette",
+    "jest": {
+        "verbose": true,
+        "reporters": [
+            [
+                "github-actions", { "silent": false }
+            ],
+            "summary"
+        ]
+    }
 }
