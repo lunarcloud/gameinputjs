@@ -1254,6 +1254,44 @@ const GameInputModels = [
         'joycons',
         'Joy-Con L+R (STANDARD GAMEPAD Vendor: 057e Product: 200e)'),
     new GameInputModel(
+        GameInputSchema.Plumber,
+        'joycons',
+        'Nintendo Switch Combined Joy-Cons (Vendor: 057e Product: 2008)',
+        'Linux',
+        new GamepadMapping(
+            16, 18, 17, 15,
+            11,
+            1, 2, 4, 3,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
+            new AxisAsButton(-3),
+            new AxisAsButton(3),
+            6, 7, 8, 9
+        )),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'joycons',
+        '057e-2008-Nintendo Switch Combined Joy-Cons',
+        'Linux',
+        new GamepadMapping(
+            16, 18, 17, 15,
+            11,
+            1, 2, 4, 3,
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
+            new AxisAsButton(-1),
+            new AxisAsButton(1),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
+            new AxisAsButton(-3),
+            new AxisAsButton(3),
+            6, 7, 8, 9
+        )),
+    new GameInputModel(
         GameInputSchema.Hedgehog, // should be numbers, see issue #16
         'generic',
         'USB  Joystick (Vendor: 1345 Product: 1030)',
