@@ -820,20 +820,17 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
-        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)',
-        'Linux'
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
-        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b12)',
-        'Linux'
+        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b12)'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
-        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)',
-        'Android'
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -894,8 +891,7 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
-        'Performance Designed Products Afterglow Wired Controller for Xbox One (STANDARD GAMEPAD Vendor: 0e6f Product: 0139)',
-        'Linux'
+        'Performance Designed Products Afterglow Wired Controller for Xbox One (STANDARD GAMEPAD Vendor: 0e6f Product: 0139)'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -1082,7 +1078,8 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 5, 6,
+            StardardGamepadMapping.leftShoulder,
+            StardardGamepadMapping.rightShoulder,
             /* triggers */ undefined, undefined
         )),
     new GameInputModel(
@@ -1119,7 +1116,8 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 5, 6,
+            StardardGamepadMapping.leftShoulder,
+            StardardGamepadMapping.rightShoulder,
             /* triggers */ undefined, undefined
         )),
     new GameInputModel(
