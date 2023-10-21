@@ -1,11 +1,21 @@
 import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
-import { GamepadMapping } from './gamepad-mapping.js'
+import { FaceDirections, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping, GamepadMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
-import { StardardGamepadMapping, GravisGamepadProSchema } from './standard-gamepad-mapping.js'
+import { StardardGamepadMapping, GravisGamepadProSchema, StandardPlumberGamepadMapping, StandardLeftStickMapping, NonStandardRagdollMapping, NonStandardAfterglow360Mapping, StandardShoulderMapping, StandardRightStickMapping } from './standard-gamepad-mapping.js'
 
 const frenchVRStickDeadzone = 0.6
 const frenchVRStickThreshold = 0.8
+
+const OddFaceMapping = new GamepadFaceMapping(2, 0, 1, 3)
+const OldPlumberFaceMapping = OddFaceMapping.variant({ direction: FaceDirections.rtl})
+const OddDPadMapping = new GamepadDirectionsMapping(14, 16, 15, 13)
+const HuiJiaDreamcastMapping = StardardGamepadMapping.variant( {
+    dpad: new GamepadDirectionsMapping(13, 14, 12, 15),
+    rightStick: undefined,
+    shoulder: undefined,
+    trigger: StandardShoulderMapping
+})
 
 const GameInputModels = [
     new GameInputModel(
@@ -14,88 +24,90 @@ const GameInputModels = [
         'Xbox 360 Controller (XInput STANDARD GAMEPAD)'
     ),
     new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'Gravis GamePad Pro USB  (Vendor: 0428 Product: 4001)',
+        'Linux',
+        GravisGamepadProSchema),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        '0428-4001-Gravis GamePad Pro USB ',
+        'Linux',
+        GravisGamepadProSchema),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'GamePad Pro USB  (Vendor: 0428 Product: 4001)',
+        'macOS',
+        GravisGamepadProSchema),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        '428-4001-GamePad Pro USB ',
+        'macOS',
+        GravisGamepadProSchema),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b12)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)'
+    ),
+    new GameInputModel(
         GameInputSchema.Plumber,
         'nintendo-generic',
         '0925-8866-SFC/USB Pad',
         'Windows',
-        new GamepadMapping(
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            8,
-            /* face */ 2, 1, 4, 3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
-        )),
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            center: new GamepadCenterMapping(7),
+            face: OldPlumberFaceMapping,
+            leftStick: undefined,
+            rightStick: undefined,
+            trigger: undefined
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Plumber,
         'nintendo-generic',
         'SFC/USB Pad (Vendor: 0925 Product: 8866)',
         'Windows',
-        new GamepadMapping(
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            8,
-            /* face */ 2, 1, 4, 3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
-        )),
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            center: new GamepadCenterMapping(7),
+            face: OldPlumberFaceMapping,
+            leftStick: undefined,
+            rightStick: undefined,
+            trigger: undefined
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
         'Xbox 360 Wireless Receiver (Vendor: 0000 Product: 0000)',
         'Linux',
-        new GamepadMapping(
-            16, 17, 14, 15,
-            StardardGamepadMapping.menu,
-            /* face */ 2, 1, 4, 3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.rightStickUp,
-            StardardGamepadMapping.rightStickDown,
-            StardardGamepadMapping.rightStickLeft,
-            StardardGamepadMapping.rightStickRight,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
+        StardardGamepadMapping.variant({
+            dpad: OddDPadMapping,
+            center: new GamepadCenterMapping(8),
+            face: OddFaceMapping
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
         '0000-0000-Xbox 360 Wireless Receiver',
         'Linux',
-        new GamepadMapping(
-            16, 17, 14, 15,
-            StardardGamepadMapping.menu,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.rightStickUp,
-            StardardGamepadMapping.rightStickDown,
-            StardardGamepadMapping.rightStickLeft,
-            StardardGamepadMapping.rightStickRight,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
+        StardardGamepadMapping.variant({ dpad: OddDPadMapping })
+    ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds4',
@@ -106,23 +118,17 @@ const GameInputModels = [
         'ds4',
         '054c-05c4-Wireless Controller',
         'Windows',
-        new GamepadMapping(
-            15, 16, 17, 18,
-            StardardGamepadMapping.menu,
-            2, 3, 1, 4,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-6),
-            new AxisAsButton(6),
-            new AxisAsButton(-3),
-            new AxisAsButton(3),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
+        StardardGamepadMapping.variant({
+            dpad: OddDPadMapping,
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            rightStick: new GamepadDirectionsMapping(
+                new AxisAsButton('-', 5),
+                new AxisAsButton('+', 2),
+                new AxisAsButton('+', 5),
+                new AxisAsButton('-', 2)
+            )
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds5',
@@ -138,51 +144,14 @@ const GameInputModels = [
         'ds5',
         '054c-0ce6-DualSense Wireless Controller',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-8),
-            new AxisAsButton(8),
-            new AxisAsButton(-7),
-            new AxisAsButton(7),
-            StardardGamepadMapping.menu,
-            1, 2, 4, 3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-5),
-            new AxisAsButton(5),
-            new AxisAsButton(-4),
-            new AxisAsButton(4),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            new AxisAsButton(3),
-            new AxisAsButton(6)
-        )),
+        NonStandardRagdollMapping
+    ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds5',
         '054c-0ce6-Sony Interactive Entertainment DualSense Wireless Controller',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-8),
-            new AxisAsButton(8),
-            new AxisAsButton(-7),
-            new AxisAsButton(7),
-            StardardGamepadMapping.menu,
-            1, 2, 4, 3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-5),
-            new AxisAsButton(5),
-            new AxisAsButton(-4),
-            new AxisAsButton(4),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            new AxisAsButton(3),
-            new AxisAsButton(6)
-        )),
+        NonStandardRagdollMapping),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
@@ -198,117 +167,29 @@ const GameInputModels = [
         'xbox360',
         'Performance Designed Products Afterglow Gamepad for Xbox 360 (Vendor: 0e6f Product: 0213)',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-8),
-            new AxisAsButton(8),
-            new AxisAsButton(-7),
-            new AxisAsButton(7),
-            8,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-5),
-            new AxisAsButton(5),
-            new AxisAsButton(-4),
-            new AxisAsButton(4),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            new AxisAsButton(3),
-            new AxisAsButton(6)
-        )),
+        NonStandardAfterglow360Mapping
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
         '0e6f-0213-Afterglow Gamepad for Xbox 360',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-8),
-            new AxisAsButton(8),
-            new AxisAsButton(-7),
-            new AxisAsButton(7),
-            8,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-5),
-            new AxisAsButton(5),
-            new AxisAsButton(-4),
-            new AxisAsButton(4),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            new AxisAsButton(3),
-            new AxisAsButton(6)
-        )),
+        NonStandardAfterglow360Mapping
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'dc',
         'HuiJia  USB GamePad (Vendor: 0e8f Product: 3013)',
-        'Linux',
-        new GamepadMapping(
-            13, 15, 16, 14,
-            StardardGamepadMapping.menu,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ undefined, undefined,
-            /* triggers */ StardardGamepadMapping.leftShoulder, StardardGamepadMapping.rightShoulder
-        )),
+        undefined,
+        HuiJiaDreamcastMapping
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'dc',
         'USB GamePad (Vendor: 0e8f Product: 3013)',
-        'Windows',
-        new GamepadMapping(
-            13, 15, 16, 14,
-            StardardGamepadMapping.menu,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ undefined, undefined,
-            /* triggers */ StardardGamepadMapping.leftShoulder, StardardGamepadMapping.rightShoulder
-        )),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'dc',
-        'USB GamePad (Vendor: 0e8f Product: 3013)',
-        'macOS',
-        new GamepadMapping(
-            13, 15, 16, 14,
-            StardardGamepadMapping.menu,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ undefined, undefined,
-            /* triggers */ StardardGamepadMapping.leftShoulder, StardardGamepadMapping.rightShoulder
-        )),
+        undefined,
+        HuiJiaDreamcastMapping
+    ),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'ds3',
@@ -319,20 +200,14 @@ const GameInputModels = [
         'ds3',
         '054c-0268-Sony PLAYSTATION(R)3 Controller',
         'Linux',
-        new GamepadMapping(
-            5, 7, 8, 6,
-            4,
-            15, 14, 16, 13,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.rightStickUp,
-            StardardGamepadMapping.rightStickDown,
-            StardardGamepadMapping.rightStickLeft,
-            StardardGamepadMapping.rightStickRight,
-            11, 12, 9, 10
-        )),
+        StardardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(4, 5, 6, 7),
+            face: new GamepadFaceMapping(12, 13, 14, 15),
+            center: new GamepadCenterMapping(3),
+            shoulder: new GamepadLRMapping(10, 11),
+            trigger: new GamepadLRMapping(8, 9)
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds4',
@@ -343,110 +218,86 @@ const GameInputModels = [
         'ds4',
         '054c-05c4-Sony Computer Entertainment Wireless Controller',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-8),
-            new AxisAsButton(8),
-            new AxisAsButton(-7),
-            new AxisAsButton(7),
-            StardardGamepadMapping.menu,
-            2, 3, 1, 4,
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            new AxisAsButton(-6),
-            new AxisAsButton(6),
-            new AxisAsButton(-3),
-            new AxisAsButton(3),
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
+        StardardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(
+                new AxisAsButton('-', 7),
+                new AxisAsButton('+', 6),
+                new AxisAsButton('+', 7),
+                new AxisAsButton('-', 6)
+            ),
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            rightStick: new GamepadDirectionsMapping(
+                new AxisAsButton('-', 4),
+                new AxisAsButton('+', 3),
+                new AxisAsButton('+', 4),
+                new AxisAsButton('-', 3)
+            )
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'joystick',
         'Mayflash Arcade Stick (Vendor: 0e8f Product: 0003)',
         'Windows',
-        new GamepadMapping(
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.menu,
-            StardardGamepadMapping.button0,
-            StardardGamepadMapping.button1,
-            StardardGamepadMapping.button2,
-            StardardGamepadMapping.button3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
+        StardardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'joystick',
         'PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)', /* Mayflash Arcade Stick */
         'macOS',
-        new GamepadMapping(
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.menu,
-            7, 1, 2, 8,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            5, 3, 4, 6
-        )),
+        StardardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            leftStick: undefined,
+            rightStick: undefined,
+            face: new GamepadFaceMapping(7, 0, 6, 1),
+            shoulder: new GamepadLRMapping(4, 2),
+            trigger: new GamepadLRMapping(3, 5)
+        })
+    ),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
         'MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)',
         'Linux',
-        new GamepadMapping(
-            new AxisAsButton(-3),
-            new AxisAsButton(3),
-            new AxisAsButton(-4),
-            new AxisAsButton(4),
-            StardardGamepadMapping.menu,
-            4, 2, 1, 3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            7, 8, 5, 6
-        )),
+        StardardGamepadMapping.variant({
+            dpad: StandardRightStickMapping,
+            leftStick: undefined,
+            rightStick: undefined,
+            face: new GamepadFaceMapping(2, 1, 3, 0),
+            shoulder: new GamepadLRMapping(6, 7),
+            trigger: new GamepadLRMapping(4, 5)
+        })
+    ),
     new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
         '0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick',
         'Linux',
-        new GamepadMapping(
-            StardardGamepadMapping.leftStickUp,
-            StardardGamepadMapping.leftStickDown,
-            StardardGamepadMapping.leftStickLeft,
-            StardardGamepadMapping.leftStickRight,
-            StardardGamepadMapping.menu,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            StardardGamepadMapping.leftShoulder,
-            StardardGamepadMapping.rightShoulder,
-            StardardGamepadMapping.leftTrigger,
-            StardardGamepadMapping.rightTrigger
-        )),
-    new GameInputModel(
+        StardardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    )
+]
+/*
+    ,new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
         'Logitech Logitech Dual Action (Vendor: 046d Product: c216)', // DirectInput (XInput uses 'standard' mapping)
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-6),
-            /* dpadDown */ new AxisAsButton(6),
-            /* dpadLeft */ new AxisAsButton(-5),
-            /* dpadRight */ new AxisAsButton(5),
+            new AxisAsButton(-6),
+            new AxisAsButton(6),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
             StardardGamepadMapping.menu,
-            /* face */ 2, 3, 1, 4,
+            2, 3, 1, 4,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
@@ -466,11 +317,11 @@ const GameInputModels = [
         'Logitech Gamepad F310 (Vendor: 046d Product: c21d)',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -479,14 +330,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -494,11 +345,11 @@ const GameInputModels = [
         '046d-c21d-Logitech Gamepad F310', // XInput
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -507,14 +358,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -522,12 +373,12 @@ const GameInputModels = [
         '046d-c216-Logitech Logitech Dual Action', // DirectInput (XInput uses 'standard' mapping)
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-6),
-            /* dpadDown */ new AxisAsButton(6),
-            /* dpadLeft */ new AxisAsButton(-5),
-            /* dpadRight */ new AxisAsButton(5),
+            new AxisAsButton(-6),
+            new AxisAsButton(6),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
             StardardGamepadMapping.menu,
-            /* face */ 2, 3, 1, 4,
+            2, 3, 1, 4,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
@@ -602,11 +453,11 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 1, 2, 4, 5,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 6, 3,
-            /* triggers */ 7, 8
+            1, 2, 4, 5,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
+            6, 3,
+            7, 8
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -619,11 +470,11 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 1, 2, 4, 5,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 6, 3,
-            /* triggers */ 7, 8
+            1, 2, 4, 5,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
+            6, 3,
+            7, 8
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -631,8 +482,8 @@ const GameInputModels = [
         'ASUS Gamepad',
         'Android',
         new GamepadMapping(
-            /* dpad */ undefined, undefined, undefined, undefined,
-            /* menu */ 12,
+            undefined, undefined, undefined, undefined,
+            12,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -645,8 +496,8 @@ const GameInputModels = [
             StardardGamepadMapping.rightStickDown,
             StardardGamepadMapping.rightStickLeft,
             StardardGamepadMapping.rightStickRight,
-            /* shoulders */ 7, 8,
-            /* triggers */ 5, 6
+            7, 8,
+            5, 6
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -679,7 +530,7 @@ const GameInputModels = [
         'Moga 2 HID',
         'Android',
         new GamepadMapping(
-            /* dpad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.menu,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
@@ -689,7 +540,7 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             7, 8,
             undefined, undefined
         )),
@@ -732,12 +583,12 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 2, 3, 1, 4,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 3, 1, 4,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -750,12 +601,12 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 2, 3, 1, 4,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 3, 1, 4,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -768,12 +619,12 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 2, 3, 1, 4,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 3, 1, 4,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -781,68 +632,29 @@ const GameInputModels = [
         '810-e501-usb gamepad           ',
         'macOS',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-3),
-            /* dpadDown */ new AxisAsButton(3),
-            /* dpadLeft */ new AxisAsButton(-2),
-            /* dpadRight */ new AxisAsButton(2),
+            new AxisAsButton(-3),
+            new AxisAsButton(3),
+            new AxisAsButton(-2),
+            new AxisAsButton(2),
             StardardGamepadMapping.menu,
-            /* button0 */ 2, 3, 1, 4,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 3, 1, 4,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Gravis GamePad Pro USB  (Vendor: 0428 Product: 4001)',
-        'Linux',
-        GravisGamepadProSchema),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        '0428-4001-Gravis GamePad Pro USB ',
-        'Linux',
-        GravisGamepadProSchema),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'GamePad Pro USB  (Vendor: 0428 Product: 4001)',
-        'macOS',
-        GravisGamepadProSchema),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        '428-4001-GamePad Pro USB ',
-        'macOS',
-        GravisGamepadProSchema),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'xboxone',
-        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)'
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'xboxone',
-        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b12)'
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'xboxone',
-        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)'
-    ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
         '045e-0b12-Microsoft Xbox Series S|X Controller',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -851,14 +663,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -866,11 +678,11 @@ const GameInputModels = [
         '045e-02e0-Xbox Wireless Controller',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -879,14 +691,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -899,11 +711,11 @@ const GameInputModels = [
         'Performance Designed Products Afterglow Wired Controller for Xbox One (Vendor: 0e6f Product: 0139)',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -912,14 +724,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -927,11 +739,11 @@ const GameInputModels = [
         '0e6f-0139-Afterglow Prismatic Wired Controller',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-8),
-            /* dpadDown */ new AxisAsButton(8),
-            /* dpadLeft */ new AxisAsButton(-7),
-            /* dpadRight */ new AxisAsButton(7),
-            /* menu */ 8,
+            new AxisAsButton(-8),
+            new AxisAsButton(8),
+            new AxisAsButton(-7),
+            new AxisAsButton(7),
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
@@ -940,14 +752,14 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStickUp */ new AxisAsButton(-5),
-            /* rightStickDown */ new AxisAsButton(5),
-            /* rightStickLeft */ new AxisAsButton(-4),
-            /* rightStickRight */ new AxisAsButton(4),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
+            new AxisAsButton(-4),
+            new AxisAsButton(4),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* leftTrigger */ new AxisAsButton(3),
-            /* rightTrigger */ new AxisAsButton(6)
+            new AxisAsButton(3),
+            new AxisAsButton(6)
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -960,12 +772,12 @@ const GameInputModels = [
             StardardGamepadMapping.dpadLeft,
             StardardGamepadMapping.dpadRight,
             StardardGamepadMapping.menu,
-            /* face */ 2, 1, 4, 3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 1, 4, 3,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -978,12 +790,12 @@ const GameInputModels = [
             StardardGamepadMapping.dpadLeft,
             StardardGamepadMapping.dpadRight,
             StardardGamepadMapping.menu,
-            /* face */ 2, 1, 4, 3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            2, 1, 4, 3,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber, // it's a square and x /y are generic style, while a / b are nintendo style - FAMICOM
@@ -995,16 +807,16 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* menu */ 8,
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
             StardardGamepadMapping.button3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber, // it's a square and x /y are generic style, while a / b are nintendo style - FAMICOM
@@ -1016,16 +828,16 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* menu */ 8,
+            8,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
             StardardGamepadMapping.button3,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.PlumberRotatedRight,
@@ -1033,16 +845,16 @@ const GameInputModels = [
         '057e-2007-Nintendo Switch Right Joy-Con',
         'Linux',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             9,
             2, 3, 1, 4,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 5, 7,
-            /* triggers */ undefined, undefined
+            undefined, undefined, undefined, undefined,
+            5, 7,
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.PlumberRotatedRight,
@@ -1050,16 +862,16 @@ const GameInputModels = [
         'Nintendo Switch Right Joy-Con (Vendor: 057e Product: 2007)',
         'Linux',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             9,
             2, 3, 1, 4,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 5, 7,
-            /* triggers */ undefined, undefined
+            undefined, undefined, undefined, undefined,
+            5, 7,
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.PlumberRotatedRight,
@@ -1067,7 +879,7 @@ const GameInputModels = [
         'Wireless Gamepad (STANDARD GAMEPAD Vendor: 057e Product: 2007)',
         'Windows',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.menu,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
@@ -1077,10 +889,10 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.PlumberRotatedLeft,
@@ -1088,16 +900,16 @@ const GameInputModels = [
         '057e-2006-Nintendo Switch Left Joy-Con',
         'Linux',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             6,
             10, 9, 8, 11,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
-            /* shoulders */ 3, 5,
-            /* triggers */ undefined, undefined
+            undefined, undefined, undefined, undefined,
+            3, 5,
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.PlumberRotatedLeft,
@@ -1105,7 +917,7 @@ const GameInputModels = [
         'Wireless Gamepad (STANDARD GAMEPAD Vendor: 057e Product: 2006)',
         'Windows',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.menu,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
@@ -1115,10 +927,10 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
-            /* triggers */ undefined, undefined
+            undefined, undefined
         )),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -1130,7 +942,7 @@ const GameInputModels = [
         'Nintendo Switch Combined Joy-Cons (Vendor: 057e Product: 2008)',
         'Linux',
         new GamepadMapping(
-            /* dPad */ 16, 18, 17, 15,
+            16, 18, 17, 15,
             11,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
@@ -1152,7 +964,7 @@ const GameInputModels = [
         '057e-2008-Nintendo Switch Combined Joy-Cons',
         'Linux',
         new GamepadMapping(
-            /* dPad */ 16, 18, 17, 15,
+            16, 18, 17, 15,
             11,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
@@ -1179,9 +991,9 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 3, 2, 4, 1,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            3, 2, 4, 1,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
             StardardGamepadMapping.leftTrigger,
@@ -1198,9 +1010,9 @@ const GameInputModels = [
             StardardGamepadMapping.leftStickLeft,
             StardardGamepadMapping.leftStickRight,
             StardardGamepadMapping.menu,
-            /* face */ 3, 2, 4, 1,
-            /* leftStick */ undefined, undefined, undefined, undefined,
-            /* rightStick */ undefined, undefined, undefined, undefined,
+            3, 2, 4, 1,
+            undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
             StardardGamepadMapping.leftTrigger,
@@ -1216,19 +1028,19 @@ const GameInputModels = [
             StardardGamepadMapping.dpadDown,
             StardardGamepadMapping.dpadLeft,
             StardardGamepadMapping.dpadRight,
-            /* menu */ 4,
+            4,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
-            /* button3 */ new AxisAsButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickUp */ new AxisAsButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickDown */ new AxisAsButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickLeft */ new AxisAsButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickRight */ new AxisAsButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickUp */ new AxisAsButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickDown */ new AxisAsButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickLeft */ new AxisAsButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickRight */ new AxisAsButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
+            / * button3 * / new AxisAsButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
             StardardGamepadMapping.leftTrigger,
@@ -1244,19 +1056,19 @@ const GameInputModels = [
             StardardGamepadMapping.dpadDown,
             StardardGamepadMapping.dpadLeft,
             StardardGamepadMapping.dpadRight,
-            /* menu */ 4,
+            4,
             StardardGamepadMapping.button0,
             StardardGamepadMapping.button1,
             StardardGamepadMapping.button2,
-            /* button3 */ new AxisAsButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickUp */ new AxisAsButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickDown */ new AxisAsButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickLeft */ new AxisAsButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* leftStickRight */ new AxisAsButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickUp */ new AxisAsButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickDown */ new AxisAsButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickLeft */ new AxisAsButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
-            /* rightStickRight */ new AxisAsButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
+            / * button3 * / new AxisAsButton(-3, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(2, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-2, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(1, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-1, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-6, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(6, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(-5, frenchVRStickThreshold, frenchVRStickDeadzone),
+            new AxisAsButton(5, frenchVRStickThreshold, frenchVRStickDeadzone),
             StardardGamepadMapping.leftShoulder,
             StardardGamepadMapping.rightShoulder,
             StardardGamepadMapping.leftTrigger,
@@ -1268,12 +1080,12 @@ const GameInputModels = [
         '20d6-a711-Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-6),
-            /* dpadDown */ new AxisAsButton(6),
-            /* dpadLeft */ new AxisAsButton(-5),
-            /* dpadRight */ new AxisAsButton(5),
+            new AxisAsButton(-6),
+            new AxisAsButton(6),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
             StardardGamepadMapping.menu,
-            /* face */ 3, 2, 4, 1,
+            3, 2, 4, 1,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
@@ -1294,12 +1106,12 @@ const GameInputModels = [
         'Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller (Vendor: 20d6 Product: a711)',
         'Linux',
         new GamepadMapping(
-            /* dpadUp */ new AxisAsButton(-6),
-            /* dpadDown */ new AxisAsButton(6),
-            /* dpadLeft */ new AxisAsButton(-5),
-            /* dpadRight */ new AxisAsButton(5),
+            new AxisAsButton(-6),
+            new AxisAsButton(6),
+            new AxisAsButton(-5),
+            new AxisAsButton(5),
             StardardGamepadMapping.menu,
-            /* face */ 3, 2, 4, 1,
+            3, 2, 4, 1,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
@@ -1320,9 +1132,9 @@ const GameInputModels = [
         'Core (Plus) Wired Controller (Vendor: 20d6 Product: a711)',
         'Windows',
         new GamepadMapping(
-            /* dPad */ undefined, undefined, undefined, undefined,
+            undefined, undefined, undefined, undefined,
             StardardGamepadMapping.menu,
-            /* face */ 3, 2, 4, 1,
+            3, 2, 4, 1,
             StardardGamepadMapping.leftStickUp,
             StardardGamepadMapping.leftStickDown,
             StardardGamepadMapping.leftStickLeft,
@@ -1338,6 +1150,7 @@ const GameInputModels = [
         )
     )
 ]
+*/
 
 export default GameInputModels
 export { GameInputModels }

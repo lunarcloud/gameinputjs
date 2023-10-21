@@ -46,7 +46,7 @@
                     "silent": false
                 }
             ],
-            "summary"
+            "default"
         ],
         "testLocationInResults": true
     }
