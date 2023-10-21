@@ -108,12 +108,32 @@ test('Standard right stick mappings', () => {
 })
 
 const mappingsSeen = new Set()
-for (const mapping of GameInputModels) {
-    const mappingUniqueID = `${mapping.id}::${mapping.os}`
+for (const model of GameInputModels) {
+    // check that there are no duplicate mappings in the same os context
+    const mappingUniqueID = `${model.id}::${model.os}`
     test(`Mapping "${mappingUniqueID}" is unique`, () => {
         expect(mappingsSeen.has(mappingUniqueID)).toBeFalsy()
         mappingsSeen.add(mappingUniqueID)
     })
 
-    // TODO check that there are no duplicate button mappings within gamepads
+    // check that there are no duplicate button mappings within gamepads
+    const indexesSeen = new Set()
+    for (const i in model.schema) {
+        const section = model.schema[i]
+        for (const j in section) {
+            let item = section[j]
+
+            if (item instanceof AxisAsButton)
+                item = `axis:${item.direction}${item.index}`
+            else if (typeof item === 'number')
+                item = `button:${item}`
+            else
+                continue
+
+            test(`Mapping "${mappingUniqueID}" ${item} is unique`, () => {
+                expect(mappingsSeen.has(item)).toBeFalsy()
+                indexesSeen.add(item)
+            })
+        }
+    }
 }
