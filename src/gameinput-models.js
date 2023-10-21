@@ -286,7 +286,7 @@ const GameInputModels = [
     )
 ]
 /*
-    ,new GameInputModel(
+    new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
         'Logitech Logitech Dual Action (Vendor: 046d Product: c216)', // DirectInput (XInput uses 'standard' mapping)
