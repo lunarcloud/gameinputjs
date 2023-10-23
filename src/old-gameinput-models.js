@@ -8,6 +8,43 @@ const frenchVRStickDeadzone = 0.6
 const frenchVRStickThreshold = 0.8
 
 const OldGameInputModels = [
+
+    new OldGameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'Logitech Rumblepad 2',
+        undefined,
+        new OldGamepadMapping(
+            12, 13, 14, 15,
+            10,
+            2, 3, 1, 4,
+            new OldAxisAsButton(-2),
+            new OldAxisAsButton(2),
+            new OldAxisAsButton(-1),
+            new OldAxisAsButton(1),
+            new OldAxisAsButton(-4),
+            new OldAxisAsButton(4),
+            new OldAxisAsButton(-3),
+            new OldAxisAsButton(3)
+        )),
+    new OldGameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'Logitech Dual Action',
+        undefined,
+        new OldGamepadMapping(
+            12, 13, 14, 15,
+            10,
+            2, 3, 1, 4,
+            new OldAxisAsButton(-2),
+            new OldAxisAsButton(2),
+            new OldAxisAsButton(-1),
+            new OldAxisAsButton(1),
+            new OldAxisAsButton(-4),
+            new OldAxisAsButton(4),
+            new OldAxisAsButton(-3),
+            new OldAxisAsButton(3)
+        )),
     new OldGameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',

@@ -26,6 +26,5 @@ for (const id in osStrings)
  */
 const DetectedOS = _detectedOS || 'Other'
 
-
 export default DetectedOS
 export { DetectedOS }

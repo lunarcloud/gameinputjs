@@ -7,7 +7,6 @@ import { GameInputPlayer } from './gameinput-player.js'
 import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
-import { StandardGamepadMapping } from './standard-gamepad-mapping.js'
 import { GameInputOptions } from './gameinput-options.js'
 /**
  * @module GameInput
@@ -46,53 +45,7 @@ class GameInput {
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'generic',
-                'Logitech Rumblepad 2',
-                undefined,
-                new GamepadMapping(
-                    12, 13, 14, 15,
-                    10,
-                    2, 3, 1, 4,
-                    new AxisAsButton(-2),
-                    new AxisAsButton(2),
-                    new AxisAsButton(-1),
-                    new AxisAsButton(1),
-                    new AxisAsButton(-4),
-                    new AxisAsButton(4),
-                    new AxisAsButton(-3),
-                    new AxisAsButton(3)//,
-                    // TODO leftShoulder,
-                    // TODO rightShoulder,
-                    // TODO leftTrigger,
-                    // TODO rightTrigger
-                )),
-            new GameInputModel(
-                GameInputSchema.Hedgehog,
-                'generic',
-                'Logitech Dual Action',
-                undefined,
-                new GamepadMapping(
-                    12, 13, 14, 15,
-                    10,
-                    2, 3, 1, 4,
-                    new AxisAsButton(-2),
-                    new AxisAsButton(2),
-                    new AxisAsButton(-1),
-                    new AxisAsButton(1),
-                    new AxisAsButton(-4),
-                    new AxisAsButton(4),
-                    new AxisAsButton(-3),
-                    new AxisAsButton(3)//,
-                    // TODO leftShoulder,
-                    // TODO rightShoulder,
-                    // TODO leftTrigger,
-                    // TODO rightTrigger
-                )),
-            new GameInputModel(
-                GameInputSchema.Hedgehog,
-                'generic',
-                'STANDARD GAMEPAD',
-                undefined,
-                StandardGamepadMapping
+                'STANDARD GAMEPAD'
             )
         ],
 

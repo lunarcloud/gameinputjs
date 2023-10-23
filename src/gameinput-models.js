@@ -210,6 +210,21 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
+        'Logitech Dual Action',
+        undefined,
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(11, 14, 12, 13),
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            center: new GamepadCenterMapping(9),
+            shoulder: undefined,
+            trigger: undefined,
+            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
         '046d-c21d-Logitech Gamepad F310',
         'Linux',
         StandardGamepadMapping.variant({
@@ -255,6 +270,21 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6), new AxisAsButton('+', 5), new AxisAsButton('+', 6), new AxisAsButton('-', 5)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: new GamepadCenterMapping(9),
+            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'Logitech Rumblepad 2',
+        undefined,
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(11, 14, 12, 13),
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            center: new GamepadCenterMapping(9),
+            shoulder: undefined,
+            trigger: undefined,
             leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
