@@ -4,7 +4,6 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
@@ -121,7 +120,7 @@ class GameInput {
 
     /**
      * Callback providing player index and button name.
-     * @typedef {function(number, import('./gamepad-buttons.js').GameInputButton):void} ButtonActionFunc
+     * @typedef {function(number, string, string):void} ButtonActionFunc
      */
 
     /**
@@ -219,26 +218,28 @@ class GameInput {
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
-    buttonDown (player, buttonName) {
+    buttonDown (player, sectionName, buttonName) {
         for (const action in this.buttonDownActions)
             if (typeof (this.buttonDownActions[action]) === 'function')
-                this.buttonDownActions[action](player, buttonName)
+                this.buttonDownActions[action](player, sectionName, buttonName)
         return this
     }
 
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
-    buttonUp (player, buttonName) {
+    buttonUp (player, sectionName, buttonName) {
         for (const action in this.buttonUpActions)
             if (typeof (this.buttonUpActions[action]) === 'function')
-                this.buttonUpActions[action](player, buttonName)
+                this.buttonUpActions[action](player, sectionName, buttonName)
         return this
     }
 
@@ -330,19 +331,19 @@ class GameInput {
         for (const player of this.Players) {
             for (const sectionName in player.state) {
                 for (const itemName in player.state[sectionName]) {
-                    if (!this.#firstPress[i]) {
-                        this.#firstPress[i] = true
+                    if (!this.#firstPress[player.index]) {
+                        this.#firstPress[player.index] = true
                         return
                     }
 
                     if (player.previous.state[sectionName][itemName].active === false &&
                         player.state[sectionName][itemName].active === true) {
                         // @ts-ignore
-                        player.buttonDown(j)
+                        player.buttonDown(sectionName, itemName)
                     } else if (player.previous.state[sectionName][itemName].active === true &&
                         player.state[sectionName][itemName].active === false) {
                         // @ts-ignore
-                        player.buttonUp(j)
+                        player.buttonUp(sectionName, itemName)
                     }
                 }
             }
@@ -388,7 +389,6 @@ class GameInput {
             for (let i = 0; i < this.Players.length; i++)
                 if (this.Connection.Gamepads.filter(Boolean).length === 0)
                     this.#firstPress[i] = false
-
 
             for (const i in this.Connection.Gamepads) {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
@@ -457,5 +457,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GameInputButtons, Vector2, DetectedOS
+    GameInputPlayer, Vector2, DetectedOS
 }

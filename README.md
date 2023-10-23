@@ -40,7 +40,7 @@ const gameLoop = function () {
         const player = gameInput.getPlayer(4)
         if (!player)
             continue
-        if (player.state[GameInputButtons.button0])
+        if (player.state.dpad.ordinal(0))
             player.rumble({ duration: 200, weakMagnitude: 1.0, strongMagnitude: 0.25 })
         const leftStick = player.getStickVector('left')
         console.debug(`Player left stick vector is ${leftStick.toString()}`)

@@ -2,7 +2,6 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { GameInput } from './gameinput.js'
 import { GamepadMapping } from './gamepad-mapping.js'
-import { GameInputButtons } from './gamepad-buttons.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { Vector2 } from './vector2.js'
 import { GameInputState } from './gameinput-state.js'
@@ -54,13 +53,13 @@ class GameInputPlayer {
 
     /**
      * Actions to perform on button down.
-     * @type {Map<import('./gamepad-buttons.js').GameInputButton, Array<Function>>}
+     * @type {Map<string, Array<Function>>}
      */
     buttonDownActions = new Map()
 
     /**
      * Actions to perform on button up.
-     * @type {Map<import('./gamepad-buttons.js').GameInputButton, Array<Function>>}
+     * @type {Map<string, Array<Function>>}
      */
     buttonUpActions = new Map()
 
@@ -74,10 +73,11 @@ class GameInputPlayer {
         this.number = number
         this.index = number - 1
 
-        for (const i in GameInputButtons) {
-            this.buttonDownActions.set(GameInputButtons[i], [])
-            this.buttonUpActions.set(GameInputButtons[i], [])
-        }
+        for (const section in GamepadMapping)
+            for (const buttonName in GamepadMapping[section]) {
+                this.buttonDownActions.set(`${section}.${buttonName}`, [])
+                this.buttonUpActions.set(`${section}.${buttonName}`, [])
+            }
     }
 
     updatePrevious () {
@@ -125,50 +125,50 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      */
-    buttonDown (buttonName) {
-        this.#gameInput.buttonDown(this.index, buttonName)
-        for (const action in this.buttonDownActions.get(buttonName))
-            this.buttonDownActions.get(buttonName)[action]()
+    buttonDown (sectionName, buttonName) {
+        this.#gameInput.buttonDown(this.index, sectionName, buttonName)
+        const actionList = this.buttonDownActions.get(`${sectionName}.${buttonName}`)
+        for (const action of actionList) action()
     }
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      */
-    buttonUp (buttonName) {
-        this.#gameInput.buttonUp(this.index, buttonName)
-        for (const action in this.buttonUpActions.get(buttonName))
-            this.buttonUpActions.get(buttonName)[action]()
+    buttonUp (sectionName, buttonName) {
+        this.#gameInput.buttonUp(this.index, sectionName, buttonName)
+        const actionList = this.buttonUpActions.get(`${sectionName}.${buttonName}`)
+        for (const action of actionList) action()
     }
 
     /**
      * Add an action to "button down" events.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      * @param {Function} action Action to add.
      */
-    onButtonDown (buttonName, action) {
-        if (buttonName in GameInputButtons === false)
-            throw new Error('Must be buttonNames')
+    onButtonDown (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonDownActions.get(buttonName).push(action)
+        this.buttonDownActions.get(`${sectionName}.${buttonName}`)?.push(action)
     }
 
     /**
      * Add an action to "button up" events.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName Name of button
+     * @param {string} sectionName  Name of the section
+     * @param {string} buttonName   Name of button
      * @param {Function} action Action to add.
      */
-    onButtonUp (buttonName, action) {
-        if (buttonName in GameInputButtons === false)
-            throw new Error('Must be buttonNames')
+    onButtonUp (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonUpActions.get(buttonName).push(action)
+        this.buttonUpActions.get(`${sectionName}.${buttonName}`)?.push(action)
     }
 
     /**
