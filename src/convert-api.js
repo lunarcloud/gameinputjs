@@ -86,9 +86,9 @@ export default function ConvertGamepadModels () {
     let output = ''
 
     for (const model of OldGameInputModels.sort(alphabeticalById)) {
-        let modelType = model.type.name
+        let modelType = model.schema.name
 
-        switch (model.type) {
+        switch (model.schema) {
         case GameInputSchema.RagdollOld:
             modelType = 'RagdollOld'
             break
@@ -102,47 +102,47 @@ export default function ConvertGamepadModels () {
 
         let schema = ''
 
-        if (model.schema === OldStandardGamepadMapping)
+        if (model.mapping === OldStandardGamepadMapping)
             schema = 'StandardGamepadMapping'
         else {
             schema = `Standard${modelType.includes('Plumber') ? 'Plumber' : ''}GamepadMapping.variant({`
 
-            if (isNullDPad(model.schema))
+            if (isNullDPad(model.mapping))
                 schema += '\n\t\tdpad: undefined,'
-            else if (!isStandardDPad(model.schema))
-                schema += `\n\t\tdpad: ${oldToNewDirectional(model.schema.dpadUp, model.schema.dpadDown, model.schema.dpadLeft, model.schema.dpadRight)},`
+            else if (!isStandardDPad(model.mapping))
+                schema += `\n\t\tdpad: ${oldToNewDirectional(model.mapping.dpadUp, model.mapping.dpadDown, model.mapping.dpadLeft, model.mapping.dpadRight)},`
 
-            if (isNullFace(model.schema))
+            if (isNullFace(model.mapping))
                 schema += '\n\t\tface: undefined,'
-            else if (!isStandardFace(model.schema))
-                schema += `\n\t\tface: ${oldToNewFace(model.schema.button0, model.schema.button1, model.schema.button2, model.schema.button3)},`
+            else if (!isStandardFace(model.mapping))
+                schema += `\n\t\tface: ${oldToNewFace(model.mapping.button0, model.mapping.button1, model.mapping.button2, model.mapping.button3)},`
 
             // Center Mapping
-            schema += `\n\t\tcenter: new GamepadCenterMapping(${oldToNewButton(model.schema.menu)}),`
+            schema += `\n\t\tcenter: new GamepadCenterMapping(${oldToNewButton(model.mapping.menu)}),`
 
             // Shoulder Mapping
-            if (isNullShoulder(model.schema))
+            if (isNullShoulder(model.mapping))
                 schema += '\n\t\tshoulder: undefined,'
-            else if (!isStandardShoulder(model.schema))
-                schema += `\n\t\tshoulder: new GamepadLRMapping(${oldToNewButton(model.schema.leftShoulder)}, ${oldToNewButton(model.schema.rightShoulder)}),`
+            else if (!isStandardShoulder(model.mapping))
+                schema += `\n\t\tshoulder: new GamepadLRMapping(${oldToNewButton(model.mapping.leftShoulder)}, ${oldToNewButton(model.mapping.rightShoulder)}),`
 
             // Trigger Mapping
-            if (isNullTrigger(model.schema))
+            if (isNullTrigger(model.mapping))
                 schema += '\n\t\ttrigger: undefined,'
-            else if (!isStandardTrigger(model.schema))
-                schema += `\n\t\ttrigger: new GamepadLRMapping(${oldToNewButton(model.schema.leftTrigger)}, ${oldToNewButton(model.schema.rightTrigger)}),`
+            else if (!isStandardTrigger(model.mapping))
+                schema += `\n\t\ttrigger: new GamepadLRMapping(${oldToNewButton(model.mapping.leftTrigger)}, ${oldToNewButton(model.mapping.rightTrigger)}),`
 
             // Left Stick Mapping,
-            if (isNullLeftStick(model.schema))
+            if (isNullLeftStick(model.mapping))
                 schema += '\n\t\tleftStick: undefined,'
-            else if (!isStandardLeftStick(model.schema))
-                schema += `\n\t\tleftStick: ${oldToNewDirectional(model.schema.leftStickUp, model.schema.leftStickDown, model.schema.leftStickLeft, model.schema.leftStickRight)},`
+            else if (!isStandardLeftStick(model.mapping))
+                schema += `\n\t\tleftStick: ${oldToNewDirectional(model.mapping.leftStickUp, model.mapping.leftStickDown, model.mapping.leftStickLeft, model.mapping.leftStickRight)},`
 
             // Right Stick Mapping
-            if (isNullRightStick(model.schema))
+            if (isNullRightStick(model.mapping))
                 schema += '\n\t\trightStick: undefined,'
-            else if (!isStandardRightStick(model.schema))
-                schema += `\n\t\trightStick: ${oldToNewDirectional(model.schema.leftStickUp, model.schema.leftStickDown, model.schema.leftStickLeft, model.schema.leftStickRight)},`
+            else if (!isStandardRightStick(model.mapping))
+                schema += `\n\t\trightStick: ${oldToNewDirectional(model.mapping.leftStickUp, model.mapping.leftStickDown, model.mapping.leftStickLeft, model.mapping.leftStickRight)},`
 
             schema = schema.slice(0, -1) // remove final comma
             schema += '\n\t})'

@@ -16,19 +16,19 @@ class GameInputModel {
 
     /**
      * Define a GameInputModel.
-     * @param {GameInputSchema} type                            type of the schema
+     * @param {GameInputSchema} schema                          schema to use
      * @param {GamepadIconName} iconName                        icon to use
      * @param {string|undefined} id                             device id text
      * @param {import('./os-detect.js').OSName|undefined} os    for which OS ?
-     * @param {GamepadMapping|undefined} schema                     gamepad api schema
+     * @param {GamepadMapping|undefined} mapping                gamepad api mapping
      */
-    constructor (type, iconName, id = undefined, os = undefined, schema = undefined) {
-        this.type = type
+    constructor (schema, iconName, id = undefined, os = undefined, mapping = undefined) {
+        this.schema = schema
         this.iconName = iconName
         this.id = id
         this.os = os
-        this.schema = schema ?? StandardGamepadMapping
-        this.IsStandardMapping = this.schema === StandardGamepadMapping
+        this.mapping = mapping ?? StandardGamepadMapping
+        this.IsStandardMapping = this.mapping === StandardGamepadMapping
 
         const idInfo = id?.match(GameInputModel.GamepadIdInfoRegex)
         if (idInfo) {
@@ -53,8 +53,8 @@ class OldGameInputModel extends GameInputModel {
      */
     constructor (type, iconName, id = undefined, os = undefined, schema = undefined) {
         super(type, iconName, id, os)
-        this.schema = schema ?? OldStandardGamepadMapping
-        this.IsStandardMapping = this.schema === OldStandardGamepadMapping
+        this.mapping = schema ?? OldStandardGamepadMapping
+        this.IsStandardMapping = this.mapping === OldStandardGamepadMapping
     }
 }
 

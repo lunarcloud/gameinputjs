@@ -16,7 +16,7 @@ const gameInput = new GameInput()
             noPlayers()
             return
         }
-        displayButtons(firstPlayer?.type.buttonNames)
+        displayButtons(firstPlayer?.[sectionName]?.[buttonName])
         document.querySelector('img.gamepad').src = `img/${firstPlayer?.model?.iconName || 'generic'}.png`
     })
     .onButtonDown((index, section, button) => {

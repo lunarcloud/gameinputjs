@@ -1,6 +1,6 @@
 import { GamepadMapping } from './gamepad-mapping.js'
 import { GameInputModel } from './gameinput-model.js'
-import { GameInputSchema } from './gameinput-schema.js'
+import { GameInputSchema, GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
@@ -120,7 +120,7 @@ class GameInput {
 
     /**
      * Callback providing player index and button name.
-     * @typedef {function(number, string, string):void} ButtonActionFunc
+     * @typedef {function(number, import('./gameinput-schema.js').GameInputSchemaSectionName, string):void} ButtonActionFunc
      */
 
     /**
@@ -218,8 +218,8 @@ class GameInput {
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
     buttonDown (player, sectionName, buttonName) {
@@ -232,8 +232,8 @@ class GameInput {
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
     buttonUp (player, sectionName, buttonName) {
@@ -311,7 +311,7 @@ class GameInput {
                 for (const sectionName in player.state) {
                     for (const itemName in player.state[sectionName]) {
                         /** @type {import('./gamepad-mapping.js').SchemaButtonDef} */
-                        const schema = player.schema[sectionName][itemName]
+                        const schema = player.mapping[sectionName][itemName]
                         /** @type {GameInputItemState} */
                         const state = player.state[sectionName][itemName]
 
@@ -400,7 +400,7 @@ class GameInput {
                             player.setModel(gamepad)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + player.type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.schema.name + ' configured')
                             }
                             break
                         }
@@ -411,7 +411,7 @@ class GameInput {
                             if (this.Connection.Gamepads[i].id.match(gamepad.id) !== null) {
                                 player.setModel(gamepad)
                                 if (this.debug) {
-                                    console.debug('Gamepad of type ' + player.type.name + ' configured')
+                                    console.debug('Gamepad of type ' + player.schema.name + ' configured')
                                 }
                             }
                         }
@@ -428,7 +428,7 @@ class GameInput {
                             player.setModel(GameInput.Models.UnknownStandardMapping)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + player.type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.schema.name + ' configured')
                             }
                         }
                     }
@@ -457,5 +457,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, Vector2, DetectedOS
+    GameInputPlayer, Vector2, DetectedOS, GameInputSchemaSectionNames, GameInputSchemaButtonNames
 }

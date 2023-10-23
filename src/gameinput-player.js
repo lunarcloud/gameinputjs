@@ -9,7 +9,7 @@ import { GameInputState } from './gameinput-state.js'
 /**
  * Game Input Player.
  */
-class GameInputPlayer {
+export class GameInputPlayer {
     /**
      * @type {GameInput}
      */
@@ -18,7 +18,7 @@ class GameInputPlayer {
     /**
      * @type {GameInputSchema|undefined}
      */
-    type = undefined
+    schema = undefined
 
     /**
      * @type {GameInputModel|undefined}
@@ -28,7 +28,7 @@ class GameInputPlayer {
     /**
      * @type {GamepadMapping|undefined}
      */
-    schema = undefined
+    mapping = undefined
 
     /**
      * Current button values
@@ -38,16 +38,16 @@ class GameInputPlayer {
 
     /**
      * @type {{
-     *  type: GameInputSchema|undefined,
+     *  schema: GameInputSchema|undefined,
      *  model: GameInputModel|undefined,
-     *  schema: GamepadMapping|undefined,
+     *  mapping: GamepadMapping|undefined,
      *  state: GameInputState
      * }}
      */
     previous = {
-        type: undefined,
-        model: undefined,
         schema: undefined,
+        model: undefined,
+        mapping: undefined,
         state: new GameInputState()
     }
 
@@ -81,9 +81,9 @@ class GameInputPlayer {
     }
 
     updatePrevious () {
-        this.previous.type = this.type
-        this.previous.model = this.model
         this.previous.schema = this.schema
+        this.previous.model = this.model
+        this.previous.mapping = this.mapping
         this.previous.state = this.state
         this.state = new GameInputState()
     }
@@ -93,9 +93,9 @@ class GameInputPlayer {
      * @param {GameInputModel|undefined} model Model to set
      */
     setModel (model) {
-        this.type = model?.type
-        this.model = model
         this.schema = model?.schema
+        this.model = model
+        this.mapping = model?.mapping
     }
 
     /**
@@ -125,8 +125,8 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button down' actions for this player.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      */
     buttonDown (sectionName, buttonName) {
         this.#gameInput.buttonDown(this.index, sectionName, buttonName)
@@ -136,8 +136,8 @@ class GameInputPlayer {
 
     /**
      * Activate 'Button up' actions for this player.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      */
     buttonUp (sectionName, buttonName) {
         this.#gameInput.buttonUp(this.index, sectionName, buttonName)
@@ -147,8 +147,8 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button down" events.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @param {Function} action Action to add.
      */
     onButtonDown (sectionName, buttonName, action) {
@@ -160,8 +160,8 @@ class GameInputPlayer {
 
     /**
      * Add an action to "button up" events.
-     * @param {string} sectionName  Name of the section
-     * @param {string} buttonName   Name of button
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @param {Function} action Action to add.
      */
     onButtonUp (sectionName, buttonName, action) {
@@ -238,8 +238,8 @@ class GameInputPlayer {
         const stickInput = this.getStickVector(stick)
         let radialDeadZone = 0
 
-        for (const direction in this.schema[`${stick}Stick`]) {
-            const item = this.schema[`${stick}Stick`][direction]
+        for (const direction in this.mapping[`${stick}Stick`]) {
+            const item = this.mapping[`${stick}Stick`][direction]
             if (item instanceof AxisAsButton) {
                 if (item.deadZone > radialDeadZone) {
                     radialDeadZone = item.deadZone
@@ -289,16 +289,17 @@ class GameInputPlayer {
 
     /**
      * Gets the button text.
-     * @param   {string}  sectionName        name of the section
-     * @param   {string}  buttonName        name of the button or axisValue
-     * @param   {boolean} symbolsAsWords    whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
+     * @param   {import('./gameinput-schema.js').GameInputSchemaSectionName}  sectionName        name of the section
+     * @param   {import('./gameinput-schema.js').GameInputSchemaButtonName}  buttonName        name of the button or axisValue
+     * @param   {boolean} symbolsAsWords    whether or not to convert Ragdoll's "▶ x □ o △" to "start cross square circle triangle"
      * @returns {string}                    button text
      */
     getButtonText (sectionName, buttonName, symbolsAsWords = false) {
-        if (!this.model?.type)
+        if (!this.model?.schema)
             return ''
 
-        const text = this.model.type.buttonNames.get(buttonName)
+        /** @type {string} */
+        const text = this.model.schema[sectionName]?.[buttonName]
 
         if (symbolsAsWords !== true)
             return text
@@ -319,5 +320,3 @@ class GameInputPlayer {
         }
     }
 };
-
-export { GameInputPlayer }

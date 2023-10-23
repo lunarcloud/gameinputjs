@@ -115,8 +115,8 @@ for (const model of GameInputModels) {
 
     // check that there are no duplicate button mappings within gamepads
     const indexesSeen = new Set()
-    for (const i in model.schema) {
-        const section = model.schema[i]
+    for (const i in model.mapping) {
+        const section = model.mapping[i]
         for (const j in section) {
             let item = section[j]
 
