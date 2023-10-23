@@ -94,7 +94,7 @@ class GameInput {
             3: 3
         },
         /**
-         * Actual gamepads.
+         * Cache of actual gamepads.
          * @type {Array<Gamepad>}
          */
         Gamepads: [undefined, undefined, undefined, undefined]
@@ -114,8 +114,9 @@ class GameInput {
 
     /**
      * Whether we've received the first button press.
+     * @type {Array<boolean>}
      */
-    firstPress = false
+    #firstPress = [undefined, undefined, undefined, undefined]
 
     /**
      * Callback providing player index and button name.
@@ -326,8 +327,8 @@ class GameInput {
         // Keydown / Keyup
         for (let i = 0; i < this.Players.length; i++) {
             this.Players[i].state.forEach((value, j, _) => {
-                if (!this.firstPress) {
-                    this.firstPress = true
+                if (!this.#firstPress[i]) {
+                    this.#firstPress[i] = true
                     return
                 }
 
@@ -381,9 +382,10 @@ class GameInput {
         if (GameInput.canUseGamepadAPI()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
-            if (this.Connection.Gamepads.filter(Boolean).length === 0) {
-                this.firstPress = false
-            }
+            for (let i = 0; i < this.Players.length; i++)
+                if (this.Connection.Gamepads.filter(Boolean).length === 0) {
+                    this.#firstPress[i] = false
+                }
 
             for (const i in this.Connection.Gamepads) {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
