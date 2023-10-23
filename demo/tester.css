@@ -1,0 +1,171 @@
+
+body {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+
+    & h1 {
+        grid-area: 1 / 1;
+    }
+
+    & .detected-os {
+        grid-area: 1 / 2;
+        margin: auto;
+    }
+
+    & #players {
+        grid-area: 2 / 1 / 2 / 3;
+        display: flex;
+        max-width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+    }
+}
+
+.player {
+    --player-color: salmon;
+
+    flex: 0 1 calc(50% - 2em);
+    text-align: center;
+    font-size: min(2vw, 1em);
+    width: fit-content;
+    min-height: fit-content;
+    padding: 2em 0;
+    background: var(--player-color);
+    border: .35em ridge var(--player-color);
+    border-radius: 5em;
+
+    &:nth-child(2) {
+        --player-color: cadetblue;
+    }
+
+    &:nth-child(3) {
+        --player-color: darkseagreen;
+    }
+
+    &:nth-child(4) {
+        --player-color: thistle;
+    }
+
+    & .gamepad-info > h2 {
+        margin-top: 0;
+    }
+}
+
+.gamepad-visualize {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr); /* triggers, shoulders, dpad/center/face, sticks, rumbles */
+    grid-template-columns: repeat(3, 1fr); /* left, center, right */
+    gap: 0.5em;
+
+    font-size: 1em;
+    height: 24em;
+    min-height: fit-content;
+    aspect-ratio: 2;
+    max-width: 100%;
+
+    margin: auto;
+    align-items: center;
+    text-align: center;
+
+    & .button {
+        background-color: grey;
+        color: black;
+        border: 0.2em outset #ccc;
+        border-radius: 1em;
+        line-height: 2em;
+        vertical-align: middle;
+
+        &:active {
+            border-style: outset;
+        }
+    }
+
+    & button, & .button {
+        margin: auto;
+        height: 2em;
+        aspect-ratio: 2;
+        user-select: none;
+    }
+
+    & :not(.pair, .center) {
+        & .button {
+            aspect-ratio: 2;
+        }
+    }
+
+    & .directional {
+        display: grid;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        background: aliceblue;
+        border: 0.2em outset #3ac;
+        border-radius: 50%;
+        padding: 0.5em;
+
+        & .up {
+            grid-area: 1 / 2;
+        }
+
+        & .down {
+            grid-area: 3 / 2;
+        }
+
+        & .left {
+            grid-area: 2 / 1;
+        }
+
+        & .right {
+            grid-area: 2 / 3;
+        }
+    }
+
+    & .pair {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: repeat(3, 1fr);
+
+        & :first-child {
+            grid-column: 1;
+        }
+
+        & :last-child {
+            grid-column: 3;
+        }
+    }
+
+    & .dpad {
+        grid-area: 3 / 1;
+    }
+
+    & .center {
+        grid-area: 3 / 2;
+    }
+
+    & .face {
+        grid-area: 3 / 3;
+    }
+
+    & .leftStick {
+        grid-area: 4 / 1;
+    }
+
+    & .rightStick {
+        grid-area: 4 / 3;
+    }
+
+    & .shoulder {
+        grid-area: 1 / 1 / 1 / 4;
+    }
+
+    & .trigger {
+        grid-area: 2 / 1 / 2 / 4;
+    }
+
+    & .rumble {
+        grid-area: 5 / 1 / 5 / 4;
+    }
+}

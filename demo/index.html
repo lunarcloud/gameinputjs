@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GameInput Testing</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="manifest" href="./site.webmanifest">
+
+    <meta name="author" content="Samuel Sarette">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./tester.css">
+</head>
+<body>
+    <h1>Game Input Tester</h1>
+    <p class="detected-os"></p>
+    <div id="players"></div>
+
+    <template id="player-template">
+        <div class="player">
+
+            <div class='gamepad-info'>
+                <h2><span>Player: </span><span class="player-number">1</span></h2>
+                <img class="gamepad-icon" alt="gamepad's icon" />
+                <hr>
+                <div class="gamepad-device">
+                    <span class='gamepad-vendorid'>0000</span>
+                    <span class='gamepad-productid'>0000</span>
+                    <span class='gamepad-productname'>?</span>
+                </div>
+                <hr>
+            </div>
+
+            <div class='gamepad-visualize'>
+                <div class="dpad directional">
+                    <div class="up button">↑</div>
+                    <div class="down button">↓</div>
+                    <div class="left button">←</div>
+                    <div class="right button">→</div>
+                </div>
+                <div class="center pair">
+                    <div class="back button">back</div>
+                    <div class="menu button">▶</div>
+                </div>
+                <div class="face directional">
+                    <div class="up button">Y</div>
+                    <div class="down button">A</div>
+                    <div class="left button">X</div>
+                    <div class="right button">B</div>
+                </div>
+                <div class="leftStick directional">
+                    <div class="up button">↑</div>
+                    <div class="down button">↓</div>
+                    <div class="left button">←</div>
+                    <div class="right button">→</div>
+                </div>
+                <div class="rightStick directional">
+                    <div class="up button">↑</div>
+                    <div class="down button">↓</div>
+                    <div class="left button">←</div>
+                    <div class="right button">→</div>
+                </div>
+                <div class="shoulder pair">
+                    <div class="left button">LB</div>
+                    <div class="right button">RB</div>
+                </div>
+                <div class="trigger pair">
+                    <div class="left button">LT</div>
+                    <div class="right button">LT</div>
+                </div>
+                <div class="rumble pair">
+                    <div class="weak">
+                        <button>rumble</button>
+                    </div>
+                    <div class="strong">
+                        <button>rumble</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script type="module">
+    import './tester.js'
+</script>
+</body>
+</html>
