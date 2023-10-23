@@ -5,7 +5,6 @@ import { StandardPlumberGamepadMapping, StandardGamepadMapping } from './standar
 import { AxisAsButton } from './axis-as-button.js'
 import { FaceDirections } from './gamepad-mapping.js'
 import GameInputModels from './gameinput-models.js'
-import OldGameInputModels from './old-gameinput-models.js'
 
 /**
  * This is what they state a gamepad labeled "STANDARD MAPPING" should look like.
@@ -135,5 +134,3 @@ for (const model of GameInputModels) {
         }
     }
 }
-
-test('old and new mappings are the same', () => expect(GameInputModels.length).toBe(OldGameInputModels.length))

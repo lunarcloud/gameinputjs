@@ -12,6 +12,8 @@ import { OldStandardGamepadMapping } from './old-standard-gamepad-mapping.js'
  * Game Input Model Definition
  */
 class GameInputModel {
+    static GamepadIdInfoRegex = /([0-9a-fA-F]{1,4})-([0-9a-fA-F]{1,4})-(.*)|(.*)\((?:STANDARD GAMEPAD)*\s*Vendor:\s*([0-9a-fA-F]{1,4})\s*Product:\s([0-9a-fA-F]{1,4})\)/
+
     /**
      * Define a GameInputModel.
      * @param {GameInputSchema} type                            type of the schema
@@ -26,6 +28,14 @@ class GameInputModel {
         this.id = id
         this.os = os
         this.schema = schema ?? StandardGamepadMapping
+        this.IsStandardMapping = this.schema === StandardGamepadMapping
+
+        const idInfo = id?.match(GameInputModel.GamepadIdInfoRegex)
+        if (idInfo) {
+            this.VendorId = (idInfo[1] || idInfo[5]).padStart(4, '0')
+            this.ProductId = (idInfo[2] || idInfo[6]).padStart(4, '0')
+            this.ProductName = (idInfo[3] || idInfo[4]).trim()
+        }
     }
 }
 
@@ -44,6 +54,7 @@ class OldGameInputModel extends GameInputModel {
     constructor (type, iconName, id = undefined, os = undefined, schema = undefined) {
         super(type, iconName, id, os)
         this.schema = schema ?? OldStandardGamepadMapping
+        this.IsStandardMapping = this.schema === OldStandardGamepadMapping
     }
 }
 

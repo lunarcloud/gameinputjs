@@ -881,7 +881,6 @@ const GameInputModels = [
         'xboxone',
         'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)'
     )
-
 ]
 
 export default GameInputModels
