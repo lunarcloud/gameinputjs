@@ -19,9 +19,9 @@ const gameInput = new GameInput()
         displayButtons(firstPlayer?.type.buttonNames)
         document.querySelector('img.gamepad').src = `img/${firstPlayer?.model?.iconName || 'generic'}.png`
     })
-    .onButtonDown((index, button) => {
+    .onButtonDown((index, section, button) => {
         const player = this.gameInput.getPlayer(index)
-        console.debug(`Player ${player} pushed ${player.getButtonText(button)} (${button})`)
+        console.debug(`Player ${player} pushed ${player.getButtonText(section, button)} (${button})`)
         switch (button) {
         case GameInputButtons.menu:
             break
@@ -29,19 +29,20 @@ const gameInput = new GameInput()
             break
         }
     })
-    .onButtonUp((index, button) => {
+    .onButtonUp((index, section, button) => {
         const player = this.gameInput.getPlayer(index)
-        console.debug(`Player ${player} released ${player.getButtonText(button)} (${button})`)
+        console.debug(`Player ${player} released ${player.getButtonText(section, button)} (${button})`)
     })
 
 // Game-Loop Style
 const gameLoop = function () {
-    for (let i = 0; i < 4; i++) {
-        const player = gameInput.getPlayer(4)
+    for (const player of gameInput.Players) {
         if (!player)
             continue
+
         if (player.state.dpad.ordinal(0))
             player.rumble({ duration: 200, weakMagnitude: 1.0, strongMagnitude: 0.25 })
+
         const leftStick = player.getStickVector('left')
         console.debug(`Player left stick vector is ${leftStick.toString()}`)
         requestAnimationFrame(() => gameLoop())

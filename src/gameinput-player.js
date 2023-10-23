@@ -289,11 +289,12 @@ class GameInputPlayer {
 
     /**
      * Gets the button text.
-     * @param   {import('./gamepad-buttons.js').GameInputButton|string}  buttonName  name of the button or axisValue
-     * @param   {boolean} symbolsAsWords            whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
-     * @returns {string}                            button text
+     * @param   {string}  sectionName        name of the section
+     * @param   {string}  buttonName        name of the button or axisValue
+     * @param   {boolean} symbolsAsWords    whether or not to convert Ragdoll's "x □ o △" to "cross square circle triangle"
+     * @returns {string}                    button text
      */
-    getButtonText (buttonName, symbolsAsWords = false) {
+    getButtonText (sectionName, buttonName, symbolsAsWords = false) {
         if (!this.model?.type)
             return ''
 

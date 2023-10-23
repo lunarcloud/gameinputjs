@@ -6,108 +6,180 @@ class GameInputSchema {
      * The default values that can be overridden.
      */
     static Defaults = {
-        dpadUp: '↑',
-        dpadDown: '↓',
-        dpadLeft: '←',
-        dpadRight: '→',
-        menu: '▶',
-        button0: 'button0',
-        button1: 'button1',
-        button2: 'button2',
-        button3: 'button3',
-        leftStickUp: '↑',
-        leftStickDown: '↓',
-        leftStickLeft: '←',
-        leftStickRight: '→',
-        rightStickUp: '↑',
-        rightStickDown: '↓',
-        rightStickLeft: '←',
-        rightStickRight: '→',
-        leftShoulder: 'leftShoulder',
-        rightShoulder: 'rightShoulder',
-        leftTrigger: 'leftTrigger',
-        rightTrigger: 'rightTrigger'
+        dpad: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→'
+        },
+        center: {
+            menu: '▶',
+            back: 'back'
+        },
+        face: {
+            up: '3',
+            down: '0',
+            left: '2',
+            right: '1'
+        },
+        leftStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→'
+        },
+        rightStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→'
+        },
+        shoulder: {
+            left: 'LB',
+            right: 'RB'
+        },
+        trigger: {
+            left: 'LT',
+            right: 'RT'
+        }
     }
 
     /**
      * Sega/Xbox style
      */
     static Hedgehog = new GameInputSchema('Hedgehog', {
-        button0: 'A',
-        button1: 'B',
-        button2: 'X',
-        button3: 'Y',
-        leftShoulder: 'LB',
-        rightShoulder: 'RB',
-        leftTrigger: 'LT',
-        rightTrigger: 'RT'
+        face: {
+            up: 'Y',
+            down: 'A',
+            left: 'X',
+            right: 'B'
+        },
+        shoulder: {
+            left: 'LB',
+            right: 'RB'
+        },
+        trigger: {
+            left: 'LT',
+            right: 'RT'
+        }
     })
 
     /**
      * Nintendo style
      */
     static Plumber = new GameInputSchema('Plumber', {
-        button0: 'A',
-        button1: 'B',
-        button2: 'X',
-        button3: 'Y',
-        leftShoulder: 'L',
-        rightShoulder: 'R',
-        leftTrigger: 'ZL',
-        rightTrigger: 'ZR'
+        face: {
+            up: 'X',
+            down: 'B',
+            left: 'Y',
+            right: 'A'
+        },
+        center: {
+            menu: '+',
+            back: '-'
+        },
+        shoulder: {
+            left: 'L',
+            right: 'R'
+        },
+        trigger: {
+            left: 'ZL',
+            right: 'ZR'
+        }
     })
 
     /**
      * Nintendo style (Horizontal Right Joy-Con)
      */
     static PlumberRotatedRight = new GameInputSchema('Plumber', {
-        button0: 'A',
-        button1: 'X',
-        button2: 'B',
-        button3: 'Y',
-        leftShoulder: 'SL',
-        rightShoulder: 'SR'
+        face: {
+            up: 'Y',
+            down: 'A',
+            left: 'B',
+            right: 'X'
+        },
+        center: {
+            menu: '+'
+        },
+        shoulder: {
+            left: 'SL',
+            right: 'SR'
+        },
+        trigger: {
+            left: 'ZL',
+            right: 'ZR'
+        }
     })
 
     /**
      * Nintendo style (Horizontal Left Joy-Con)
      */
     static PlumberRotatedLeft = new GameInputSchema('Plumber', {
-        button0: '↑',
-        button1: '→',
-        button2: '←',
-        button3: '↓',
-        leftShoulder: 'SL',
-        rightShoulder: 'SR'
+        face: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→'
+        },
+        center: {
+            menu: '-'
+        },
+        shoulder: {
+            left: 'SL',
+            right: 'SR'
+        },
+        trigger: {
+            left: 'ZL',
+            right: 'ZR'
+        }
     })
 
     /**
      * Older Sony style
      */
     static RagdollOld = new GameInputSchema('Ragdoll', {
-        button0: 'x',
-        button1: 'o',
-        button2: '□',
-        button3: '△',
-        leftShoulder: 'L1',
-        rightShoulder: 'R1',
-        leftTrigger: 'L2',
-        rightTrigger: 'R2'
+        face: {
+            up: '△',
+            down: 'x',
+            left: '□',
+            right: 'o'
+        },
+        center: {
+            menu: 'start',
+            back: 'select'
+        },
+        shoulder: {
+            left: 'L1',
+            right: 'R1'
+        },
+        trigger: {
+            left: 'L2',
+            right: 'R2'
+        }
     })
 
     /**
      * Newer Sony style
      */
     static Ragdoll = new GameInputSchema('Ragdoll', {
-        menu: 'options',
-        button0: 'x',
-        button1: 'o',
-        button2: '□',
-        button3: '△',
-        leftShoulder: 'L1',
-        rightShoulder: 'R1',
-        leftTrigger: 'L2',
-        rightTrigger: 'R2'
+        face: {
+            up: '△',
+            down: 'x',
+            left: '□',
+            right: 'o'
+        },
+        center: {
+            menu: 'options',
+            back: 'share'
+        },
+        shoulder: {
+            left: 'L1',
+            right: 'R1'
+        },
+        trigger: {
+            left: 'L2',
+            right: 'R2'
+        }
     })
 
     /**
@@ -116,21 +188,13 @@ class GameInputSchema {
     name = ''
 
     /**
-     * Button/Axes names-to-text
-     * @type {Map<import("./gamepad-buttons").GameInputButton, string>}
-     */
-    buttonNames = new Map()
-
-    /**
      * Constructor.
-     * @param {string} name schema/theme name
-     * @param {Map|object} themebuttonNames list of overrides for button names to text
+     * @param {string} name         schema/theme name
+     * @param {object} overrides    list of overrides for button names to text
      */
-    constructor (name, themebuttonNames) {
+    constructor (name, overrides) {
         this.name = name
-
-        Object.keys(GameInputSchema.Defaults).forEach((/** @type {any} */key, _) =>
-            this.buttonNames.set(key, themebuttonNames[key] ?? GameInputSchema.Defaults[key]))
+        Object.assign(this, Object.assign(GameInputSchema.Defaults, overrides))
     }
 }
 
