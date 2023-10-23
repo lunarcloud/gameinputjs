@@ -47,4 +47,17 @@ class AxisAsButton {
     }
 }
 
-export { AxisAsButton }
+// TODO remove
+class OldAxisAsButton extends AxisAsButton {
+    /**
+     * Old Constructor.
+     * @param {number} indexAndDirection The button index, sign is direction
+     * @param {number|undefined} threshold threshold to activate as button
+     * @param {number|undefined} deadZone axis dead zone
+     */
+    constructor (indexAndDirection, threshold = undefined, deadZone = undefined) {
+        super(indexAndDirection < 0 ? '-' : '+', Math.abs(indexAndDirection), threshold, deadZone)
+    }
+}
+
+export { AxisAsButton, OldAxisAsButton }

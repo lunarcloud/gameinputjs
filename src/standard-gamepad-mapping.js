@@ -22,9 +22,8 @@ export const StandardRightStickMapping = new GamepadDirectionsMapping(
 
 /**
  * Standard mapping
- * @type {GamepadMapping}
  */
-export const StardardGamepadMapping = new GamepadMapping(
+export const StandardGamepadMapping = new GamepadMapping(
     StandardDPadMapping,
     StandardFaceMapping,
     StandardCenterMapping,
@@ -34,18 +33,21 @@ export const StardardGamepadMapping = new GamepadMapping(
     StandardRightStickMapping
 )
 
-export const StandardPlumberGamepadMapping = StardardGamepadMapping
+/**
+ * Standard Plumber (RTL) mapping
+ */
+export const StandardPlumberGamepadMapping = StandardGamepadMapping
     .variant({ face: StandardPlumberFaceMapping })
 
 export const GravisDPadMapping = new GamepadDirectionsMapping(3, 2, 1, 0)
 
-export const GravisGamepadProSchema = StardardGamepadMapping
+export const GravisGamepadProSchema = StandardGamepadMapping
     .variant({
         dpad: GravisDPadMapping,
         rightStick: undefined
     })
 
-export const NonStandardRagdollMapping = StardardGamepadMapping.variant({
+export const NonStandardRagdollMapping = StandardGamepadMapping.variant({
     dpad: new GamepadDirectionsMapping(
         new AxisAsButton('-', 7),
         new AxisAsButton('+', 6),
@@ -68,5 +70,3 @@ export const NonStandardRagdollMapping = StardardGamepadMapping.variant({
 export const NonStandardAfterglow360Mapping = NonStandardRagdollMapping.variant({
     center: new GamepadCenterMapping(7)
 })
-
-export default StardardGamepadMapping

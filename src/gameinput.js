@@ -7,7 +7,7 @@ import { GameInputPlayer } from './gameinput-player.js'
 import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS, DetectedBrowser } from './os-detect.js'
-import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+import { StandardGamepadMapping } from './standard-gamepad-mapping.js'
 import { GameInputOptions } from './gameinput-options.js'
 /**
  * @module GameInput
@@ -92,7 +92,7 @@ class GameInput {
                 'generic',
                 'STANDARD GAMEPAD',
                 undefined,
-                StardardGamepadMapping
+                StandardGamepadMapping
             )
         ],
 

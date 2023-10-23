@@ -1,10 +1,11 @@
 /* Test of Gamepad Mapping */
 
 import { test, expect } from '@jest/globals'
-import { StandardPlumberGamepadMapping, StardardGamepadMapping } from './standard-gamepad-mapping.js'
-import { AxisAsButton } from './axis-as-button'
+import { StandardPlumberGamepadMapping, StandardGamepadMapping } from './standard-gamepad-mapping.js'
+import { AxisAsButton } from './axis-as-button.js'
 import { FaceDirections } from './gamepad-mapping.js'
 import GameInputModels from './gameinput-models.js'
+import OldGameInputModels from './old-gameinput-models.js'
 
 /**
  * This is what they state a gamepad labeled "STANDARD MAPPING" should look like.
@@ -42,10 +43,7 @@ const w3cStandardMapping = {
     }
 }
 
-// const oldToNewFace = (down, right, left, up) => [up - 1, right - 1, down - 1, left - 1]
-// const oldToNewDirectional = (up, down, left, right) => [up - 1, right - 1, down - 1, left - 1]
-
-const mapping = StardardGamepadMapping
+const mapping = StandardGamepadMapping
 
 test('Standard face button mappings', () => {
     expect(mapping.face.ordinal(0)).toBe(w3cStandardMapping.buttons.indexOf('button0'))
@@ -137,3 +135,5 @@ for (const model of GameInputModels) {
         }
     }
 }
+
+test('old and new mappings are the same', () => expect(GameInputModels.length).toBe(OldGameInputModels.length))
