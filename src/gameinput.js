@@ -8,6 +8,7 @@ import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
+import { GameInputItemState, GameInputState } from './gameinput-state.js'
 /**
  * @module GameInput
  */
@@ -302,46 +303,49 @@ class GameInput {
             this.Players[i].updatePrevious()
 
             const currentGamepad = this.Connection.Gamepads[i]
-            const currentSchema = this.Players[i].schema
 
             if (typeof (currentGamepad) === 'undefined' || currentGamepad === null) continue
 
-            for (const j in currentSchema) {
-                if (typeof (currentSchema[j]) === 'undefined') {
-                    // skip
-                } else if (typeof (currentGamepad.buttons[currentSchema[j] - 1]) === 'undefined') {
-                    const negativeAxis = currentSchema[j].threshold < 0
+            for (const player of this.Players) {
+                for (const sectionName in player.state) {
+                    for (const itemName in player.state[sectionName]) {
+                        /** @type {import('./gamepad-mapping.js').SchemaButtonDef} */
+                        const schema = player.schema[sectionName][itemName]
+                        /** @type {GameInputItemState} */
+                        const state = player.state[sectionName][itemName]
 
-                    const axisValue = this.Players[i].analog[j] = currentGamepad.axes[currentSchema[j].index - 1]
-
-                    this.Players[i].state.set(j, (negativeAxis && axisValue < currentSchema[j].threshold) ||
-                                                (!negativeAxis && axisValue > currentSchema[j].threshold))
-                } else {
-                    this.Players[i].state.set(j, currentGamepad.buttons[currentSchema[j] - 1].pressed)
-
-                    this.Players[i].analog.set(j, this.Players[i].state[j] ? 1 : 0)
+                        if (schema instanceof AxisAsButton) {
+                            state.value = currentGamepad.axes[schema.index]
+                            state.active = Math.abs(state.value) >= Math.abs(schema[schema.index].threshold)
+                        } else {
+                            state.active = currentGamepad.buttons[schema].pressed
+                            state.value = state.active ? 1 : 0
+                        }
+                    }
                 }
             }
         }
 
-        // Keydown / Keyup
-        for (let i = 0; i < this.Players.length; i++) {
-            this.Players[i].state.forEach((value, j, _) => {
-                if (!this.#firstPress[i]) {
-                    this.#firstPress[i] = true
-                    return
-                }
+        // Button down / up
+        for (const player of this.Players) {
+            for (const sectionName in player.state) {
+                for (const itemName in player.state[sectionName]) {
+                    if (!this.#firstPress[i]) {
+                        this.#firstPress[i] = true
+                        return
+                    }
 
-                if (this.Players[i].previous.state.get(j) === false &&
-                    this.Players[i].state.get(j) === true) {
-                    // @ts-ignore
-                    this.Players[i].buttonDown(j)
-                } else if (this.Players[i].previous.state.get(j) === true &&
-                    this.Players[i].state.get(j) === false) {
-                    // @ts-ignore
-                    this.Players[i].buttonUp(j)
+                    if (player.previous.state[sectionName][itemName].active === false &&
+                        player.state[sectionName][itemName].active === true) {
+                        // @ts-ignore
+                        player.buttonDown(j)
+                    } else if (player.previous.state[sectionName][itemName].active === true &&
+                        player.state[sectionName][itemName].active === false) {
+                        // @ts-ignore
+                        player.buttonUp(j)
+                    }
                 }
-            })
+            }
         }
     }
 
@@ -375,43 +379,44 @@ class GameInput {
      */
     reinitialize () {
         // clear gamepad information
-        for (let i = 0; i < this.Players.length; i++) {
-            this.Players[i].setModel(undefined)
-        }
+        for (const player of this.Players)
+            player.setModel(undefined)
 
         if (GameInput.canUseGamepadAPI()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
             for (let i = 0; i < this.Players.length; i++)
-                if (this.Connection.Gamepads.filter(Boolean).length === 0) {
+                if (this.Connection.Gamepads.filter(Boolean).length === 0)
                     this.#firstPress[i] = false
-                }
+
 
             for (const i in this.Connection.Gamepads) {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
+                    const player = this.Players[i]
+
                     // Translate into Type -  Players order is gamepad order
                     for (const gamepad of GameInput.Models.Specific) {
                         if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id) && [DetectedOS, undefined].includes(gamepad.os)) {
-                            this.Players[i].setModel(gamepad)
+                            player.setModel(gamepad)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.type.name + ' configured')
                             }
                             break
                         }
                     }
 
-                    if (typeof (this.Players[i].model) === 'undefined') {
+                    if (typeof (player.model) === 'undefined') {
                         for (const gamepad of GameInput.Models.Generic) {
                             if (this.Connection.Gamepads[i].id.match(gamepad.id) !== null) {
-                                this.Players[i].setModel(gamepad)
+                                player.setModel(gamepad)
                                 if (this.debug) {
-                                    console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                    console.debug('Gamepad of type ' + player.type.name + ' configured')
                                 }
                             }
                         }
 
-                        if (this.Connection.Gamepads[i] instanceof Gamepad && typeof (this.Players[i].model) === 'undefined') {
+                        if (this.Connection.Gamepads[i] instanceof Gamepad && typeof (player.model) === 'undefined') {
                             if (this.debug) {
                                 if (this.Connection.Gamepads[i].mapping === 'standard') {
                                     console.debug('Gamepad not detected, detected "stardard" mapping: "' + this.Connection.Gamepads[i].id + '"')
@@ -420,20 +425,19 @@ class GameInput {
                                 }
                             }
 
-                            this.Players[i].setModel(GameInput.Models.UnknownStandardMapping)
+                            player.setModel(GameInput.Models.UnknownStandardMapping)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.type.name + ' configured')
                             }
                         }
                     }
 
                     // blank state to start
-                    this.Players[i].state.clear()
-                    this.Players[i].analog.clear()
+                    player.state = new GameInputState()
 
                     // setup Previous as current
-                    this.Players[i].updatePrevious()
+                    player.updatePrevious()
                 }
             }
         } else if (this.debug) {

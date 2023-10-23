@@ -244,18 +244,6 @@ export class GamepadMapping {
     }
 
     /**
-     * Look up def by button name.
-     * @param {import('./gamepad-buttons.js').GameInputButton} key button name.
-     * @returns {string} button definition
-     */
-    lookup (key) {
-        for (const i in this)
-            if (this[i] === key)
-                return i
-        throw new Error('key not found!')
-    }
-
-    /**
      * @typedef {{
      *  dpad?: GamepadDirectionsMapping|undefined,
      *  face?: GamepadFaceMapping|undefined,

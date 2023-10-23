@@ -5,6 +5,7 @@ import { GamepadMapping } from './gamepad-mapping.js'
 import { GameInputButtons } from './gamepad-buttons.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { Vector2 } from './vector2.js'
+import { GameInputState } from './gameinput-state.js'
 
 /**
  * Game Input Player.
@@ -32,31 +33,23 @@ class GameInputPlayer {
 
     /**
      * Current button values
-     * @type {Map<string,boolean>}
+     * @type {GameInputState}
      */
-    state = new Map()
-
-    /**
-     * Current analog values
-     * @type {Map<string, number>}
-     */
-    analog = new Map()
+    state = new GameInputState()
 
     /**
      * @type {{
      *  type: GameInputSchema|undefined,
      *  model: GameInputModel|undefined,
      *  schema: GamepadMapping|undefined,
-     *  state: Map<string,boolean>,
-     *  analog: Map<string, number>
+     *  state: GameInputState
      * }}
      */
     previous = {
         type: undefined,
         model: undefined,
         schema: undefined,
-        state: new Map(),
-        analog: new Map()
+        state: new GameInputState()
     }
 
     /**
@@ -92,9 +85,7 @@ class GameInputPlayer {
         this.previous.model = this.model
         this.previous.schema = this.schema
         this.previous.state = this.state
-        this.previous.analog = this.analog
-        this.state = new Map()
-        this.analog = new Map()
+        this.state = new GameInputState()
     }
 
     /**
@@ -191,45 +182,45 @@ class GameInputPlayer {
 
         const vector = new Vector2(0, 0)
 
-        let item = stick + 'StickUp'
-        if (this.schema[item] instanceof AxisAsButton) {
-            if (this.schema[item].direction === 'negative') {
-                vector.y -= this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+        let state = this.state[`${stick}Stick`].up
+        if (state.item instanceof AxisAsButton) {
+            if (state.item.direction === 'negative') {
+                vector.y -= state.value < state.item.deadZone ? state.value : 0
             } else {
-                vector.y -= this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+                vector.y -= state.value > state.item.deadZone ? Math.abs(state.value) : 0
             }
         } else {
             vector.y -= 0.7
         }
 
-        item = stick + 'StickDown'
-        if (this.schema[item] instanceof AxisAsButton) {
-            if (this.schema[item].direction === 'negative') {
-                vector.y += this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+        state = this.state[`${stick}Stick`].down
+        if (state.item instanceof AxisAsButton) {
+            if (state.item.direction === 'negative') {
+                vector.y += state.value < state.item.deadZone ? Math.abs(state.value) : 0
             } else {
-                vector.y += this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+                vector.y += state.value > state.item.deadZone ? Math.abs(state.value) : 0
             }
         } else {
             vector.y += 0.7
         }
 
-        item = stick + 'StickLeft'
-        if (this.schema[item] instanceof AxisAsButton) {
-            if (this.schema[item].direction === 'negative') {
-                vector.x -= this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+        state = this.state[`${stick}Stick`].left
+        if (state.item instanceof AxisAsButton) {
+            if (state.item.direction === 'negative') {
+                vector.x -= state.value < state.item.deadZone ? Math.abs(state.value) : 0
             } else {
-                vector.x -= this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+                vector.x -= state.value > state.item.deadZone ? Math.abs(state.value) : 0
             }
         } else {
             vector.x -= 0.7
         }
 
-        item = stick + 'StickRight'
-        if (this.schema[item] instanceof AxisAsButton) {
-            if (this.schema[item].direction === 'negative') {
-                vector.x += this.analog.get(item) < this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+        state = this.state[`${stick}Stick`].right
+        if (state.item instanceof AxisAsButton) {
+            if (state.item.direction === 'negative') {
+                vector.x += state.value < state.item.deadZone ? Math.abs(state.value) : 0
             } else {
-                vector.x += this.analog.get(item) > this.schema[item].deadZone ? Math.abs(this.analog.get(item)) : 0
+                vector.x += state.value > state.item.deadZone ? Math.abs(state.value) : 0
             }
         } else {
             vector.x += 0.7
@@ -247,10 +238,11 @@ class GameInputPlayer {
         const stickInput = this.getStickVector(stick)
         let radialDeadZone = 0
 
-        for (const direction in ['Up', 'Down', 'Left', 'Right']) {
-            if (this.schema[stick + 'Stick' + direction] instanceof AxisAsButton) {
-                if (this.schema[stick + 'Stick' + direction].deadZone > radialDeadZone) {
-                    radialDeadZone = this.schema[stick + 'Stick' + direction].deadZone
+        for (const direction in this.schema[`${stick}Stick`]) {
+            const item = this.schema[`${stick}Stick`][direction]
+            if (item instanceof AxisAsButton) {
+                if (item.deadZone > radialDeadZone) {
+                    radialDeadZone = item.deadZone
                 }
             }
         }
@@ -281,17 +273,18 @@ class GameInputPlayer {
     getNormalizedTriggerValue (trigger) {
         if (trigger !== 'left' && trigger !== 'right')
             throw new Error('Must be left or right')
-        trigger += 'Trigger'
 
-        if (typeof (this.schema[trigger]) === 'number') {
-            return this.state.get(trigger) ? 1 : 0
-        }
-        // else  this.schema[trigger] instanceof AxisAsButton
-        return this.#normalize(
-            this.analog.get(trigger),
-            this.schema[trigger].deadZone,
-            1
-        )
+        const item = this.state.trigger[trigger]
+
+        if (typeof (item.value) === 'number')
+            return item.active ? 1 : 0
+        else if (item.item instanceof AxisAsButton)
+            return this.#normalize(
+                item.value,
+                item.item.deadZone,
+                1
+            )
+        throw new Error('item type issue')
     }
 
     /**
