@@ -26,14 +26,6 @@ for (const id in osStrings)
  */
 const DetectedOS = _detectedOS || 'Other'
 
-/**
- * Detected Browser.
- * @type {'Chrome'|'Firefox'|'Other'}
- */
-const DetectedBrowser = /Chrome/.test(navigator.userAgent)
-    ? 'Chrome'
-    : /Firefox/.test(navigator.userAgent)
-        ? 'Firefox'
-        : 'Other'
 
-export { DetectedOS, DetectedBrowser }
+export default DetectedOS
+export { DetectedOS }

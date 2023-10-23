@@ -6,7 +6,7 @@ import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
 import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
-import { DetectedOS, DetectedBrowser } from './os-detect.js'
+import { DetectedOS } from './os-detect.js'
 import { StandardGamepadMapping } from './standard-gamepad-mapping.js'
 import { GameInputOptions } from './gameinput-options.js'
 /**
@@ -498,5 +498,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GameInputButtons, Vector2, DetectedOS, DetectedBrowser
+    GameInputPlayer, GameInputButtons, Vector2, DetectedOS
 }

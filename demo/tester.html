@@ -148,11 +148,11 @@
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script type="module">
-    import { GameInput, GameInputButtons, DetectedOS, DetectedBrowser } from '../gameinput.js' // from '../src/gameinput.js'
+    import { GameInput, GameInputButtons, DetectedOS } from '../gameinput.js' // from '../src/gameinput.js'
 
     globalThis.gi = new GameInput();
 
-    document.querySelector('p.detected').textContent = `${DetectedBrowser} on ${DetectedOS}`
+    document.querySelector('p.detected').textContent = `OS: ${DetectedOS}`
 
     // Setup
     gi.onButtonDown((playerIndex, buttonName) => {
