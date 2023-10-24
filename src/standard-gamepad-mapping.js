@@ -1,4 +1,4 @@
-import { FaceDirections, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping, GamepadMapping } from './gamepad-mapping.js'
+import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping, GamepadMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
 
 export const StandardDPadMapping = new GamepadDirectionsMapping(12, 15, 13, 14)
@@ -7,17 +7,19 @@ export const StandardPlumberFaceMapping = new GamepadFaceMapping(3, 2, 1, 0, Fac
 export const StandardCenterMapping = new GamepadCenterMapping(9, 8)
 export const StandardShoulderMapping = new GamepadLRMapping(4, 5)
 export const StandardTriggerMapping = new GamepadLRMapping(6, 7)
-export const StandardLeftStickMapping = new GamepadDirectionsMapping(
+export const StandardLeftStickMapping = new GamepadAnalogStickMapping(
     new AxisAsButton('-', 1),
     new AxisAsButton('+', 0),
     new AxisAsButton('+', 1),
-    new AxisAsButton('-', 0)
+    new AxisAsButton('-', 0),
+    10
 )
-export const StandardRightStickMapping = new GamepadDirectionsMapping(
+export const StandardRightStickMapping = new GamepadAnalogStickMapping(
     new AxisAsButton('-', 3),
     new AxisAsButton('+', 2),
     new AxisAsButton('+', 3),
-    new AxisAsButton('-', 2)
+    new AxisAsButton('-', 2),
+    11
 )
 
 /**
@@ -55,7 +57,7 @@ export const NonStandardRagdollMapping = StandardGamepadMapping.variant({
         new AxisAsButton('-', 6)
     ),
     face: new GamepadFaceMapping(2, 1, 0, 3),
-    rightStick: new GamepadDirectionsMapping(
+    rightStick: new GamepadAnalogStickMapping(
         new AxisAsButton('-', 4),
         new AxisAsButton('+', 3),
         new AxisAsButton('+', 4),

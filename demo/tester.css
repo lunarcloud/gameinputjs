@@ -115,6 +115,10 @@ body {
             grid-area: 3 / 2;
         }
 
+        & .click {
+            grid-area: 2 / 2;
+        }
+
         & .left {
             grid-area: 2 / 1;
         }

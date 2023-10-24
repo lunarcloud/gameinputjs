@@ -97,6 +97,29 @@ export class GamepadDirectionsMapping extends GamepadLRMapping {
         this.down = down
     }
 }
+/**
+ * Mapping Of an Analog Stick: directions plus click
+ */
+export class GamepadAnalogStickMapping extends GamepadDirectionsMapping {
+    /**
+     * Button/Axis for "stick click"
+     * @type {SchemaButtonDef}
+     */
+    click
+
+    /**
+     * Constructor, define directions in clockwise order.
+     * @param {SchemaButtonDef} up      north button
+     * @param {SchemaButtonDef} right   east button
+     * @param {SchemaButtonDef} down    south button
+     * @param {SchemaButtonDef} left    west button
+     * @param {SchemaButtonDef} click   click stick in
+     */
+    constructor (up = undefined, right = undefined, down = undefined, left = undefined, click = undefined) {
+        super(up, right, down, left)
+        this.click = click
+    }
+}
 
 export class GamepadFaceMapping extends GamepadDirectionsMapping {
     /**
@@ -189,13 +212,13 @@ export class GamepadMapping {
 
     /**
      * Left Stick.
-     * @type {GamepadDirectionsMapping|undefined}
+     * @type {GamepadAnalogStickMapping|undefined}
      */
     leftStick
 
     /**
      * Left Stick.
-     * @type {GamepadDirectionsMapping|undefined}
+     * @type {GamepadAnalogStickMapping|undefined}
      */
     rightStick
 
@@ -230,8 +253,8 @@ export class GamepadMapping {
      * @param {GamepadCenterMapping|undefined} center Start/Select Buttons
      * @param {GamepadLRMapping|undefined} shoulder Shoulder Buttons
      * @param {GamepadLRMapping|undefined} trigger Triggers
-     * @param {GamepadDirectionsMapping|undefined} leftStick Left analog stick
-     * @param {GamepadDirectionsMapping|undefined} rightStick Right analog stick
+     * @param {GamepadAnalogStickMapping|undefined} leftStick Left analog stick
+     * @param {GamepadAnalogStickMapping|undefined} rightStick Right analog stick
      */
     constructor (dpad = undefined, face = undefined, center = undefined, shoulder = undefined, trigger = undefined, leftStick = undefined, rightStick = undefined) {
         this.dpad = dpad
@@ -250,8 +273,8 @@ export class GamepadMapping {
      *  center?: GamepadCenterMapping|undefined,
      *  shoulder?: GamepadLRMapping|undefined,
      *  trigger?: GamepadLRMapping|undefined,
-     *  leftStick?: GamepadDirectionsMapping|undefined,
-     *  rightStick?: GamepadDirectionsMapping|undefined
+     *  leftStick?: GamepadAnalogStickMapping|undefined,
+     *  rightStick?: GamepadAnalogStickMapping|undefined
      * }} GamepadMappingOverrides
      */
 

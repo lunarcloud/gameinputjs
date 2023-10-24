@@ -3,6 +3,10 @@
  */
 
 /**
+ * @typedef {{ up?: GameInputSchemaButtonName, down?: GameInputSchemaButtonName, left?: GameInputSchemaButtonName, right?: GameInputSchemaButtonName, click?: GameInputSchemaButtonName }} GameInputSchemaStickNames
+ */
+
+/**
  * @typedef {{ left: GameInputSchemaButtonName, right: GameInputSchemaButtonName }} GameInputSchemaLRNames
  */
 
@@ -15,7 +19,7 @@
  */
 
 /**
- * @typedef {string|'up'|'down'|'left'|'right'|'menu'|'back'} GameInputSchemaButtonName
+ * @typedef {string|'up'|'down'|'left'|'right'|'menu'|'back'|'click'} GameInputSchemaButtonName
  */
 
 /**
@@ -34,7 +38,7 @@ export const GameInputSchemaSectionNames = {
 
 /**
  * Possible Button Names Within sections
- * @type {{ up: GameInputSchemaButtonName, down: GameInputSchemaButtonName, left: GameInputSchemaButtonName, right: GameInputSchemaButtonName, menu: GameInputSchemaButtonName, back: GameInputSchemaButtonName }}
+ * @type {{ up: GameInputSchemaButtonName, down: GameInputSchemaButtonName, left: GameInputSchemaButtonName, right: GameInputSchemaButtonName, menu: GameInputSchemaButtonName, back: GameInputSchemaButtonName, click: GameInputSchemaButtonName }}
  */
 export const GameInputSchemaButtonNames = {
     up: 'up',
@@ -42,7 +46,8 @@ export const GameInputSchemaButtonNames = {
     left: 'left',
     right: 'right',
     menu: 'menu',
-    back: 'back'
+    back: 'back',
+    click: 'click'
 }
 
 /**
@@ -50,8 +55,8 @@ export const GameInputSchemaButtonNames = {
  *     dpad?: GameInputSchemaDirectionNames,
  *     center?: { menu: string, back?: string },
  *     face?:  GameInputSchemaDirectionNames,
- *     leftStick?:  GameInputSchemaDirectionNames,
- *     rightStick?:  GameInputSchemaDirectionNames,
+ *     leftStick?:  GameInputSchemaStickNames,
+ *     rightStick?:  GameInputSchemaStickNames,
  *     shoulder?: GameInputSchemaLRNames,
  *     trigger?: GameInputSchemaLRNames
  * }} GameInputSchemaOverrides
@@ -75,13 +80,13 @@ export class GameInputSchema {
 
     /**
      * Left Stick Schema names
-     * @type {GameInputSchemaDirectionNames}
+     * @type {GameInputSchemaStickNames}
      */
     leftStick
 
     /**
      * Right Stick Schema names
-     * @type {GameInputSchemaDirectionNames}
+     * @type {GameInputSchemaStickNames}
      */
     rightStick
 
@@ -128,13 +133,15 @@ export class GameInputSchema {
             up: '↑',
             down: '↓',
             left: '←',
-            right: '→'
+            right: '→',
+            click: '.'
         },
         rightStick: {
             up: '↑',
             down: '↓',
             left: '←',
-            right: '→'
+            right: '→',
+            click: '.'
         },
         shoulder: {
             left: 'LB',
@@ -257,6 +264,12 @@ export class GameInputSchema {
         trigger: {
             left: 'L2',
             right: 'R2'
+        },
+        leftStick: {
+            click: 'L3'
+        },
+        rightStick: {
+            click: 'R3'
         }
     })
 
@@ -281,6 +294,12 @@ export class GameInputSchema {
         trigger: {
             left: 'L2',
             right: 'R2'
+        },
+        leftStick: {
+            click: 'L3'
+        },
+        rightStick: {
+            click: 'R3'
         }
     })
 

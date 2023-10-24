@@ -1,6 +1,6 @@
 import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
-import { FaceDirections, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
+import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { StandardCenterMapping, StandardGamepadMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping } from './standard-gamepad-mapping.js'
 
@@ -15,7 +15,7 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -29,7 +29,7 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -43,7 +43,7 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -58,8 +58,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(3),
             shoulder: new GamepadLRMapping(10, 11),
             trigger: new GamepadLRMapping(8, 9),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -76,8 +76,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -94,8 +94,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(14, 17, 15, 16),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -113,8 +113,8 @@ const GameInputModels = [
             face: new GamepadFaceMapping(2, 1, 0, 3),
             center: StandardCenterMapping,
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -132,8 +132,8 @@ const GameInputModels = [
             face: new GamepadFaceMapping(2, 1, 0, 3),
             center: StandardCenterMapping,
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -151,7 +151,7 @@ const GameInputModels = [
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
             leftStick: undefined,
-            rightStick: new GamepadDirectionsMapping(undefined, undefined, undefined, undefined)
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
         })
     ),
     new GameInputModel(
@@ -164,8 +164,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(11),
             shoulder: new GamepadLRMapping(6, 7),
             trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -178,7 +178,7 @@ const GameInputModels = [
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
             leftStick: undefined,
-            rightStick: new GamepadDirectionsMapping(undefined, undefined, undefined, undefined)
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
         })
     ),
     new GameInputModel(
@@ -191,7 +191,7 @@ const GameInputModels = [
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
             leftStick: undefined,
-            rightStick: new GamepadDirectionsMapping(undefined, undefined, undefined, undefined)
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
         })
     ),
     new GameInputModel(
@@ -204,7 +204,7 @@ const GameInputModels = [
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
             leftStick: undefined,
-            rightStick: new GamepadDirectionsMapping(undefined, undefined, undefined, undefined)
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
         })
     ),
     new GameInputModel(
@@ -218,8 +218,8 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -241,8 +241,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6), new AxisAsButton('+', 5), new AxisAsButton('+', 6), new AxisAsButton('-', 5)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -254,8 +254,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6), new AxisAsButton('+', 5), new AxisAsButton('+', 6), new AxisAsButton('-', 5)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -269,8 +269,8 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -311,7 +311,7 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: new GamepadLRMapping(6, 7),
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -324,8 +324,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             center: new GamepadCenterMapping(6),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 6), new AxisAsButton('+', 5)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -337,8 +337,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -378,7 +378,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(5),
             shoulder: new GamepadLRMapping(2, 4),
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -391,7 +391,7 @@ const GameInputModels = [
             dpad: undefined,
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -406,7 +406,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(8),
             shoulder: new GamepadLRMapping(4, 6),
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 0), new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 0), new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1)),
             rightStick: undefined
         })
     ),
@@ -421,7 +421,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(8),
             shoulder: new GamepadLRMapping(4, 6),
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -434,7 +434,7 @@ const GameInputModels = [
             dpad: undefined,
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
             rightStick: undefined
         })
     ),
@@ -454,8 +454,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(10, 9),
             shoulder: new GamepadLRMapping(5, 6),
             trigger: new GamepadLRMapping(7, 8),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
         })
     ),
     new GameInputModel(
@@ -469,8 +469,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(10, 9),
             shoulder: new GamepadLRMapping(5, 6),
             trigger: new GamepadLRMapping(7, 8),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
         })
     ),
     new GameInputModel(
@@ -482,8 +482,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
             face: new GamepadFaceMapping(new AxisAsButton('-', 3, -0.8, -0.6), 1, 0, 2),
             center: new GamepadCenterMapping(3),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
         })
     ),
     new GameInputModel(
@@ -495,8 +495,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
             face: new GamepadFaceMapping(new AxisAsButton('-', 3, -0.8, -0.6), 1, 0, 2),
             center: new GamepadCenterMapping(3),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
         })
     ),
     new GameInputModel(
@@ -508,8 +508,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6, -0.3), new AxisAsButton('+', 5, 0.3), new AxisAsButton('+', 6, 0.3), new AxisAsButton('-', 5, -0.3)),
             center: new GamepadCenterMapping(11),
             trigger: new GamepadLRMapping(8, 10),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
         })
     ),
     new GameInputModel(
@@ -521,8 +521,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6, -0.3), new AxisAsButton('+', 5, 0.3), new AxisAsButton('+', 6, 0.3), new AxisAsButton('-', 5, -0.3)),
             center: new GamepadCenterMapping(11),
             trigger: new GamepadLRMapping(8, 10),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
         })
     ),
     new GameInputModel(
@@ -549,7 +549,7 @@ const GameInputModels = [
             shoulder: undefined,
             trigger: undefined,
             leftStick: undefined,
-            rightStick: new GamepadDirectionsMapping(undefined, undefined, undefined, undefined)
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
         })
     ),
     new GameInputModel(
@@ -619,8 +619,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
             face: StandardPlumberFaceMapping,
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
         })
     ),
     new GameInputModel(
@@ -632,8 +632,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
             face: StandardPlumberFaceMapping,
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
         })
     ),
     new GameInputModel(
@@ -671,8 +671,8 @@ const GameInputModels = [
             dpad: undefined,
             face: new GamepadFaceMapping(0, 1, 2, 3),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -773,8 +773,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             center: new GamepadCenterMapping(7),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -795,8 +795,8 @@ const GameInputModels = [
         StandardGamepadMapping.variant({
             dpad: new GamepadDirectionsMapping(15, 14, 16, 13),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -808,8 +808,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(15, 14, 16, 13),
             face: new GamepadFaceMapping(2, 0, 1, 3),
             center: StandardCenterMapping,
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -821,8 +821,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
             center: new GamepadCenterMapping(7, 6),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3))
         })
     ),
     new GameInputModel(
@@ -839,8 +839,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             center: new GamepadCenterMapping(7),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -857,8 +857,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             center: new GamepadCenterMapping(7),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
@@ -870,8 +870,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
             center: new GamepadCenterMapping(7),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
         })
     ),
     new GameInputModel(
