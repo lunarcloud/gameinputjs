@@ -57,6 +57,7 @@ function setupPlayers()
         for (const sectionName in GameInputSchemaSectionNames)
             for (const buttonName in GameInputSchemaButtonNames) {
                 const el = clone.querySelector(`.gamepad-visualize .${sectionName} .${buttonName}`)
+                if (!el) continue
                 el.textContent = gi.Players[i].getButtonText(sectionName, buttonName)
             }
         playersEl.appendChild(clone);
