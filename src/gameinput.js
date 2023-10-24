@@ -301,27 +301,33 @@ class GameInput {
         this.Connection.Gamepads = navigator.getGamepads()
 
         for (let i = 0; i < this.Connection.Gamepads.length; i++) {
-            this.Players[i].updatePrevious()
+            const player = this.Players[i]
+            const currentGamepad = this.Connection.Gamepads[this.Connection.GamePadMapping[i]]
 
-            const currentGamepad = this.Connection.Gamepads[i]
+            player.updatePrevious()
 
-            if (typeof (currentGamepad) === 'undefined' || currentGamepad === null) continue
+            if (typeof (currentGamepad) === 'undefined' || currentGamepad === null || !player.model)
+                continue
 
-            for (const player of this.Players) {
-                for (const sectionName in player.state) {
-                    for (const itemName in player.state[sectionName]) {
-                        /** @type {import('./gamepad-mapping.js').SchemaButtonDef} */
-                        const schema = player.mapping[sectionName][itemName]
-                        /** @type {GameInputItemState} */
-                        const state = player.state[sectionName][itemName]
+            for (const sectionName in GameInputSchemaSectionNames) {
+                for (const itemName in GameInputSchemaButtonNames) {
+                    /** @type {import('./gamepad-mapping.js').SchemaButtonDef} */
+                    const buttonDef = player.mapping[sectionName]?.[itemName]
+                    if (buttonDef === undefined) continue
 
-                        if (schema instanceof AxisAsButton) {
-                            state.value = currentGamepad.axes[schema.index]
-                            state.active = Math.abs(state.value) >= Math.abs(schema[schema.index].threshold)
-                        } else {
-                            state.active = currentGamepad.buttons[schema].pressed
-                            state.value = state.active ? 1 : 0
-                        }
+                    /** @type {GameInputItemState} */
+                    if (!player.state[sectionName][itemName]) {
+                        player.state[sectionName][itemName] = new GameInputItemState(buttonDef)
+                    }
+                    const state = player.state[sectionName][itemName]
+
+                    if (buttonDef instanceof AxisAsButton) {
+                        state.value = currentGamepad.axes[buttonDef.index]
+                        state.active = (state.value >= buttonDef.threshold && buttonDef.direction === 'positive') ||
+                                        (state.value <= buttonDef.threshold && buttonDef.direction === 'negative')
+                    } else {
+                        state.active = currentGamepad.buttons[buttonDef].pressed
+                        state.value = state.active ? 1 : 0
                     }
                 }
             }
@@ -336,12 +342,12 @@ class GameInput {
                         return
                     }
 
-                    if (player.previous.state[sectionName][itemName].active === false &&
-                        player.state[sectionName][itemName].active === true) {
+                    if (player.previous.state[sectionName][itemName]?.active === false &&
+                        player.state[sectionName][itemName]?.active === true) {
                         // @ts-ignore
                         player.buttonDown(sectionName, itemName)
-                    } else if (player.previous.state[sectionName][itemName].active === true &&
-                        player.state[sectionName][itemName].active === false) {
+                    } else if (player.previous.state[sectionName][itemName]?.active === true &&
+                        player.state[sectionName][itemName]?.active === false) {
                         // @ts-ignore
                         player.buttonUp(sectionName, itemName)
                     }

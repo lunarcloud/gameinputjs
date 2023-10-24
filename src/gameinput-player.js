@@ -116,11 +116,14 @@ export class GameInputPlayer {
 
     /**
      * Rumble the player's gamepad.
-     * @param {{ duration: number, strongMagnitude: number, weakMagnitude: number }} gamepadEffectParameters parameters for the rumble
+     * @param {{ startDelay?: number, duration?: number, strongMagnitude?: number, weakMagnitude?: number }} gamepadEffectParameters parameters for the rumble
      * @returns {Promise<string>} result promise
      */
-    rumble (gamepadEffectParameters = { duration: 300, strongMagnitude: 0.5, weakMagnitude: 0.5 }) {
-        return this.getGamepad()?.vibrationActuator?.playEffect('dual-rumble', gamepadEffectParameters)
+    rumble (gamepadEffectParameters = {}) {
+        Object.assign({ startDelay: 0, duration: 300, strongMagnitude: 0.5, weakMagnitude: 0.5 }, gamepadEffectParameters)
+        const vibrator = this.getGamepad()?.vibrationActuator
+        // @ts-ignore
+        return vibrator?.playEffect(vibrator?.type ?? 'dual-rumble', gamepadEffectParameters)
     }
 
     /**
@@ -131,7 +134,8 @@ export class GameInputPlayer {
     buttonDown (sectionName, buttonName) {
         this.#gameInput.buttonDown(this.index, sectionName, buttonName)
         const actionList = this.buttonDownActions.get(`${sectionName}.${buttonName}`)
-        for (const action of actionList) action()
+        if (actionList)
+            for (const action of actionList) action()
     }
 
     /**
@@ -142,7 +146,8 @@ export class GameInputPlayer {
     buttonUp (sectionName, buttonName) {
         this.#gameInput.buttonUp(this.index, sectionName, buttonName)
         const actionList = this.buttonUpActions.get(`${sectionName}.${buttonName}`)
-        for (const action of actionList) action()
+        if (actionList)
+            for (const action of actionList) action()
     }
 
     /**
@@ -155,7 +160,10 @@ export class GameInputPlayer {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonDownActions.get(`${sectionName}.${buttonName}`)?.push(action)
+        if (!this.buttonDownActions.has(`${sectionName}.${buttonName}`))
+            this.buttonDownActions.set(`${sectionName}.${buttonName}`, [])
+
+        this.buttonDownActions.get(`${sectionName}.${buttonName}`).push(action)
     }
 
     /**
@@ -168,7 +176,10 @@ export class GameInputPlayer {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
 
-        this.buttonUpActions.get(`${sectionName}.${buttonName}`)?.push(action)
+        if (!this.buttonUpActions.has(`${sectionName}.${buttonName}`))
+            this.buttonUpActions.set(`${sectionName}.${buttonName}`, [])
+
+        this.buttonUpActions.get(`${sectionName}.${buttonName}`).push(action)
     }
 
     /**

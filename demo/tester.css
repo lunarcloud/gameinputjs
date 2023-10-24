@@ -77,9 +77,11 @@ body {
         border: 0.2em outset #ccc;
         border-radius: 1em;
         line-height: 2em;
+        aspect-ratio: 2;
         vertical-align: middle;
 
-        &:active {
+        &[active] {
+            background-color: darkgray;
             border-style: outset;
         }
     }
@@ -87,7 +89,6 @@ body {
     & button, & .button {
         margin: auto;
         height: 2em;
-        aspect-ratio: 2;
         user-select: none;
     }
 
@@ -158,14 +159,18 @@ body {
     }
 
     & .shoulder {
-        grid-area: 1 / 1 / 1 / 4;
+        grid-area: 2 / 1 / 2 / 4;
     }
 
     & .trigger {
-        grid-area: 2 / 1 / 2 / 4;
+        grid-area: 1 / 1 / 1 / 4;
     }
 
     & .rumble {
         grid-area: 5 / 1 / 5 / 4;
+
+        & button {
+            width: fit-content;
+        }
     }
 }

@@ -20,7 +20,7 @@ const w3cStandardMapping = {
         'rightShoulder',
         'leftTrigger',
         'rightTrigger',
-        'select',
+        'back',
         'menu',
         'leftStickClick',
         'rightStickClick',
@@ -77,7 +77,7 @@ test('Standard DPad button mappings', () => {
 
 test('Standard center button mappings', () => {
     expect(mapping.center.menu).toBe(w3cStandardMapping.buttons.indexOf('menu'))
-    expect(mapping.center.select).toBe(w3cStandardMapping.buttons.indexOf('select'))
+    expect(mapping.center.back).toBe(w3cStandardMapping.buttons.indexOf('back'))
 })
 
 test('Standard shoulder button mappings', () => {

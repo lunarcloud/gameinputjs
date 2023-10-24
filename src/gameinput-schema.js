@@ -248,7 +248,7 @@ export class GameInputSchema {
         },
         center: {
             menu: 'start',
-            back: 'select'
+            back: 'back'
         },
         shoulder: {
             left: 'L1',

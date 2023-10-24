@@ -3,7 +3,7 @@ import { AxisAsButton } from './axis-as-button.js'
 
 export const StandardDPadMapping = new GamepadDirectionsMapping(12, 15, 13, 14)
 export const StandardFaceMapping = new GamepadFaceMapping(3, 1, 0, 2)
-export const StandardPlumberFaceMapping = new GamepadFaceMapping(3, 1, 0, 2, FaceDirections.rtl)
+export const StandardPlumberFaceMapping = new GamepadFaceMapping(3, 2, 1, 0, FaceDirections.rtl)
 export const StandardCenterMapping = new GamepadCenterMapping(9, 8)
 export const StandardShoulderMapping = new GamepadLRMapping(4, 5)
 export const StandardTriggerMapping = new GamepadLRMapping(6, 7)

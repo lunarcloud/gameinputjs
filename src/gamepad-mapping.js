@@ -43,16 +43,16 @@ export class GamepadCenterMapping {
      * Button/Axis for "select/back"
      * @type {SchemaButtonDef}
      */
-    select
+    back
 
     /**
      * Constructor, define directions from ltr.
      * @param {SchemaButtonDef} menu    start/options/menu button
-     * @param {SchemaButtonDef} select  select/back button
+     * @param {SchemaButtonDef} back  select/back button
      */
-    constructor (menu = undefined, select = undefined) {
+    constructor (menu = undefined, back = undefined) {
         this.menu = menu
-        this.select = select
+        this.back = back
     }
 }
 

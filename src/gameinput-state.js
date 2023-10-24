@@ -18,6 +18,14 @@ export class GameInputItemState {
      * @type {boolean}
      */
     active
+
+    /**
+     * Constructor.
+     * @param {import("./gamepad-mapping.js").SchemaButtonDef} item the state's reference item.
+     */
+    constructor (item) {
+        this.item = item
+    }
 }
 
 export class GameInputLRState {
@@ -218,15 +226,23 @@ export class GameInputState {
 
     /**
      *
-     * @param {GameInputDirectionsState|undefined} dpad Direction Pad
-     * @param {GameInputFaceState|undefined} face Face Buttons
-     * @param {GameInputCenterState|undefined} center Start/Select Buttons
-     * @param {GameInputLRState|undefined} shoulder Shoulder Buttons
-     * @param {GameInputLRState|undefined} trigger Triggers
-     * @param {GameInputDirectionsState|undefined} leftStick Left analog stick
-     * @param {GameInputDirectionsState|undefined} rightStick Right analog stick
+     * @param {GameInputDirectionsState} dpad Direction Pad
+     * @param {GameInputFaceState} face Face Buttons
+     * @param {GameInputCenterState} center Start/Select Buttons
+     * @param {GameInputLRState} shoulder Shoulder Buttons
+     * @param {GameInputLRState} trigger Triggers
+     * @param {GameInputDirectionsState} leftStick Left analog stick
+     * @param {GameInputDirectionsState} rightStick Right analog stick
      */
-    constructor (dpad = undefined, face = undefined, center = undefined, shoulder = undefined, trigger = undefined, leftStick = undefined, rightStick = undefined) {
+    constructor (
+        dpad = new GameInputDirectionsState(),
+        face = new GameInputFaceState(),
+        center = new GameInputCenterState(),
+        shoulder = new GameInputLRState(),
+        trigger = new GameInputLRState(),
+        leftStick = new GameInputDirectionsState(),
+        rightStick = new GameInputDirectionsState()
+    ) {
         this.dpad = dpad
         this.face = face
         this.center = center
