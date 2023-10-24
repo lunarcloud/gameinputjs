@@ -2,8 +2,7 @@ import { GameInput, DetectedOS } from '../gameinput.js'
 import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from '../gameinput-schema.js'
 
 /** @type {GameInput} */
-globalThis.gi = new GameInput()
-let gi = globalThis.gi
+const gi = new GameInput()
 
 document.querySelector('p.detected-os').textContent = `OS: ${DetectedOS}`
 
