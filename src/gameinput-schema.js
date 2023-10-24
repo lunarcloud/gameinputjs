@@ -198,6 +198,30 @@ export class GameInputSchema {
     })
 
     /**
+     * Nintendo64 style
+     */
+    static PlumberTrident = new GameInputSchema('Plumber', {
+        face: {
+            up: '',
+            down: 'A',
+            left: 'B',
+            right: ''
+        },
+        center: {
+            menu: 'start',
+            back: ''
+        },
+        shoulder: {
+            left: 'L',
+            right: 'R'
+        },
+        trigger: {
+            left: 'Z',
+            right: ''
+        }
+    })
+
+    /**
      * Nintendo style (Horizontal Right Joy-Con)
      */
     static PlumberRotatedRight = new GameInputSchema('Plumber', {
@@ -255,7 +279,7 @@ export class GameInputSchema {
         },
         center: {
             menu: 'start',
-            back: 'back'
+            back: 'select'
         },
         shoulder: {
             left: 'L1',

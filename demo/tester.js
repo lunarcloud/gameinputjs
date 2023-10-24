@@ -32,7 +32,7 @@ gi.onReinitialize(() => {
 })
 
 gi.onReinitialize(() => setupPlayers())
-setTimeout(()=> gi.reinitialize(), 100) // TODO?
+setTimeout(() => gi.reinitialize(), 100) // TODO?
 
 /**
  * Set Up the Players

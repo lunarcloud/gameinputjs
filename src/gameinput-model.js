@@ -3,7 +3,7 @@ import { GamepadMapping } from './gamepad-mapping.js'
 import { StandardGamepadMapping } from './standard-gamepad-mapping.js'
 
 /**
- * @typedef {'nintendo-generic'|'joycon-l'|'joycon-r'|'joycons'|'xbox360'|'xboxone'|'dc'|'ds3'|'ds4'|'ds5'|'joystick'|'generic'} GamepadIconName
+ * @typedef {'snes'|'n64'|'joycon-l'|'joycon-r'|'joycons'|'xbox360'|'xboxone'|'dc'|'ds3'|'ds4'|'ds5'|'joystick'|'sega-generic'|'generic'} GamepadIconName
  */
 
 /**
