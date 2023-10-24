@@ -120,6 +120,20 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Ragdoll,
         'ds5',
+        '054c-0ce6-DualSense Wireless Controller',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: undefined,
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            center: StandardCenterMapping,
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 4)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'ds5',
         'DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)'
     ),
     new GameInputModel(
@@ -231,6 +245,16 @@ const GameInputModels = [
         GameInputSchema.Hedgehog,
         'generic',
         'Logitech Logitech Dual Action (STANDARD GAMEPAD Vendor: 046d Product: c216)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'Logitech Dual Action (STANDARD GAMEPAD Vendor: 046d Product: c216)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        '046d-c216-Logitech Dual Action'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -389,9 +413,10 @@ const GameInputModels = [
         'Windows',
         StandardPlumberGamepadMapping.variant({
             dpad: undefined,
+            face: new GamepadFaceMapping(3, 1, 0, 2, FaceDirections.rtl),
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1), 10),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
             rightStick: undefined
         })
     ),
@@ -432,9 +457,10 @@ const GameInputModels = [
         'Windows',
         StandardPlumberGamepadMapping.variant({
             dpad: undefined,
+            face: new GamepadFaceMapping(3, 1, 0, 2, FaceDirections.rtl),
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1), 11),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
             rightStick: undefined
         })
     ),
@@ -667,10 +693,23 @@ const GameInputModels = [
         'Windows',
         StandardPlumberGamepadMapping.variant({
             dpad: undefined,
-            face: new GamepadFaceMapping(0, 1, 2, 3),
+            face: StandardPlumberFaceMapping,
             center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'nintendo-generic',
+        '20d6-a711-Core (Plus) Wired Controller',
+        'Windows',
+        StandardPlumberGamepadMapping.variant({
+            dpad: undefined,
+            face: StandardPlumberFaceMapping,
+            center: StandardCenterMapping,
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11)
         })
     ),
     new GameInputModel(
@@ -922,6 +961,11 @@ const GameInputModels = [
         GameInputSchema.Hedgehog,
         'xboxone',
         'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b20)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 0b20)'
     )
 ]
 

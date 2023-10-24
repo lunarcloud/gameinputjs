@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {{ up?: GameInputSchemaButtonName, down?: GameInputSchemaButtonName, left?: GameInputSchemaButtonName, right?: GameInputSchemaButtonName, click?: GameInputSchemaButtonName }} GameInputSchemaStickNames
+ * @typedef {{ up: GameInputSchemaButtonName, down: GameInputSchemaButtonName, left: GameInputSchemaButtonName, right: GameInputSchemaButtonName, click: GameInputSchemaButtonName }} GameInputSchemaStickNames
  */
 
 /**
@@ -266,9 +266,17 @@ export class GameInputSchema {
             right: 'R2'
         },
         leftStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→',
             click: 'L3'
         },
         rightStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→',
             click: 'R3'
         }
     })
@@ -296,9 +304,17 @@ export class GameInputSchema {
             right: 'R2'
         },
         leftStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→',
             click: 'L3'
         },
         rightStick: {
+            up: '↑',
+            down: '↓',
+            left: '←',
+            right: '→',
             click: 'R3'
         }
     })

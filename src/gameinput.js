@@ -29,12 +29,12 @@ class GameInput {
         Generic: [
             new GameInputModel(
                 GameInputSchema.Hedgehog,
-                'xbox360',
+                'xboxone',
                 'XInput'
             ),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
-                'xbox360',
+                'xboxone',
                 'xinput'
             ),
             new GameInputModel(
