@@ -238,24 +238,24 @@ const GameInputModels = [
         '046d-c216-Logitech Logitech Dual Action',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6), new AxisAsButton('+', 5), new AxisAsButton('+', 6), new AxisAsButton('-', 5)),
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
             face: new GamepadFaceMapping(3, 2, 1, 0),
             center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 11)
         })
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
-        'Logitech Logitech Dual Action (Vendor: 046d Product: c216)',
+        '046d-c21d-Logitech Gamepad F310',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6), new AxisAsButton('+', 5), new AxisAsButton('+', 6), new AxisAsButton('-', 5)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            center: new GamepadCenterMapping(7, 6),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
         })
     ),
     new GameInputModel(
@@ -378,7 +378,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(5),
             shoulder: new GamepadLRMapping(2, 4),
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), new AxisAsButton('-', 1), 6),
             rightStick: undefined
         })
     ),
@@ -391,7 +391,7 @@ const GameInputModels = [
             dpad: undefined,
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1), 10),
             rightStick: undefined
         })
     ),
@@ -406,7 +406,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(8),
             shoulder: new GamepadLRMapping(4, 6),
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 0), new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 0), new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), 10),
             rightStick: undefined
         })
     ),
@@ -421,7 +421,7 @@ const GameInputModels = [
             center: new GamepadCenterMapping(8),
             shoulder: new GamepadLRMapping(4, 6),
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1), 10),
             rightStick: undefined
         })
     ),
@@ -434,7 +434,7 @@ const GameInputModels = [
             dpad: undefined,
             center: StandardCenterMapping,
             trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1), 11),
             rightStick: undefined
         })
     ),
@@ -454,8 +454,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(10, 9),
             shoulder: new GamepadLRMapping(5, 6),
             trigger: new GamepadLRMapping(7, 8),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 12),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 13)
         })
     ),
     new GameInputModel(
@@ -469,8 +469,8 @@ const GameInputModels = [
             center: new GamepadCenterMapping(10, 9),
             shoulder: new GamepadLRMapping(5, 6),
             trigger: new GamepadLRMapping(7, 8),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 12),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 13)
         })
     ),
     new GameInputModel(
@@ -543,13 +543,12 @@ const GameInputModels = [
         '0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: undefined,
-            center: StandardCenterMapping,
-            shoulder: undefined,
-            trigger: undefined,
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2)),
+            face: new GamepadFaceMapping(3, 1, 0, 2),
+            shoulder: new GamepadLRMapping(4, 5),
+            trigger: new GamepadLRMapping(6, 7),
             leftStick: undefined,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
+            rightStick: undefined
         })
     ),
     new GameInputModel(
@@ -558,9 +557,8 @@ const GameInputModels = [
         'MY-POWER CO.,LTD. Mayflash Arcade Stick (STANDARD GAMEPAD Vendor: 0e8f Product: 0003)',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 4), new AxisAsButton('+', 3), new AxisAsButton('-', 4)),
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 3), new AxisAsButton('+', 2), new AxisAsButton('-', 3)),
             face: new GamepadFaceMapping(2, 1, 3, 0),
-            center: StandardCenterMapping,
             shoulder: new GamepadLRMapping(6, 7),
             trigger: new GamepadLRMapping(4, 5),
             leftStick: undefined,
@@ -619,8 +617,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
             face: StandardPlumberFaceMapping,
             center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 11)
         })
     ),
     new GameInputModel(
@@ -632,8 +630,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
             face: StandardPlumberFaceMapping,
             center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 10),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 11)
         })
     ),
     new GameInputModel(
@@ -770,11 +768,11 @@ const GameInputModels = [
         '0e6f-0213-Afterglow Gamepad for Xbox 360',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            center: new GamepadCenterMapping(7),
-            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            center: new GamepadCenterMapping(7, 6),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
         })
     ),
     new GameInputModel(
@@ -821,8 +819,8 @@ const GameInputModels = [
             dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
             center: new GamepadCenterMapping(7, 6),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3))
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
         })
     ),
     new GameInputModel(
@@ -836,11 +834,11 @@ const GameInputModels = [
         '045e-0b12-Microsoft Xbox Series S|X Controller',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            center: new GamepadCenterMapping(7),
-            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            center: new GamepadCenterMapping(7, 6),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
         })
     ),
     new GameInputModel(
@@ -854,25 +852,61 @@ const GameInputModels = [
         'Performance Designed Products Afterglow Wired Controller for Xbox One (Vendor: 0e6f Product: 0139)',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            center: new GamepadCenterMapping(7),
-            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            center: new GamepadCenterMapping(7, 6),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
         })
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'xboxone',
-        '045e-02e0-Xbox Wireless Controller',
+        '045e-0b13-Xbox Wireless Controller',
         'Linux',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            center: new GamepadCenterMapping(7),
-            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 6)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            face: new GamepadFaceMapping(4, 1, 0, 3),
+            center: new GamepadCenterMapping(11, 10),
+            shoulder: new GamepadLRMapping(6, 7),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 5), new AxisAsButton('+', 4)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 13),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 14)
         })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        '045e-02ea-Microsoft X-Box One S pad',
+        'Linux',
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            center: new GamepadCenterMapping(7, 6),
+            shoulder: new GamepadLRMapping(4, 5),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 9),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        '045e-0b20-Xbox Wireless Controller',
+        'Linux',
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6)),
+            face: new GamepadFaceMapping(4, 1, 0, 3),
+            center: new GamepadCenterMapping(11, 10),
+            shoulder: new GamepadLRMapping(6, 7),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 5), new AxisAsButton('+', 4)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 13),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 14)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'Microsoft Controller (STANDARD GAMEPAD Vendor: 045e Product: 02ea)'
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
@@ -883,6 +917,11 @@ const GameInputModels = [
         GameInputSchema.Hedgehog,
         'xboxone',
         'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)'
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'xboxone',
+        'Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b20)'
     )
 ]
 

@@ -134,14 +134,14 @@ export class GameInputSchema {
             down: '↓',
             left: '←',
             right: '→',
-            click: '.'
+            click: 'click'
         },
         rightStick: {
             up: '↑',
             down: '↓',
             left: '←',
             right: '→',
-            click: '.'
+            click: 'click'
         },
         shoulder: {
             left: 'LB',

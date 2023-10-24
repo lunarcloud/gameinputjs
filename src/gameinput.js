@@ -326,7 +326,7 @@ class GameInput {
                         state.active = (state.value >= buttonDef.threshold && buttonDef.direction === 'positive') ||
                                         (state.value <= buttonDef.threshold && buttonDef.direction === 'negative')
                     } else {
-                        state.active = currentGamepad.buttons[buttonDef].pressed
+                        state.active = currentGamepad.buttons[buttonDef]?.pressed ?? false
                         state.value = state.active ? 1 : 0
                     }
                 }

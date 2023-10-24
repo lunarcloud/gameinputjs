@@ -107,6 +107,12 @@ body {
         border-radius: 50%;
         padding: 0.5em;
 
+        &.dpad, &.face {
+            background: hsl(208deg 100% 97.06% / 46%);
+            border-radius: 4em;
+
+        }
+
         & .up {
             grid-area: 1 / 2;
         }
