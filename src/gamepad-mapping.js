@@ -129,34 +129,17 @@ export class GamepadFaceMapping extends GamepadDirectionsMapping {
     direction
 
     /**
-     * Button/Axis for "Z"
-     * @type {SchemaButtonDef}
-     */
-    upperExtra
-
-    /**
-     * Button/Axis for "C"
-     * @type {SchemaButtonDef}
-     */
-    lowerExtra
-
-    /**
      * Constructor.
      * @param {SchemaButtonDef} up          north button
      * @param {SchemaButtonDef} right       east button
      * @param {SchemaButtonDef} down        south button
      * @param {SchemaButtonDef} left        west button
      * @param {FaceDirection}   direction   button label direction
-     * @param {SchemaButtonDef} upperExtra  upper extra button (Z)
-     * @param {SchemaButtonDef} lowerExtra  lower extra button (C)
      */
     constructor (up = undefined, right = undefined, down = undefined, left = undefined,
-        direction = FaceDirections.ltr,
-        upperExtra = undefined, lowerExtra = undefined) {
+        direction = FaceDirections.ltr) {
         super(up, right, down, left)
         this.direction = direction
-        this.upperExtra = upperExtra
-        this.lowerExtra = lowerExtra
     }
 
     /**
@@ -171,8 +154,6 @@ export class GamepadFaceMapping extends GamepadDirectionsMapping {
         case 1: return ltr ? this.right : this.down
         case 2: return ltr ? this.left : this.up
         case 3: return ltr ? this.up : this.left
-        case 4: return this.lowerExtra
-        case 5: return this.upperExtra
         default: return undefined
         }
     }
@@ -184,8 +165,6 @@ export class GamepadFaceMapping extends GamepadDirectionsMapping {
      *  down?: SchemaButtonDef|undefined,
      *  left?: SchemaButtonDef|undefined,
      *  direction?: FaceDirection|undefined,
-     *  upperExtra?: SchemaButtonDef|undefined,
-     *  lowerExtra?: SchemaButtonDef|undefined
      * }} GamepadFaceMappingOverrides
      */
 

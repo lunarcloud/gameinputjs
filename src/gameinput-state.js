@@ -111,34 +111,18 @@ export class GameInputFaceState extends GameInputDirectionsState {
     direction
 
     /**
-     * Button/Axis for "Z"
-     * @type {GameInputItemState}
-     */
-    upperExtra
-
-    /**
-     * Button/Axis for "C"
-     * @type {GameInputItemState}
-     */
-    lowerExtra
-
-    /**
      * Constructor.
      * @param {GameInputItemState} up          north button
      * @param {GameInputItemState} right       east button
      * @param {GameInputItemState} down        south button
      * @param {GameInputItemState} left        west button
      * @param {import("./gamepad-mapping.js").FaceDirection}   direction   button label direction
-     * @param {GameInputItemState} upperExtra  upper extra button (Z)
-     * @param {GameInputItemState} lowerExtra  lower extra button (C)
      */
     constructor (up = undefined, right = undefined, down = undefined, left = undefined,
         direction = FaceDirections.ltr,
         upperExtra = undefined, lowerExtra = undefined) {
         super(up, right, down, left)
         this.direction = direction
-        this.upperExtra = upperExtra
-        this.lowerExtra = lowerExtra
     }
 
     /**
@@ -153,8 +137,6 @@ export class GameInputFaceState extends GameInputDirectionsState {
         case 1: return ltr ? this.right : this.down
         case 2: return ltr ? this.left : this.up
         case 3: return ltr ? this.up : this.left
-        case 4: return this.lowerExtra
-        case 5: return this.upperExtra
         default: return undefined
         }
     }
