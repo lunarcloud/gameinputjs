@@ -119,8 +119,7 @@ export class GameInputFaceState extends GameInputDirectionsState {
      * @param {import("./gamepad-mapping.js").FaceDirection}   direction   button label direction
      */
     constructor (up = undefined, right = undefined, down = undefined, left = undefined,
-        direction = FaceDirections.ltr,
-        upperExtra = undefined, lowerExtra = undefined) {
+        direction = FaceDirections.ltr) {
         super(up, right, down, left)
         this.direction = direction
     }
@@ -148,8 +147,6 @@ export class GameInputFaceState extends GameInputDirectionsState {
      *  down?: GameInputItemState|undefined,
      *  left?: GameInputItemState|undefined,
      *  direction?: import("./gamepad-mapping.js").FaceDirection|undefined,
-     *  upperExtra?: GameInputItemState|undefined,
-     *  lowerExtra?: GameInputItemState|undefined
      * }} GameInputFaceStateOverrides
      */
 
