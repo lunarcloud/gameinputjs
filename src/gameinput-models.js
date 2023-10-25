@@ -4,13 +4,25 @@ import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, Gamepa
 import { AxisAsButton } from './axis-as-button.js'
 import { StandardCenterMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping } from './standard-gamepad-mapping.js'
 
-const MagicSProN64AdapterMapping = StandardPlumberGamepadMapping.variant({
+const radialDpadAxis9 = undefined // weird single-axis thing on axis 9 we don't support
+
+const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
     dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
     face: new GamepadFaceMapping(undefined, undefined, 1, 2),
     rightStick: new GamepadAnalogStickMapping(
         new AxisAsButton('+', 3),
         new AxisAsButton('+', 2),
         new AxisAsButton('-', 3),
+        new AxisAsButton('-', 2)
+    )
+})
+const MagicSProN64AdapterWindowsMapping = StandardPlumberGamepadMapping.variant({
+    dpad: radialDpadAxis9,
+    face: new GamepadFaceMapping(undefined, undefined, 1, 2),
+    rightStick: new GamepadAnalogStickMapping(
+        new AxisAsButton('+', 5),
+        new AxisAsButton('+', 2),
+        new AxisAsButton('-', 5),
         new AxisAsButton('-', 2)
     )
 })
@@ -36,6 +48,36 @@ const GameInputModels = [
         '0e8f-3010-HuiJia  USB GamePad',
         'Linux',
         StandardGamepadMapping.variant({
+            face: new GamepadFaceMapping(4, 1, 0, 3),
+            center: new GamepadCenterMapping(9),
+            shoulder: new GamepadLRMapping(6, 2),
+            trigger: new GamepadLRMapping(5, 7),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'sega-generic',
+        'USB GamePad (Vendor: 0e8f Product: 3010)',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
+            face: new GamepadFaceMapping(4, 1, 0, 3),
+            center: new GamepadCenterMapping(9),
+            shoulder: new GamepadLRMapping(6, 2),
+            trigger: new GamepadLRMapping(5, 7),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'sega-generic',
+        '0e8f-3010-USB GamePad',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
             face: new GamepadFaceMapping(4, 1, 0, 3),
             center: new GamepadCenterMapping(9),
             shoulder: new GamepadLRMapping(6, 2),
@@ -125,10 +167,8 @@ const GameInputModels = [
         '054c-05c4-Wireless Controller',
         'Windows',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(14, 17, 15, 16),
-            face: new GamepadFaceMapping(2, 1, 0, 3),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 11),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 12)
+            dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
+            face: new GamepadFaceMapping(3, 1, 0, 2),
         })
     ),
     new GameInputModel(
@@ -611,6 +651,32 @@ const GameInputModels = [
         })
     ),
     new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'sega-generic',
+        '0079-0011-USB Gamepad ',
+        'Windows',
+        StandardGamepadMapping.variant({
+            face: new GamepadFaceMapping(2, 0, 1, 3),
+            shoulder: new GamepadLRMapping(6, 7),
+            trigger: new GamepadLRMapping(5, 4),
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'sega-generic',
+        'USB Gamepad  (STANDARD GAMEPAD Vendor: 0079 Product: 0011)',
+        'Windows',
+        StandardGamepadMapping.variant({
+            face: new GamepadFaceMapping(2,0, 1, 3),
+            shoulder: new GamepadLRMapping(6, 7),
+            trigger: new GamepadLRMapping(5, 4),
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
         GameInputSchema.RagdollOld,
         'joystick',
         '0e8f-0003-MY-POWER CO.,LTD. Mayflash Arcade Stick',
@@ -659,7 +725,29 @@ const GameInputModels = [
         })
     ),
     new GameInputModel(
-        GameInputSchema.Hedgehog,
+        GameInputSchema.RagdollOld,
+        'ds3',
+        '0e6f-0111-Afterglow Gamepad for PS3',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: radialDpadAxis9,
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11),
+            face: new GamepadFaceMapping(3, 2, 1, 0)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.RagdollOld,
+        'ds3',
+        'Afterglow Gamepad for PS3 (Vendor: 0e6f Product: 0111)',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: radialDpadAxis9,
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11),
+            face: new GamepadFaceMapping(3, 2, 1, 0)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.RagdollOld,
         'joystick',
         'PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)',
         'macOS',
@@ -690,30 +778,83 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.PlumberTrident,
         'n64',
+        '20d6-a710-Controller',
+        'Windows',
+        MagicSProN64AdapterWindowsMapping
+    ),
+    new GameInputModel(
+        GameInputSchema.PlumberTrident,
+        'n64',
+        'Controller (Vendor: 20d6 Product: a710)',
+        'Windows',
+        MagicSProN64AdapterWindowsMapping
+    ),
+    new GameInputModel(
+        GameInputSchema.PlumberTrident,
+        'n64',
+        'MAGIC-S PRO (Vendor: 20d6 Product: a710)',
+        'Windows',
+        MagicSProN64AdapterLinuxMapping
+    ),
+    new GameInputModel(
+        GameInputSchema.PlumberTrident,
+        'n64',
         'MAGIC-S PRO (Vendor: 20d6 Product: a710)',
         'Linux',
-        MagicSProN64AdapterMapping
+        MagicSProN64AdapterLinuxMapping
     ),
     new GameInputModel(
         GameInputSchema.PlumberTrident,
         'n64',
         'Controller (Vendor: 20d6 Product: a710)',
         'Linux',
-        MagicSProN64AdapterMapping
+        MagicSProN64AdapterLinuxMapping
     ),
     new GameInputModel(
         GameInputSchema.PlumberTrident,
         'n64',
         '20d6-a710-Controller',
         'Linux',
-        MagicSProN64AdapterMapping
+        MagicSProN64AdapterLinuxMapping
     ),
     new GameInputModel(
         GameInputSchema.PlumberTrident,
         'n64',
         '20d6-a710-MAGIC-S PRO',
         'Linux',
-        MagicSProN64AdapterMapping
+        MagicSProN64AdapterLinuxMapping
+    ),
+    new GameInputModel(
+        GameInputSchema.PlumberCube,
+        'generic',
+        '0079-1843-Hyperkin 4 Port Adapter',
+        'Windows',
+        StandardPlumberGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
+            face: new GamepadFaceMapping(3, 0, 1, 2, FaceDirections.rtl),
+            center: new GamepadCenterMapping(9),
+            shoulder: new GamepadLRMapping(undefined, 7),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 4)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 5), new AxisAsButton('+', 2), new AxisAsButton('-', 5))
+
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.PlumberCube,
+        'generic',
+        'Hyperkin 4 Port Adapter (Vendor: 0079 Product: 1843)',
+        'Windows',
+        StandardPlumberGamepadMapping.variant({
+            dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
+            face: new GamepadFaceMapping(3, 0, 1, 2, FaceDirections.rtl),
+            center: new GamepadCenterMapping(9),
+            shoulder: new GamepadLRMapping(undefined, 7),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 3), new AxisAsButton('+', 4)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
+            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 5), new AxisAsButton('+', 2), new AxisAsButton('-', 5))
+
+        })
     ),
     new GameInputModel(
         GameInputSchema.Plumber,

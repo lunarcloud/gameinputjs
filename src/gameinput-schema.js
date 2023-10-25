@@ -222,6 +222,30 @@ export class GameInputSchema {
     })
 
     /**
+     * Nintendo Gamecube style
+     */
+    static PlumberCube = new GameInputSchema('Plumber', {
+        face: {
+            up: 'Y',
+            down: 'A',
+            left: 'B',
+            right: 'X'
+        },
+        center: {
+            menu: 'start',
+            back: ''
+        },
+        shoulder: {
+            left: '',
+            right: 'Z'
+        },
+        trigger: {
+            left: 'L',
+            right: 'R'
+        }
+    })
+
+    /**
      * Nintendo style (Horizontal Right Joy-Con)
      */
     static PlumberRotatedRight = new GameInputSchema('Plumber', {
