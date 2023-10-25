@@ -90,20 +90,6 @@ const GameInputModels = [
         GameInputSchema.Hedgehog,
         'dc',
         'USB GamePad (Vendor: 0e8f Product: 3013)',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
-            center: StandardCenterMapping,
-            shoulder: undefined,
-            trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'dc',
-        'USB GamePad (Vendor: 0e8f Product: 3013)',
         'Windows',
         StandardGamepadMapping.variant({
             dpad: new GamepadDirectionsMapping(12, 13, 14, 15),
@@ -231,72 +217,6 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
-        '428-4001-GamePad Pro USB ',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'ASUS Gamepad',
-        'Android',
-        StandardGamepadMapping.variant({
-            dpad: undefined,
-            center: new GamepadCenterMapping(11),
-            shoulder: new GamepadLRMapping(6, 7),
-            trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'GamePad Pro USB  (Vendor: 0428 Product: 4001)',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        '0428-4001-Gravis GamePad Pro USB ',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Gravis GamePad Pro USB  (Vendor: 0428 Product: 4001)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
         'Logitech Dual Action',
         undefined,
         StandardGamepadMapping.variant({
@@ -353,115 +273,6 @@ const GameInputModels = [
             trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
             leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 9),
             rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 10)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Logitech Rumblepad 2',
-        undefined,
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(11, 14, 12, 13),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            shoulder: undefined,
-            trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        '045e-0007-Microsoft® Microsoft® SideWinder® Game Pad USB',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(4, 1, 0, 3),
-            center: StandardCenterMapping,
-            shoulder: new GamepadLRMapping(5, 2),
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Microsoft® Microsoft® SideWinder® Game Pad USB (Vendor: 045e Product: 0007)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(4, 1, 0, 3),
-            center: StandardCenterMapping,
-            shoulder: new GamepadLRMapping(5, 2),
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Moga 2 HID',
-        'Android',
-        StandardGamepadMapping.variant({
-            dpad: undefined,
-            center: StandardCenterMapping,
-            shoulder: new GamepadLRMapping(6, 7),
-            trigger: undefined,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'Moga 2 HID (Vendor: 20d6 Product: 89e5)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            center: new GamepadCenterMapping(6),
-            trigger: new GamepadLRMapping(new AxisAsButton('+', 6), new AxisAsButton('+', 5)),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'NYKO PLAYPAD PRO',
-        'Android',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 8), new AxisAsButton('+', 7), new AxisAsButton('+', 8), new AxisAsButton('-', 7)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        '1345-1030-USB  Joystick ',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(0, 1, 2, 3),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'generic',
-        'USB  Joystick (Vendor: 1345 Product: 1030)',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(0, 1, 2, 3),
-            center: StandardCenterMapping,
-            leftStick: undefined,
-            rightStick: undefined
         })
     ),
     new GameInputModel(
@@ -570,58 +381,6 @@ const GameInputModels = [
             trigger: new GamepadLRMapping(7, 8),
             leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 12),
             rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2), 13)
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'joystick',
-        '04b4-2774-Innovative Produtcs VR Pro 2000 USB Joystick',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
-            face: new GamepadFaceMapping(new AxisAsButton('-', 3, -0.8, -0.6), 1, 0, 2),
-            center: new GamepadCenterMapping(3),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'joystick',
-        'Innovative Produtcs VR Pro 2000 USB Joystick (Vendor: 04b4 Product: 2774)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
-            face: new GamepadFaceMapping(new AxisAsButton('-', 3, -0.8, -0.6), 1, 0, 2),
-            center: new GamepadCenterMapping(3),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('+', 2, 0.8, 0.6), new AxisAsButton('-', 1, -0.8, -0.6), new AxisAsButton('-', 2, -0.8, -0.6), new AxisAsButton('+', 1, 0.8, 0.6))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.RagdollOld,
-        'joystick',
-        '046d-c215-Logitech Logitech Extreme 3D Pro',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6, -0.3), new AxisAsButton('+', 5, 0.3), new AxisAsButton('+', 6, 0.3), new AxisAsButton('-', 5, -0.3)),
-            center: new GamepadCenterMapping(11),
-            trigger: new GamepadLRMapping(8, 10),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.RagdollOld,
-        'joystick',
-        'Logitech Logitech Extreme 3D Pro (Vendor: 046d Product: c215)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 6, -0.3), new AxisAsButton('+', 5, 0.3), new AxisAsButton('+', 6, 0.3), new AxisAsButton('-', 5, -0.3)),
-            center: new GamepadCenterMapping(11),
-            trigger: new GamepadLRMapping(8, 10),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2, -0.3), new AxisAsButton('+', 1, 0.3), new AxisAsButton('+', 2, 0.3), new AxisAsButton('-', 1, -0.3))
         })
     ),
     new GameInputModel(
@@ -747,35 +506,6 @@ const GameInputModels = [
         })
     ),
     new GameInputModel(
-        GameInputSchema.RagdollOld,
-        'joystick',
-        'PLAYSTATION(R)3 Controller (STANDARD GAMEPAD Vendor: 054c Product: 0268)',
-        'macOS',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(7, 0, 6, 1),
-            center: StandardCenterMapping,
-            shoulder: new GamepadLRMapping(4, 2),
-            trigger: new GamepadLRMapping(3, 5),
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'snes',
-        '(null) usb gamepad            (Vendor: 0810 Product: e501)',
-        'Linux',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0, FaceDirections.rtl),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
         GameInputSchema.PlumberTrident,
         'n64',
         '20d6-a710-Controller',
@@ -858,20 +588,6 @@ const GameInputModels = [
     ),
     new GameInputModel(
         GameInputSchema.Plumber,
-        'snes',
-        '810-e501-usb gamepad           ',
-        'macOS',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 3), new AxisAsButton('+', 2), new AxisAsButton('+', 3), new AxisAsButton('-', 2)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
         'generic',
         '20d6-a711-Bensussen Deutsch & Associates,Inc.(BDA) Core (Plus) Wired Controller',
         'Linux',
@@ -949,90 +665,6 @@ const GameInputModels = [
         })
     ),
     new GameInputModel(
-        GameInputSchema.Plumber,
-        'snes',
-        '0925-8866-SFC/USB Pad',
-        'Windows',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(2, 0, 1, 3),
-            center: new GamepadCenterMapping(7),
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'snes',
-        'SFC/USB Pad (Vendor: 0925 Product: 8866)',
-        'Windows',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(2, 0, 1, 3),
-            center: new GamepadCenterMapping(7),
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'snes',
-        '0810-e501-usb gamepad           ',
-        'Linux',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'snes',
-        'usb gamepad            (Vendor: 0810 Product: e501)',
-        'macOS',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'generic',
-        '0583-2060-USB,2-axis 8-button gamepad   ',
-        'macOS',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
-            face: new GamepadFaceMapping(2, 0, 1, 3),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Plumber,
-        'generic',
-        'USB,2-axis 8-button gamepad   (STANDARD GAMEPAD Vendor: 0583 Product: 2060)',
-        'macOS',
-        StandardPlumberGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
-            face: new GamepadFaceMapping(2, 0, 1, 3),
-            center: StandardCenterMapping,
-            trigger: undefined,
-            leftStick: undefined,
-            rightStick: undefined
-        })
-    ),
-    new GameInputModel(
         GameInputSchema.Hedgehog,
         'xbox360',
         '©Microsoft Corporation Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)'
@@ -1059,31 +691,6 @@ const GameInputModels = [
         GameInputSchema.Hedgehog,
         'xbox360',
         'Xbox 360 Controller (XInput STANDARD GAMEPAD)'
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'xbox360',
-        '0000-0000-Xbox 360 Wireless Receiver',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(15, 14, 16, 13),
-            center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
-    ),
-    new GameInputModel(
-        GameInputSchema.Hedgehog,
-        'xbox360',
-        'Xbox 360 Wireless Receiver (Vendor: 0000 Product: 0000)',
-        'Linux',
-        StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(15, 14, 16, 13),
-            face: new GamepadFaceMapping(2, 0, 1, 3),
-            center: StandardCenterMapping,
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
-            rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1))
-        })
     ),
     new GameInputModel(
         GameInputSchema.Hedgehog,
