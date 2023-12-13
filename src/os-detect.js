@@ -1,4 +1,8 @@
 /**
+ * @module
+ */
+
+/**
  * @typedef {'Android'|'iOS'|'Windows'|'macOS'|'Linux'|'Other'} OSName
  */
 

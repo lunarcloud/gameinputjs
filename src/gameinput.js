@@ -1,3 +1,7 @@
+/**
+ * @module
+ */
+
 import { GamepadMapping } from './gamepad-mapping.js'
 import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema, GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './gameinput-schema.js'
@@ -8,9 +12,6 @@ import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
 import { GameInputItemState, GameInputState } from './gameinput-state.js'
-/**
- * @module GameInput
- */
 
 /**
  * Game Input System

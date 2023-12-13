@@ -141,13 +141,12 @@ export class GameInputFaceState extends GameInputDirectionsState {
     }
 
     /**
-     * @typedef {{
-     *  up?: GameInputItemState|undefined,
-     *  right?: GameInputItemState|undefined,
-     *  down?: GameInputItemState|undefined,
-     *  left?: GameInputItemState|undefined,
-     *  direction?: import("./gamepad-mapping.js").FaceDirection|undefined,
-     * }} GameInputFaceStateOverrides
+     * @typedef {Object} GameInputFaceStateOverrides
+     * @property {GameInputItemState|undefined} [up] up override
+     * @property {GameInputItemState|undefined} [right] right override
+     * @property {GameInputItemState|undefined} [down] down override
+     * @property {GameInputItemState|undefined} [left] left override
+     * @property {import("./gamepad-mapping.js").FaceDirection|undefined} [direction] direction override
      */
 
     /**
@@ -232,21 +231,20 @@ export class GameInputState {
     }
 
     /**
-     * @typedef {{
-     *  dpad?: GameInputDirectionsState|undefined,
-     *  face?: GameInputFaceState|undefined,
-     *  center?: GameInputCenterState|undefined,
-     *  shoulder?: GameInputLRState|undefined,
-     *  trigger?: GameInputLRState|undefined,
-     *  leftStick?: GameInputDirectionsState|undefined,
-     *  rightStick?: GameInputDirectionsState|undefined
-     * }} GameInputStateOverrides
+     * @typedef {Object} GameInputStateOverrides
+     * @property {GameInputDirectionsState|undefined} [dpad] dpad override
+     * @property {GameInputFaceState|undefined} [face] face override
+     * @property {GameInputCenterState|undefined} [center] center override
+     * @property {GameInputLRState|undefined} [shoulder] shoulder override
+     * @property {GameInputLRState|undefined} [trigger] trigger override
+     * @property {GameInputDirectionsState|undefined} [leftStick] leftStick override
+     * @property {GameInputDirectionsState|undefined} [rightStick] rightStick override
      */
 
     /**
      * Return a fresh clone to modify.
-     * @param {GameInputStateOverrides|undefined} overrides           Properties to override
-     * @param {GameInputFaceStateOverrides|undefined} faceOverrides   Properties on face to override
+     * @param {?GameInputStateOverrides} overrides           Properties to override
+     * @param {?GameInputFaceStateOverrides} faceOverrides   Properties on face to override
      * @returns {GameInputState}                            new copy with changes
      */
     variant (overrides = {}, faceOverrides = undefined) {

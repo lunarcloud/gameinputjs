@@ -57,7 +57,8 @@ export class GamepadCenterMapping {
 }
 
 /**
- * @typedef {boolean} FaceDirection
+ * @typedef {boolean} FaceDirection  true= left-to-right, false=right-to-left
+ * @summary is LTR?
  */
 
 /**
@@ -159,13 +160,12 @@ export class GamepadFaceMapping extends GamepadDirectionsMapping {
     }
 
     /**
-     * @typedef {{
-     *  up?: SchemaButtonDef|undefined,
-     *  right?: SchemaButtonDef|undefined,
-     *  down?: SchemaButtonDef|undefined,
-     *  left?: SchemaButtonDef|undefined,
-     *  direction?: FaceDirection|undefined,
-     * }} GamepadFaceMappingOverrides
+     * @typedef {Object} GamepadFaceMappingOverrides
+     * @property {SchemaButtonDef|undefined} [up] up override
+     * @property {SchemaButtonDef|undefined} [right] right override
+     * @property {SchemaButtonDef|undefined} [down] down override
+     * @property {SchemaButtonDef|undefined} [left] left override
+     * @property {FaceDirection|undefined} [direction] direction override
      */
 
     /**
@@ -246,15 +246,14 @@ export class GamepadMapping {
     }
 
     /**
-     * @typedef {{
-     *  dpad?: GamepadDirectionsMapping|undefined,
-     *  face?: GamepadFaceMapping|undefined,
-     *  center?: GamepadCenterMapping|undefined,
-     *  shoulder?: GamepadLRMapping|undefined,
-     *  trigger?: GamepadLRMapping|undefined,
-     *  leftStick?: GamepadAnalogStickMapping|undefined,
-     *  rightStick?: GamepadAnalogStickMapping|undefined
-     * }} GamepadMappingOverrides
+     * @typedef {Object} GamepadMappingOverrides
+     * @property {GamepadDirectionsMapping|undefined} [dpad] dpad override
+     * @property {GamepadFaceMapping|undefined} [face] face override
+     * @property {GamepadCenterMapping|undefined} [center] center override
+     * @property {GamepadLRMapping|undefined} [shoulder] shoulder override
+     * @property {GamepadLRMapping|undefined} [trigger] trigger override
+     * @property {GamepadAnalogStickMapping|undefined} [leftStick] leftStick override
+     * @property {GamepadAnalogStickMapping|undefined} [rightStick] rightStick override
      */
 
     /**

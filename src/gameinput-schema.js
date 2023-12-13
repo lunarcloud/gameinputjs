@@ -23,8 +23,30 @@
  */
 
 /**
+ * @typedef {Object} GameInputSchemaSectionNames
+ * @property {GameInputSchemaSectionName} dpad dpad
+ * @property {GameInputSchemaSectionName} center center
+ * @property {GameInputSchemaSectionName} face face
+ * @property {GameInputSchemaSectionName} leftStick leftStick
+ * @property {GameInputSchemaSectionName} rightStick rightStick
+ * @property {GameInputSchemaSectionName} shoulder shoulder
+ * @property {GameInputSchemaSectionName} trigger trigger
+ */
+
+/**
+ * @typedef {Object} GameInputSchemaOverrides
+ * @property {GameInputSchemaDirectionNames} [dpad] dpad override
+ * @property {GameInputSchemaCenterNames} [center] center override
+ * @property {GameInputSchemaDirectionNames} [face] face override
+ * @property {GameInputSchemaStickNames} [leftStick] leftStick override
+ * @property {GameInputSchemaStickNames} [rightStick] rightStick override
+ * @property {GameInputSchemaLRNames} [shoulder] shoulder override
+ * @property {GameInputSchemaLRNames} [trigger] trigger override
+ */
+
+/**
  * Possible Section Names
- * @type {{dpad: GameInputSchemaSectionName, center: GameInputSchemaSectionName, face: GameInputSchemaSectionName, leftStick: GameInputSchemaSectionName, rightStick: GameInputSchemaSectionName, shoulder: GameInputSchemaSectionName, trigger: GameInputSchemaSectionName, }}
+ * @type {GameInputSchemaSectionNames}
  */
 export const GameInputSchemaSectionNames = {
     dpad: 'dpad',
@@ -50,17 +72,6 @@ export const GameInputSchemaButtonNames = {
     click: 'click'
 }
 
-/**
- * @typedef {{
- *     dpad?: GameInputSchemaDirectionNames,
- *     center?: { menu: string, back?: string },
- *     face?:  GameInputSchemaDirectionNames,
- *     leftStick?:  GameInputSchemaStickNames,
- *     rightStick?:  GameInputSchemaStickNames,
- *     shoulder?: GameInputSchemaLRNames,
- *     trigger?: GameInputSchemaLRNames
- * }} GameInputSchemaOverrides
- */
 
 /**
  * Defines what each button is displayed as, what should be on the physical device for each button.
@@ -256,7 +267,8 @@ export class GameInputSchema {
             right: 'X'
         },
         center: {
-            menu: '+'
+            menu: '+',
+            back: ''
         },
         shoulder: {
             left: 'SL',
@@ -279,7 +291,8 @@ export class GameInputSchema {
             right: '→'
         },
         center: {
-            menu: '-'
+            menu: '-',
+            back: ''
         },
         shoulder: {
             left: 'SL',

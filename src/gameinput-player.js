@@ -115,8 +115,16 @@ export class GameInputPlayer {
     }
 
     /**
+     * @typedef {Object} GamepadEffectParams
+     * @property {number} [startDelay]      delay time before effect
+     * @property {number} [duration]        active time of effect
+     * @property {number} [strongMagnitude] strong rumble motor magnitude
+     * @property {number} [weakMagnitude]   weak rumble motor magnitude
+     */
+
+    /**
      * Rumble the player's gamepad.
-     * @param {{ startDelay?: number, duration?: number, strongMagnitude?: number, weakMagnitude?: number }} gamepadEffectParameters parameters for the rumble
+     * @param {GamepadEffectParams} gamepadEffectParameters parameters for the rumble
      * @returns {Promise<string>} result promise
      */
     rumble (gamepadEffectParameters = {}) {
