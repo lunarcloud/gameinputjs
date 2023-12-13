@@ -1,45 +1,74 @@
-import { GamepadMapping } from './gamepad-mapping.js'
+import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping, GamepadMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
+
+export const StandardDPadMapping = new GamepadDirectionsMapping(12, 15, 13, 14)
+export const StandardFaceMapping = new GamepadFaceMapping(3, 1, 0, 2)
+export const StandardPlumberFaceMapping = new GamepadFaceMapping(3, 2, 1, 0, FaceDirections.rtl)
+export const StandardCenterMapping = new GamepadCenterMapping(9, 8)
+export const StandardShoulderMapping = new GamepadLRMapping(4, 5)
+export const StandardTriggerMapping = new GamepadLRMapping(6, 7)
+export const StandardLeftStickMapping = new GamepadAnalogStickMapping(
+    new AxisAsButton('-', 1),
+    new AxisAsButton('+', 0),
+    new AxisAsButton('+', 1),
+    new AxisAsButton('-', 0),
+    10
+)
+export const StandardRightStickMapping = new GamepadAnalogStickMapping(
+    new AxisAsButton('-', 3),
+    new AxisAsButton('+', 2),
+    new AxisAsButton('+', 3),
+    new AxisAsButton('-', 2),
+    11
+)
 
 /**
  * Standard mapping
- * @type {GamepadMapping}
  */
-const StardardGamepadMapping = new GamepadMapping(
-    /* dPad */ 13, 14, 15, 16,
-    /* menu */ 10,
-    /* face */ 1, 2, 3, 4,
-    /* leftStick */
-    new AxisAsButton(-2),
-    new AxisAsButton(2),
-    new AxisAsButton(-1),
-    new AxisAsButton(1),
-    /* rightStick */
-    new AxisAsButton(-4),
-    new AxisAsButton(4),
-    new AxisAsButton(-3),
-    new AxisAsButton(3),
-    /* shoulders */ 5, 6,
-    /* triggers */ 7, 8
+export const StandardGamepadMapping = new GamepadMapping(
+    StandardDPadMapping,
+    StandardFaceMapping,
+    StandardCenterMapping,
+    StandardShoulderMapping,
+    StandardTriggerMapping,
+    StandardLeftStickMapping,
+    StandardRightStickMapping
 )
 
-const GravisGamepadProSchema = new GamepadMapping(
-    StardardGamepadMapping.leftStickUp,
-    StardardGamepadMapping.leftStickDown,
-    StardardGamepadMapping.leftStickLeft,
-    StardardGamepadMapping.leftStickRight,
-    StardardGamepadMapping.menu,
-    /* face */ 2, 3, 1, 4,
-    /* leftStick */ undefined, undefined, undefined, undefined,
-    StardardGamepadMapping.rightStickUp,
-    StardardGamepadMapping.rightStickDown,
-    StardardGamepadMapping.rightStickLeft,
-    StardardGamepadMapping.rightStickRight,
-    StardardGamepadMapping.leftShoulder,
-    StardardGamepadMapping.rightShoulder,
-    StardardGamepadMapping.leftTrigger,
-    StardardGamepadMapping.rightTrigger
-)
+/**
+ * Standard Plumber (RTL) mapping
+ */
+export const StandardPlumberGamepadMapping = StandardGamepadMapping
+    .variant({ face: StandardPlumberFaceMapping })
 
-export default StardardGamepadMapping
-export { StardardGamepadMapping, GravisGamepadProSchema }
+export const GravisDPadMapping = new GamepadDirectionsMapping(3, 2, 1, 0)
+
+export const GravisGamepadProSchema = StandardGamepadMapping
+    .variant({
+        dpad: GravisDPadMapping,
+        rightStick: undefined
+    })
+
+export const NonStandardRagdollMapping = StandardGamepadMapping.variant({
+    dpad: new GamepadDirectionsMapping(
+        new AxisAsButton('-', 7),
+        new AxisAsButton('+', 6),
+        new AxisAsButton('+', 7),
+        new AxisAsButton('-', 6)
+    ),
+    face: new GamepadFaceMapping(2, 1, 0, 3),
+    rightStick: new GamepadAnalogStickMapping(
+        new AxisAsButton('-', 4),
+        new AxisAsButton('+', 3),
+        new AxisAsButton('+', 4),
+        new AxisAsButton('-', 3)
+    ),
+    trigger: new GamepadLRMapping(
+        new AxisAsButton('+', 2),
+        new AxisAsButton('+', 5)
+    )
+})
+
+export const NonStandardAfterglow360Mapping = NonStandardRagdollMapping.variant({
+    center: new GamepadCenterMapping(7)
+})

@@ -7,7 +7,7 @@
     "publishConfig": {
         "@lunarcloud:registry": "https://npm.pkg.github.com"
     },
-    "version": "12.3.1",
+    "version": "13.0.0",
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
     "scripts": {
@@ -18,10 +18,11 @@
         "build": "npm run pre-build && shx cp -r src/* dist/ ",
         "serve": "npm run build && npx serve dist",
         "build-prod": "npm run build && npm run docs",
-        "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+        "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
     },
     "devDependencies": {
         "@types/jest": "^29.5.6",
+        "cross-env": "^7.0.3",
         "eslint": "^8.49.0",
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-editorconfig": "^4.0.3",
@@ -46,7 +47,7 @@
                     "silent": false
                 }
             ],
-            "summary"
+            "default"
         ],
         "testLocationInResults": true
     }

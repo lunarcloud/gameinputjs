@@ -1,17 +1,17 @@
+/**
+ * @module
+ */
+
 import { GamepadMapping } from './gamepad-mapping.js'
 import { GameInputModel } from './gameinput-model.js'
-import { GameInputSchema } from './gameinput-schema.js'
+import { GameInputSchema, GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './gameinput-schema.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { GameInputModels } from './gameinput-models.js'
 import { GameInputPlayer } from './gameinput-player.js'
-import { GameInputButtons } from './gamepad-buttons.js'
 import { Vector2 } from './vector2.js'
-import { DetectedOS, DetectedBrowser } from './os-detect.js'
-import { StardardGamepadMapping } from './standard-gamepad-mapping.js'
+import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
-/**
- * @module GameInput
- */
+import { GameInputItemState, GameInputState } from './gameinput-state.js'
 
 /**
  * Game Input System
@@ -30,12 +30,12 @@ class GameInput {
         Generic: [
             new GameInputModel(
                 GameInputSchema.Hedgehog,
-                'xbox360',
+                'xboxone',
                 'XInput'
             ),
             new GameInputModel(
                 GameInputSchema.Hedgehog,
-                'xbox360',
+                'xboxone',
                 'xinput'
             ),
             new GameInputModel(
@@ -46,53 +46,7 @@ class GameInput {
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'generic',
-                'Logitech Rumblepad 2',
-                undefined,
-                new GamepadMapping(
-                    12, 13, 14, 15,
-                    10,
-                    2, 3, 1, 4,
-                    new AxisAsButton(-2),
-                    new AxisAsButton(2),
-                    new AxisAsButton(-1),
-                    new AxisAsButton(1),
-                    new AxisAsButton(-4),
-                    new AxisAsButton(4),
-                    new AxisAsButton(-3),
-                    new AxisAsButton(3)//,
-                    // TODO leftShoulder,
-                    // TODO rightShoulder,
-                    // TODO leftTrigger,
-                    // TODO rightTrigger
-                )),
-            new GameInputModel(
-                GameInputSchema.Hedgehog,
-                'generic',
-                'Logitech Dual Action',
-                undefined,
-                new GamepadMapping(
-                    12, 13, 14, 15,
-                    10,
-                    2, 3, 1, 4,
-                    new AxisAsButton(-2),
-                    new AxisAsButton(2),
-                    new AxisAsButton(-1),
-                    new AxisAsButton(1),
-                    new AxisAsButton(-4),
-                    new AxisAsButton(4),
-                    new AxisAsButton(-3),
-                    new AxisAsButton(3)//,
-                    // TODO leftShoulder,
-                    // TODO rightShoulder,
-                    // TODO leftTrigger,
-                    // TODO rightTrigger
-                )),
-            new GameInputModel(
-                GameInputSchema.Hedgehog,
-                'generic',
-                'STANDARD GAMEPAD',
-                undefined,
-                StardardGamepadMapping
+                'STANDARD GAMEPAD'
             )
         ],
 
@@ -141,7 +95,7 @@ class GameInput {
             3: 3
         },
         /**
-         * Actual gamepads.
+         * Cache of actual gamepads.
          * @type {Array<Gamepad>}
          */
         Gamepads: [undefined, undefined, undefined, undefined]
@@ -161,12 +115,13 @@ class GameInput {
 
     /**
      * Whether we've received the first button press.
+     * @type {Array<boolean>}
      */
-    firstPress = false
+    #firstPress = [undefined, undefined, undefined, undefined]
 
     /**
      * Callback providing player index and button name.
-     * @typedef {function(number, import('./gamepad-buttons.js').GameInputButton):void} ButtonActionFunc
+     * @typedef {function(number, import('./gameinput-schema.js').GameInputSchemaSectionName, string):void} ButtonActionFunc
      */
 
     /**
@@ -264,26 +219,28 @@ class GameInput {
     /**
      * Activate "button down" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
-    buttonDown (player, buttonName) {
+    buttonDown (player, sectionName, buttonName) {
         for (const action in this.buttonDownActions)
             if (typeof (this.buttonDownActions[action]) === 'function')
-                this.buttonDownActions[action](player, buttonName)
+                this.buttonDownActions[action](player, sectionName, buttonName)
         return this
     }
 
     /**
      * Activate "button up" events for a particular player.
      * @param {number} player       Player to add action for.
-     * @param {import('./gamepad-buttons.js').GameInputButton} buttonName   Button Name
+     * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
+     * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
      * @returns {GameInput}     self, for chaining statements.
      */
-    buttonUp (player, buttonName) {
+    buttonUp (player, sectionName, buttonName) {
         for (const action in this.buttonUpActions)
             if (typeof (this.buttonUpActions[action]) === 'function')
-                this.buttonUpActions[action](player, buttonName)
+                this.buttonUpActions[action](player, sectionName, buttonName)
         return this
     }
 
@@ -345,49 +302,58 @@ class GameInput {
         this.Connection.Gamepads = navigator.getGamepads()
 
         for (let i = 0; i < this.Connection.Gamepads.length; i++) {
-            this.Players[i].updatePrevious()
+            const player = this.Players[i]
+            const currentGamepad = this.Connection.Gamepads[this.Connection.GamePadMapping[i]]
 
-            const currentGamepad = this.Connection.Gamepads[i]
-            const currentSchema = this.Players[i].schema
+            player.updatePrevious()
 
-            if (typeof (currentGamepad) === 'undefined' || currentGamepad === null) continue
+            if (typeof (currentGamepad) === 'undefined' || currentGamepad === null || !player.model)
+                continue
 
-            for (const j in currentSchema) {
-                if (typeof (currentSchema[j]) === 'undefined') {
-                    // skip
-                } else if (typeof (currentGamepad.buttons[currentSchema[j] - 1]) === 'undefined') {
-                    const negativeAxis = currentSchema[j].threshold < 0
+            for (const sectionName in GameInputSchemaSectionNames) {
+                for (const itemName in GameInputSchemaButtonNames) {
+                    /** @type {import('./gamepad-mapping.js').SchemaButtonDef} */
+                    const buttonDef = player.mapping[sectionName]?.[itemName]
+                    if (buttonDef === undefined) continue
 
-                    const axisValue = this.Players[i].analog[j] = currentGamepad.axes[currentSchema[j].index - 1]
+                    /** @type {GameInputItemState} */
+                    if (!player.state[sectionName][itemName]) {
+                        player.state[sectionName][itemName] = new GameInputItemState(buttonDef)
+                    }
+                    const state = player.state[sectionName][itemName]
 
-                    this.Players[i].state.set(j, (negativeAxis && axisValue < currentSchema[j].threshold) ||
-                                                (!negativeAxis && axisValue > currentSchema[j].threshold))
-                } else {
-                    this.Players[i].state.set(j, currentGamepad.buttons[currentSchema[j] - 1].pressed)
-
-                    this.Players[i].analog.set(j, this.Players[i].state[j] ? 1 : 0)
+                    if (buttonDef instanceof AxisAsButton) {
+                        state.value = currentGamepad.axes[buttonDef.index]
+                        state.active = (state.value >= buttonDef.threshold && buttonDef.direction === 'positive') ||
+                                        (state.value <= buttonDef.threshold && buttonDef.direction === 'negative')
+                    } else {
+                        state.active = currentGamepad.buttons[buttonDef]?.pressed ?? false
+                        state.value = state.active ? 1 : 0
+                    }
                 }
             }
         }
 
-        // Keydown / Keyup
-        for (let i = 0; i < this.Players.length; i++) {
-            this.Players[i].state.forEach((value, j, _) => {
-                if (!this.firstPress) {
-                    this.firstPress = true
-                    return
-                }
+        // Button down / up
+        for (const player of this.Players) {
+            for (const sectionName in player.state) {
+                for (const itemName in player.state[sectionName]) {
+                    if (!this.#firstPress[player.index]) {
+                        this.#firstPress[player.index] = true
+                        return
+                    }
 
-                if (this.Players[i].previous.state.get(j) === false &&
-                    this.Players[i].state.get(j) === true) {
-                    // @ts-ignore
-                    this.Players[i].buttonDown(j)
-                } else if (this.Players[i].previous.state.get(j) === true &&
-                    this.Players[i].state.get(j) === false) {
-                    // @ts-ignore
-                    this.Players[i].buttonUp(j)
+                    if (player.previous.state[sectionName][itemName]?.active === false &&
+                        player.state[sectionName][itemName]?.active === true) {
+                        // @ts-ignore
+                        player.buttonDown(sectionName, itemName)
+                    } else if (player.previous.state[sectionName][itemName]?.active === true &&
+                        player.state[sectionName][itemName]?.active === false) {
+                        // @ts-ignore
+                        player.buttonUp(sectionName, itemName)
+                    }
                 }
-            })
+            }
         }
     }
 
@@ -421,42 +387,43 @@ class GameInput {
      */
     reinitialize () {
         // clear gamepad information
-        for (let i = 0; i < this.Players.length; i++) {
-            this.Players[i].setModel(undefined)
-        }
+        for (const player of this.Players)
+            player.setModel(undefined)
 
         if (GameInput.canUseGamepadAPI()) {
             this.Connection.Gamepads = navigator.getGamepads()
 
-            if (this.Connection.Gamepads.filter(Boolean).length === 0) {
-                this.firstPress = false
-            }
+            for (let i = 0; i < this.Players.length; i++)
+                if (this.Connection.Gamepads.filter(Boolean).length === 0)
+                    this.#firstPress[i] = false
 
             for (const i in this.Connection.Gamepads) {
                 if (this.Connection.Gamepads[i] instanceof Gamepad) {
+                    const player = this.Players[i]
+
                     // Translate into Type -  Players order is gamepad order
                     for (const gamepad of GameInput.Models.Specific) {
                         if (GameInput.toASCII(gamepad.id) === GameInput.toASCII(this.Connection.Gamepads[i].id) && [DetectedOS, undefined].includes(gamepad.os)) {
-                            this.Players[i].setModel(gamepad)
+                            player.setModel(gamepad)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.schema.name + ' configured')
                             }
                             break
                         }
                     }
 
-                    if (typeof (this.Players[i].model) === 'undefined') {
+                    if (typeof (player.model) === 'undefined') {
                         for (const gamepad of GameInput.Models.Generic) {
                             if (this.Connection.Gamepads[i].id.match(gamepad.id) !== null) {
-                                this.Players[i].setModel(gamepad)
+                                player.setModel(gamepad)
                                 if (this.debug) {
-                                    console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                    console.debug('Gamepad of type ' + player.schema.name + ' configured')
                                 }
                             }
                         }
 
-                        if (this.Connection.Gamepads[i] instanceof Gamepad && typeof (this.Players[i].model) === 'undefined') {
+                        if (this.Connection.Gamepads[i] instanceof Gamepad && typeof (player.model) === 'undefined') {
                             if (this.debug) {
                                 if (this.Connection.Gamepads[i].mapping === 'standard') {
                                     console.debug('Gamepad not detected, detected "stardard" mapping: "' + this.Connection.Gamepads[i].id + '"')
@@ -465,20 +432,19 @@ class GameInput {
                                 }
                             }
 
-                            this.Players[i].setModel(GameInput.Models.UnknownStandardMapping)
+                            player.setModel(GameInput.Models.UnknownStandardMapping)
 
                             if (this.debug) {
-                                console.debug('Gamepad of type ' + this.Players[i].type.name + ' configured')
+                                console.debug('Gamepad of type ' + player.schema.name + ' configured')
                             }
                         }
                     }
 
                     // blank state to start
-                    this.Players[i].state.clear()
-                    this.Players[i].analog.clear()
+                    player.state = new GameInputState()
 
                     // setup Previous as current
-                    this.Players[i].updatePrevious()
+                    player.updatePrevious()
                 }
             }
         } else if (this.debug) {
@@ -498,5 +464,5 @@ class GameInput {
  */
 export {
     GameInput, GamepadMapping, GameInputModel, GameInputSchema, AxisAsButton,
-    GameInputPlayer, GameInputButtons, Vector2, DetectedOS, DetectedBrowser
+    GameInputPlayer, Vector2, DetectedOS, GameInputSchemaSectionNames, GameInputSchemaButtonNames
 }

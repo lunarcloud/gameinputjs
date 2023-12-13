@@ -28,13 +28,14 @@ class AxisAsButton {
 
     /**
      * Constructor.
-     * @param {number} indexAndDirection The button index, sign is direction
-     * @param {number|undefined} threshold threshold to activate as button
-     * @param {number|undefined} deadZone axis dead zone
+     * @param {'+'|'-'} direction           positive or negative direction
+     * @param {number} index                Axis index.
+     * @param {number|undefined} threshold  threshold to activate as button
+     * @param {number|undefined} deadZone   axis dead zone
      */
-    constructor (indexAndDirection, threshold = undefined, deadZone = undefined) {
-        this.index = Math.abs(indexAndDirection)
-        this.direction = indexAndDirection < 0 ? 'negative' : 'positive'
+    constructor (direction, index, threshold = undefined, deadZone = undefined) {
+        this.index = Math.abs(index)
+        this.direction = direction === '-' ? 'negative' : 'positive'
 
         if (typeof (threshold) === 'undefined')
             threshold = 0.5
