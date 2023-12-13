@@ -1,87 +1,72 @@
 import { GameInput, DetectedOS } from '../gameinput.js'
 import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from '../gameinput-schema.js'
 
-/** @type {GameInput} */
-const gi = new GameInput()
-
 document.querySelector('p.detected-os').textContent = `OS: ${DetectedOS}`
 
 const playersEl = document.getElementById('players')
 
-// Setup
-gi.onButtonDown((playerIndex, sectionName, buttonName) => {
-    const el = document.querySelector(`.player[playerIndex="${playerIndex}"] .gamepad-visualize .${sectionName} .${buttonName}`)
-    el?.setAttribute('active', 'active')
-})
+/** @type {GameInput} */
+const gi = new GameInput()
+    .onButtonDown((playerIndex, sectionName, buttonName) => {
+        const el = document.querySelector(`.player[playerIndex="${playerIndex}"] .gamepad-visualize .${sectionName} .${buttonName}`)
+        el?.setAttribute('active', 'active')
+    })
+    .onButtonUp((playerIndex, sectionName, buttonName) => {
+        const el = document.querySelector(`.player[playerIndex="${playerIndex}"] .gamepad-visualize .${sectionName} .${buttonName}`)
+        el?.removeAttribute('active')
+    })
+    .onReinitialize(() => {
+        /* Remove Old Stuff */
+        document.querySelector('#players').innerHTML = ''
 
-gi.onButtonUp((playerIndex, sectionName, buttonName) => {
-    const el = document.querySelector(`.player[playerIndex="${playerIndex}"] .gamepad-visualize .${sectionName} .${buttonName}`)
-    el?.removeAttribute('active')
-})
+        let players = 0
+        const template = document.getElementById('player-template')
+        for (const i in gi.Players) {
+            const clone = template.content.cloneNode(true)
+            /** {GameInputModel} */
+            const model = gi.Players[i].model
 
-gi.onReinitialize(() => {
-    /* Remove Old Stuff */
-    playersEl.innerHTML = ''
+            if (!model)
+                continue
+            players++
 
-    /* TODO Add new stuff */
-    setTimeout(() => {
-        for (const player of gi.Players) {
-            // TODO
-        }
-    }, 1)
-})
+            clone.querySelector('.player').setAttribute('playerIndex', i)
+            clone.querySelector('.player-number').textContent = i
+            clone.querySelector('.gamepad-icon').src = `img/${model.iconName}.png`
+            clone.querySelector('.gamepad-vendorid').textContent = model.VendorId
+            clone.querySelector('.gamepad-productid').textContent = model.ProductId
+            clone.querySelector('.gamepad-productname').textContent = model.ProductName
 
-gi.onReinitialize(() => setupPlayers())
-setTimeout(() => gi.reinitialize(), 100) // TODO?
+            for (const sectionName in GameInputSchemaSectionNames)
+                for (const buttonName in GameInputSchemaButtonNames) {
+                    const el = clone.querySelector(`.gamepad-visualize .${sectionName} .${buttonName}`)
+                    if (!el) continue
+                    el.textContent = gi.Players[i].getButtonText(sectionName, buttonName)
+                }
 
-/**
- * Set Up the Players
- */
-function setupPlayers () {
-    document.querySelector('#players').innerHTML = ''
+            /** @type {Button} */
+            const weakRumbleEl = clone.querySelector('.rumble .weak')
+            /** @type {Button} */
+            const strongRumbleEl = clone.querySelector('.rumble .strong')
 
-    const template = document.getElementById('player-template')
-    for (const i in gi.Players) {
-        const clone = template.content.cloneNode(true)
-        /** {GameInputModel} */
-        const model = gi.Players[i].model
+            if (gi.Players[i].hasRumble()) {
+                weakRumbleEl.onclick = () => gi.Players[i].rumble({ duration: 300, strongMagnitude: 0, weakMagnitude: 0.75 })
+                weakRumbleEl.disabled = !gi.Players[i].hasRumble()
 
-        if (!model)
-            continue
-
-        clone.querySelector('.player').setAttribute('playerIndex', i)
-        clone.querySelector('.player-number').textContent = i
-        clone.querySelector('.gamepad-icon').src = `img/${model.iconName}.png`
-        clone.querySelector('.gamepad-vendorid').textContent = model.VendorId
-        clone.querySelector('.gamepad-productid').textContent = model.ProductId
-        clone.querySelector('.gamepad-productname').textContent = model.ProductName
-
-        for (const sectionName in GameInputSchemaSectionNames)
-            for (const buttonName in GameInputSchemaButtonNames) {
-                const el = clone.querySelector(`.gamepad-visualize .${sectionName} .${buttonName}`)
-                if (!el) continue
-                el.textContent = gi.Players[i].getButtonText(sectionName, buttonName)
+                strongRumbleEl.onclick = () => gi.Players[i].rumble({ duration: 300, strongMagnitude: 0.75, weakMagnitude: 0 })
+                strongRumbleEl.disabled = !gi.Players[i].hasRumble()
+            } else {
+                weakRumbleEl.remove()
+                strongRumbleEl.remove()
             }
 
-        /** @type {Button} */
-        const weakRumbleEl = clone.querySelector('.rumble .weak')
-        /** @type {Button} */
-        const strongRumbleEl = clone.querySelector('.rumble .strong')
-
-        if (gi.Players[i].hasRumble()) {
-            weakRumbleEl.onclick = () => gi.Players[i].rumble({ duration: 300, strongMagnitude: 0, weakMagnitude: 0.75 })
-            weakRumbleEl.disabled = !gi.Players[i].hasRumble()
-
-            strongRumbleEl.onclick = () => gi.Players[i].rumble({ duration: 300, strongMagnitude: 0.75, weakMagnitude: 0 })
-            strongRumbleEl.disabled = !gi.Players[i].hasRumble()
-        } else {
-            weakRumbleEl.remove()
-            strongRumbleEl.remove()
+            playersEl.appendChild(clone)
         }
 
-        playersEl.appendChild(clone)
-    }
-}
+        // fallback text
+        if (players === 0)
+            document.querySelector('#players').innerHTML = 'Connect Gamepad(s) and Push Any Button'
+    })
 
 /**
  * Find the nearest element parent with a class.
