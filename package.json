@@ -39,6 +39,7 @@
     "license": "MIT",
     "author": "Samuel Sarette",
     "jest": {
+        "testEnvironment": "jsdom",
         "verbose": true,
         "reporters": [
             [
@@ -50,5 +51,8 @@
             "default"
         ],
         "testLocationInResults": true
+    },
+    "dependencies": {
+        "jest-environment-jsdom": "^29.7.0"
     }
 }

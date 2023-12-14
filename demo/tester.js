@@ -44,9 +44,9 @@ const gi = new GameInput()
                     el.textContent = gi.Players[i].getButtonText(sectionName, buttonName)
                 }
 
-            /** @type {Button} */
+            /** @type {HTMLButtonElement} */
             const weakRumbleEl = clone.querySelector('.rumble .weak')
-            /** @type {Button} */
+            /** @type {HTMLButtonElement} */
             const strongRumbleEl = clone.querySelector('.rumble .strong')
 
             if (gi.Players[i].hasRumble()) {
