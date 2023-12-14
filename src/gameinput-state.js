@@ -1,3 +1,4 @@
+import { OrdinalButtonName } from './gameinput-schema.js'
 import { FaceDirections } from './gamepad-mapping.js'
 
 export class GameInputItemState {
@@ -130,14 +131,7 @@ export class GameInputFaceState extends GameInputDirectionsState {
      * @returns {GameInputItemState} button mapping.
      */
     ordinal (value) {
-        const ltr = this.direction === FaceDirections.ltr
-        switch (value) {
-        case 0: return ltr ? this.down : this.right
-        case 1: return ltr ? this.right : this.down
-        case 2: return ltr ? this.left : this.up
-        case 3: return ltr ? this.up : this.left
-        default: return undefined
-        }
+        return this[OrdinalButtonName(value, this.direction)]
     }
 
     /**

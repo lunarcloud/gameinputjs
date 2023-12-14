@@ -154,7 +154,7 @@ const GameInputModels = [
         'Windows',
         StandardGamepadMapping.variant({
             dpad: new GamepadDirectionsMapping(12, 15, 13, 14),
-            face: new GamepadFaceMapping(3, 1, 0, 2),
+            face: new GamepadFaceMapping(3, 1, 0, 2)
         })
     ),
     new GameInputModel(
@@ -428,7 +428,7 @@ const GameInputModels = [
         'USB Gamepad  (STANDARD GAMEPAD Vendor: 0079 Product: 0011)',
         'Windows',
         StandardGamepadMapping.variant({
-            face: new GamepadFaceMapping(2,0, 1, 3),
+            face: new GamepadFaceMapping(2, 0, 1, 3),
             shoulder: new GamepadLRMapping(6, 7),
             trigger: new GamepadLRMapping(5, 4),
             leftStick: undefined,

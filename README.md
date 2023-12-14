@@ -24,16 +24,19 @@ const gameInput = new GameInput()
     .onButtonDown((playerIndex, sectionName, buttonName) => {
         const player = gameInput.getPlayer(playerIndex)
         console.debug(`Player ${player} pushed ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
-        switch (buttonName) {
-        case GameInputButtons.menu:
-            break
-        default:
-            break
-        }
     })
     .onButtonUp((playerIndex, sectionName, buttonName) => {
         const player = gameInput.getPlayer(playerIndex)
         console.debug(`Player ${player} released ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
+
+        if (sectionName === 'center' && buttonName === 'menu') {
+            console.debug('menu requested')
+            return
+        }
+
+        if (sectionName === 'face' && buttonName === player.schema.ordinalButton(0)) {
+            console.debug('Jump / Confirm pushed')
+        }
     })
 
 // Game-Loop Style
