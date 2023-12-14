@@ -70,6 +70,12 @@ export const FaceDirections = {
 }
 
 /**
+ * Used later to let Playstation prior to PS5 use RTL direction for Japan
+ */
+export const IsJapan = navigator.language.toLowerCase() === 'ja-jp' ||
+                        Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Tokyo'
+
+/**
  * Mapping Of Schema Buttons for the 4 cardinal directions
  */
 export class GamepadDirectionsMapping extends GamepadLRMapping {

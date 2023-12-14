@@ -1,3 +1,5 @@
+import { FaceDirections, IsJapan } from './gamepad-mapping.js'
+
 /**
  * @typedef {{ up: GameInputSchemaButtonName, down: GameInputSchemaButtonName, left: GameInputSchemaButtonName, right: GameInputSchemaButtonName }} GameInputSchemaDirectionNames
  */
@@ -45,6 +47,22 @@
  */
 
 /**
+ * Get button name by ordinal priority and direction.
+ * @param {number} value button ordinal (0 for primary/accept, 1 for secondary/cancel, etc)
+ * @param {import('./gamepad-mapping.js').FaceDirection|boolean} ltr   if Left-to-Right (false for rtl)
+ * @returns {GameInputSchemaButtonName} button name.
+ */
+export function OrdinalButtonName (value, ltr) {
+    switch (value) {
+    case 0: return ltr ? 'down' : 'right'
+    case 1: return ltr ? 'right' : 'down'
+    case 2: return ltr ? 'left' : 'up'
+    case 3: return ltr ? 'up' : 'left'
+    default: return undefined
+    }
+}
+
+/**
  * Possible Section Names
  * @type {GameInputSchemaSectionNames}
  */
@@ -71,7 +89,6 @@ export const GameInputSchemaButtonNames = {
     back: 'back',
     click: 'click'
 }
-
 
 /**
  * Defines what each button is displayed as, what should be on the physical device for each button.
@@ -167,7 +184,7 @@ export class GameInputSchema {
     /**
      * Sega/Xbox style
      */
-    static Hedgehog = new GameInputSchema('Hedgehog', {
+    static Hedgehog = new GameInputSchema('Hedgehog', FaceDirections.ltr, {
         face: {
             up: 'Y',
             down: 'A',
@@ -187,7 +204,7 @@ export class GameInputSchema {
     /**
      * Nintendo style
      */
-    static Plumber = new GameInputSchema('Plumber', {
+    static Plumber = new GameInputSchema('Plumber', FaceDirections.rtl, {
         face: {
             up: 'X',
             down: 'B',
@@ -211,7 +228,7 @@ export class GameInputSchema {
     /**
      * Nintendo64 style
      */
-    static PlumberTrident = new GameInputSchema('Plumber', {
+    static PlumberTrident = new GameInputSchema('Plumber', FaceDirections.rtl, {
         face: {
             up: '',
             down: 'A',
@@ -235,7 +252,7 @@ export class GameInputSchema {
     /**
      * Nintendo Gamecube style
      */
-    static PlumberCube = new GameInputSchema('Plumber', {
+    static PlumberCube = new GameInputSchema('Plumber', FaceDirections.rtl, {
         face: {
             up: 'Y',
             down: 'A',
@@ -259,7 +276,7 @@ export class GameInputSchema {
     /**
      * Nintendo style (Horizontal Right Joy-Con)
      */
-    static PlumberRotatedRight = new GameInputSchema('Plumber', {
+    static PlumberRotatedRight = new GameInputSchema('Plumber', FaceDirections.rtl, {
         face: {
             up: 'Y',
             down: 'A',
@@ -283,7 +300,7 @@ export class GameInputSchema {
     /**
      * Nintendo style (Horizontal Left Joy-Con)
      */
-    static PlumberRotatedLeft = new GameInputSchema('Plumber', {
+    static PlumberRotatedLeft = new GameInputSchema('Plumber', FaceDirections.rtl, {
         face: {
             up: '↑',
             down: '↓',
@@ -307,45 +324,47 @@ export class GameInputSchema {
     /**
      * Older Sony style
      */
-    static RagdollOld = new GameInputSchema('Ragdoll', {
-        face: {
-            up: '△',
-            down: 'x',
-            left: '□',
-            right: 'o'
-        },
-        center: {
-            menu: 'start',
-            back: 'select'
-        },
-        shoulder: {
-            left: 'L1',
-            right: 'R1'
-        },
-        trigger: {
-            left: 'L2',
-            right: 'R2'
-        },
-        leftStick: {
-            up: '↑',
-            down: '↓',
-            left: '←',
-            right: '→',
-            click: 'L3'
-        },
-        rightStick: {
-            up: '↑',
-            down: '↓',
-            left: '←',
-            right: '→',
-            click: 'R3'
-        }
-    })
+    static RagdollOld = new GameInputSchema('Ragdoll',
+        IsJapan ? FaceDirections.rtl : FaceDirections.ltr,
+        {
+            face: {
+                up: '△',
+                down: 'x',
+                left: '□',
+                right: 'o'
+            },
+            center: {
+                menu: 'start',
+                back: 'select'
+            },
+            shoulder: {
+                left: 'L1',
+                right: 'R1'
+            },
+            trigger: {
+                left: 'L2',
+                right: 'R2'
+            },
+            leftStick: {
+                up: '↑',
+                down: '↓',
+                left: '←',
+                right: '→',
+                click: 'L3'
+            },
+            rightStick: {
+                up: '↑',
+                down: '↓',
+                left: '←',
+                right: '→',
+                click: 'R3'
+            }
+        })
 
     /**
      * Newer Sony style
      */
-    static Ragdoll = new GameInputSchema('Ragdoll', {
+    static Ragdoll = new GameInputSchema('Ragdoll', FaceDirections.ltr, {
         face: {
             up: '△',
             down: 'x',
@@ -386,12 +405,38 @@ export class GameInputSchema {
     name = ''
 
     /**
-     * Constructor.
-     * @param {string} name         schema/theme name
-     * @param {GameInputSchemaOverrides} overrides    list of overrides for button names to text
+     * Direction of face buttons
+     * @type {import("./gamepad-mapping.js").FaceDirection|boolean}
      */
-    constructor (name, overrides) {
+    direction = FaceDirections.ltr
+
+    /**
+     * Constructor.
+     * @param {string} name     schema/theme name
+     * @param {import("./gamepad-mapping.js").FaceDirection|boolean} direction      Direction of ordinality for face buttons
+     * @param {GameInputSchemaOverrides} overrides      list of overrides for button names to text
+     */
+    constructor (name, direction, overrides) {
         this.name = name
+        this.direction = direction
         Object.assign(this, Object.assign(GameInputSchema.Defaults, overrides))
+    }
+
+    /**
+     * Get button text by ordinal priority.
+     * @param {number} value button ordinal (0 for primary/accept, 1 for secondary/cancel, etc)
+     * @returns {string} button text.
+     */
+    ordinal (value) {
+        return this.face[OrdinalButtonName(value, this.direction)]
+    }
+
+    /**
+     * Get button name by ordinal priority.
+     * @param {number} value button ordinal (0 for primary/accept, 1 for secondary/cancel, etc)
+     * @returns {GameInputSchemaButtonName} button name.
+     */
+    ordinalButton (value) {
+        return OrdinalButtonName(value, this.direction)
     }
 }
