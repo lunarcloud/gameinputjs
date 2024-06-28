@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
-import { StandardCenterMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping } from './standard-gamepad-mapping.js'
+import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping } from './standard-gamepad-mapping.js'
 
 const radialDpadAxis9 = undefined // weird single-axis thing on axis 9 we don't support
 
@@ -25,6 +25,23 @@ const MagicSProN64AdapterWindowsMapping = StandardPlumberGamepadMapping.variant(
         new AxisAsButton('-', 5),
         new AxisAsButton('-', 2)
     )
+})
+
+const HoriFightStickMiniChrome = StandardGamepadMapping.variant({
+    dpad: undefined,
+    face: new GamepadFaceMapping(3, 2, 1, 0),
+    center: StandardCenterMapping,
+    leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 10),
+    rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
+})
+const HoriFightStickMiniFirefox = StandardGamepadMapping.variant({
+    dpad: undefined,
+    face: new GamepadFaceMapping(3, 17, 1, 0),
+    center: new GamepadCenterMapping(7, 6),
+    shoulder: new GamepadLRMapping(2, 18),
+    trigger: new GamepadLRMapping(4, 5),
+    leftStick: new GamepadAnalogStickMapping(12, 15, 13, 14, 8),
+    rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 9)
 })
 
 const GameInputModels = [
@@ -116,6 +133,62 @@ const GameInputModels = [
             center: StandardCenterMapping,
             leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0), 11),
             rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 4), new AxisAsButton('+', 3), new AxisAsButton('+', 4), new AxisAsButton('-', 3), 12)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI CO.,LTD. HORI Fighting Stick mini (Vendor: 0f0d Product: 01b3)',
+        'Linux',
+        HoriFightStickMiniChrome
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI CO.,LTD. HORI Fighting Stick mini (Vendor: 0f0d Product: 01b4)',
+        'Linux',
+        HoriFightStickMiniChrome
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI CO.,LTD. HORI Fighting Stick mini (Vendor: 0f0d Product: 01b5)',
+        'Linux',
+        StandardGamepadMapping.variant({
+            dpad: undefined,
+            face: StandardFaceMapping,
+            center: new GamepadCenterMapping(7, 6),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 9),
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 10)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b3-HORI CO.,LTD. HORI Fighting Stick mini',
+        'Linux',
+        HoriFightStickMiniFirefox
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b4-HORI CO.,LTD. HORI Fighting Stick mini',
+        'Linux',
+        HoriFightStickMiniFirefox
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b5-Generic X-Box pad',
+        'Linux',
+        StandardGamepadMapping.variant({
+            dpad: undefined,
+            face: new GamepadFaceMapping(2, 1, 0, 3),
+            center: new GamepadCenterMapping(9, 8),
+            trigger: new GamepadLRMapping(new AxisAsButton('+', 4), new AxisAsButton('+', 5)),
+            leftStick: new GamepadAnalogStickMapping(12, 15, 13, 14, 10),
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
         })
     ),
     new GameInputModel(
