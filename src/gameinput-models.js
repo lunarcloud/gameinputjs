@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
-import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
+import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
 
 const radialDpadAxis9 = undefined // weird single-axis thing on axis 9 we don't support
 
@@ -181,6 +181,19 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Plumber,
         'generic',
+        '8BitDo 8BitDo Zero 2 gamepad (Vendor: 2dc8 Product: 9018)',
+        'Android',
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            face: new GamepadFaceMapping(2, 0, 1, 3, FaceDirections.rtl),
+            trigger: undefined,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'generic',
         '8BitDo Zero 2 gamepad (Vendor: 2dc8 Product: 9018)',
         'Windows',
         StandardPlumberGamepadMapping.variant({
@@ -201,6 +214,19 @@ const GameInputModels = [
         StandardPlumberGamepadMapping.variant({
             dpad: StandardLeftStickMapping,
             face: new GamepadFaceMapping(3, 1, 0, 2, FaceDirections.rtl),
+            trigger: undefined,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'generic',
+        '8BitDo Zero 2 gamepad (Vendor: 2dc8 Product: 3230)',
+        'Android',
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            face: new GamepadFaceMapping(2, 0, 1, 3, FaceDirections.rtl),
             trigger: undefined,
             leftStick: undefined,
             rightStick: undefined
@@ -256,6 +282,32 @@ const GameInputModels = [
             dpad: StandardLeftStickMapping,
             shoulder: new GamepadLRMapping(4, 6),
             trigger: new GamepadLRMapping(5, 7),
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        '8BitDo 8BitDo M30 gamepad (Vendor: 2dc8 Product: 5006)',
+        'Android',
+        StandardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            shoulder: StandardTriggerMapping,
+            trigger: StandardShoulderMapping,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        '8BitDo M30 gamepad (Vendor: 2dc8 Product: 0651)',
+        'Android',
+        StandardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            shoulder: StandardTriggerMapping,
+            trigger: StandardShoulderMapping,
             leftStick: undefined,
             rightStick: undefined
         })
