@@ -7,7 +7,7 @@
     "publishConfig": {
         "@lunarcloud:registry": "https://npm.pkg.github.com"
     },
-    "version": "13.1.0",
+    "version": "13.2.1",
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
     "scripts": {
