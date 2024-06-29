@@ -324,8 +324,7 @@ class GameInput {
 
                     if (buttonDef instanceof AxisAsButton) {
                         state.value = currentGamepad.axes[buttonDef.index]
-                        state.active = (state.value >= buttonDef.threshold && buttonDef.direction === 'positive') ||
-                                        (state.value <= buttonDef.threshold && buttonDef.direction === 'negative')
+                        state.active = buttonDef.test(state.value)
                     } else {
                         state.active = currentGamepad.buttons[buttonDef]?.pressed ?? false
                         state.value = state.active ? 1 : 0

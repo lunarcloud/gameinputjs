@@ -3,8 +3,9 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
+import { CombinedAxesAsStick } from './combined-axis-as-button.js'
 
-const radialDpadAxis9 = undefined // weird single-axis thing on axis 9 we don't support
+const radialDpadAxis9 = new CombinedAxesAsStick(9, undefined) // weird single-axis thing on axis 9 we don't support
 
 const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
     dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
