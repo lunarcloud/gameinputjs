@@ -1,5 +1,5 @@
 /**
- * @typedef {number|import('./axis-as-button.js').AxisAsButton} SchemaButtonDef
+ * @typedef {number|import('./axis-as-button.js').AxisAsButton|import('./combined-axis-as-button.js').CombinedAxisToButton} SchemaButtonDef
  */
 
 /**

@@ -2,6 +2,17 @@ import { AxisAsButton } from "./axis-as-button.js"
 import { GamepadAnalogStickMapping } from "./gamepad-mapping.js"
 
 /**
+ * Round fraction to places
+ * @param {number} value number
+ * @param {number} [places] decimal places to keep
+ * @returns rounded fraction
+ */
+function roundF(value, places = 5) {
+    const factor = Math.pow(10, places)
+    return Math.round(value * factor) / factor
+}
+
+/**
  * Schema 2-Axes-Combined-As-1-Axis as Button
  */
 class CombinedAxesAsStick extends GamepadAnalogStickMapping {
@@ -52,19 +63,20 @@ class CombinedAxisToButton extends AxisAsButton {
      * @returns {boolean}
      */
     test(value) {
+        const input = roundF(value)
         switch (this.cardinal) {
             case "up":
-                return [-5/7, -1, 1].includes(value)
+                return [roundF(-5/7), -1, 1].includes(input)
             case "right":
-                return -5/7 >= value && value >= -1/7
+                return roundF(-5/7) <= input && input <= roundF(-1/7)
             case "down":
-                return -1/7 >= value && value >= 3/7
+                return roundF(-1/7) <= input && input <= roundF(3/7)
             case "left":
-                return 3/7 >= value && value >= 7/7
+                return roundF(3/7) <= input && input <= roundF(7/7)
             default:
                 return false;
         }
     }
 }
 
-export { CombinedAxesAsStick, CombinedAxisToButton as AxisAsExactValues }
+export { CombinedAxesAsStick, CombinedAxisToButton }

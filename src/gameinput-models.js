@@ -5,7 +5,7 @@ import { AxisAsButton } from './axis-as-button.js'
 import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
 import { CombinedAxesAsStick } from './combined-axis-as-button.js'
 
-const radialDpadAxis9 = new CombinedAxesAsStick(9, undefined) // weird single-axis thing on axis 9 we don't support
+const radialDpadAxis9 = new CombinedAxesAsStick(9, 10) // weird single-axis thing on axis 9 we don't support
 
 const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
     dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
@@ -157,11 +157,22 @@ const GameInputModels = [
         'Linux',
         StandardGamepadMapping.variant({
             dpad: undefined,
-            face: StandardFaceMapping,
             center: new GamepadCenterMapping(7, 6),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
             leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 9),
             rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 10)
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI Fighting Stick mini (Vendor: 0f0d Product: 01b3)',
+        'Windows',
+        StandardGamepadMapping.variant({
+            dpad: undefined,
+            face: new GamepadFaceMapping(3, 2, 1, 0),
+            leftStick: radialDpadAxis9,
+            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
         })
     ),
     new GameInputModel(
