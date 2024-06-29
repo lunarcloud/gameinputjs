@@ -35,6 +35,12 @@ const HoriFightStickMiniChrome = StandardGamepadMapping.variant({
     leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 10),
     rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
 })
+const HoriFightStickMiniChromeWindows = StandardGamepadMapping.variant({
+    dpad: undefined,
+    face: new GamepadFaceMapping(3, 2, 1, 0),
+    leftStick: radialDpadAxis9,
+    rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
+})
 const HoriFightStickMiniFirefox = StandardGamepadMapping.variant({
     dpad: undefined,
     face: new GamepadFaceMapping(3, 17, 1, 0),
@@ -168,12 +174,14 @@ const GameInputModels = [
         'joystick',
         'HORI Fighting Stick mini (Vendor: 0f0d Product: 01b3)',
         'Windows',
-        StandardGamepadMapping.variant({
-            dpad: undefined,
-            face: new GamepadFaceMapping(3, 2, 1, 0),
-            leftStick: radialDpadAxis9,
-            rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
-        })
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI Fighting Stick mini (Vendor: 0f0d Product: 01b4)',
+        'Windows',
+        HoriFightStickMiniChromeWindows
     ),
     new GameInputModel(
         GameInputSchema.Plumber,
