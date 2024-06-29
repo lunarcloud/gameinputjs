@@ -220,6 +220,21 @@ const GameInputModels = [
         })
     ),
     new GameInputModel(
+        GameInputSchema.Plumber,
+        'generic',
+        '2dc8-9018-8BitDo Zero 2 gamepad',
+        'Windows',
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            face: new GamepadFaceMapping(3, 0, 1, 4, FaceDirections.rtl),
+            shoulder: StandardTriggerMapping,
+            center: new GamepadCenterMapping(11, 10),
+            trigger: undefined,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
         GameInputSchema.Hedgehog,
         'generic',
         '8BitDo 8BitDo M30 gamepad (STANDARD GAMEPAD Vendor: 045e Product: 028e)',
