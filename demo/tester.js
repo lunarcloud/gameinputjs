@@ -81,3 +81,6 @@ globalThis.findAncestor = (el, cls) => {
     while ((el = el.parentElement) && !el.classList.contains(cls));
     return el
 }
+
+// Make this available to the console
+globalThis.gameInput = gi
