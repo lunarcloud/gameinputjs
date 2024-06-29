@@ -45,6 +45,19 @@ class AxisAsButton {
             deadZone = 0
         this.deadZone = (this.direction === 'positive' ? 1 : -1) * Math.abs(deadZone)
     }
+
+    /**
+     * Test whether the axis value matches this "button"'s direction
+     * @param {number} value Axis value.
+     * @returns {boolean}
+     */
+    test(value) {
+        if (this.direction === 'positive')
+            return value >= this.threshold
+        else if (this.direction === 'negative')
+            return value <= this.threshold
+        return false
+    }
 }
 
 export { AxisAsButton }

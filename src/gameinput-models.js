@@ -3,8 +3,7 @@ import { GameInputSchema } from './gameinput-schema.js'
 import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
 import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
-
-const radialDpadAxis9 = undefined // weird single-axis thing on axis 9 we don't support
+import { CombinedAxesAsStick } from './combined-axis-as-button.js'
 
 const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
     dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 4), new AxisAsButton('+', 5), new AxisAsButton('-', 4)),
@@ -17,7 +16,7 @@ const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
     )
 })
 const MagicSProN64AdapterWindowsMapping = StandardPlumberGamepadMapping.variant({
-    dpad: radialDpadAxis9,
+    dpad: new CombinedAxesAsStick(9, undefined),
     face: new GamepadFaceMapping(undefined, undefined, 1, 2),
     rightStick: new GamepadAnalogStickMapping(
         new AxisAsButton('+', 5),
@@ -32,6 +31,12 @@ const HoriFightStickMiniChrome = StandardGamepadMapping.variant({
     face: new GamepadFaceMapping(3, 2, 1, 0),
     center: StandardCenterMapping,
     leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 10),
+    rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
+})
+const HoriFightStickMiniChromeWindows = StandardGamepadMapping.variant({
+    dpad: undefined,
+    face: new GamepadFaceMapping(3, 2, 1, 0),
+    leftStick: new CombinedAxesAsStick(9, 10),
     rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 11)
 })
 const HoriFightStickMiniFirefox = StandardGamepadMapping.variant({
@@ -113,7 +118,7 @@ const GameInputModels = [
             center: StandardCenterMapping,
             shoulder: undefined,
             trigger: new GamepadLRMapping(4, 5),
-            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 1), new AxisAsButton('+', 0), new AxisAsButton('+', 1), new AxisAsButton('-', 0)),
             rightStick: undefined
         })
     ),
@@ -156,12 +161,39 @@ const GameInputModels = [
         'Linux',
         StandardGamepadMapping.variant({
             dpad: undefined,
-            face: StandardFaceMapping,
             center: new GamepadCenterMapping(7, 6),
             trigger: new GamepadLRMapping(new AxisAsButton('+', 2), new AxisAsButton('+', 5)),
             leftStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 7), new AxisAsButton('+', 6), new AxisAsButton('+', 7), new AxisAsButton('-', 6), 9),
             rightStick: new GamepadAnalogStickMapping(undefined, undefined, undefined, undefined, 10)
         })
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI Fighting Stick mini (Vendor: 0f0d Product: 01b3)',
+        'Windows',
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        'HORI Fighting Stick mini (Vendor: 0f0d Product: 01b4)',
+        'Windows',
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b3-HORI Fighting Stick mini',
+        'Windows',
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b4-HORI Fighting Stick mini',
+        'Windows',
+        HoriFightStickMiniChromeWindows
     ),
     new GameInputModel(
         GameInputSchema.Plumber,
@@ -653,7 +685,7 @@ const GameInputModels = [
         'Mayflash Arcade Stick (Vendor: 0e8f Product: 0003)',
         'Windows',
         StandardGamepadMapping.variant({
-            dpad: new GamepadDirectionsMapping(new AxisAsButton('-', 2), new AxisAsButton('+', 1), new AxisAsButton('+', 2), new AxisAsButton('-', 1)),
+            dpad: new CombinedAxesAsStick(9, undefined),
             center: StandardCenterMapping,
             leftStick: undefined,
             rightStick: undefined
@@ -753,7 +785,7 @@ const GameInputModels = [
         '0e6f-0111-Afterglow Gamepad for PS3',
         'Windows',
         StandardGamepadMapping.variant({
-            dpad: radialDpadAxis9,
+            dpad: new CombinedAxesAsStick(9, 10),
             rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11),
             face: new GamepadFaceMapping(3, 2, 1, 0)
         })
@@ -764,7 +796,7 @@ const GameInputModels = [
         'Afterglow Gamepad for PS3 (Vendor: 0e6f Product: 0111)',
         'Windows',
         StandardGamepadMapping.variant({
-            dpad: radialDpadAxis9,
+            dpad: new CombinedAxesAsStick(9, 10),
             rightStick: new GamepadAnalogStickMapping(new AxisAsButton('-', 5), new AxisAsButton('+', 2), new AxisAsButton('+', 5), new AxisAsButton('-', 2), 11),
             face: new GamepadFaceMapping(3, 2, 1, 0)
         })

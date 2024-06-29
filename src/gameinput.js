@@ -12,6 +12,7 @@ import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
 import { GameInputItemState, GameInputState } from './gameinput-state.js'
+import { CombinedAxesAsStick, CombinedAxisToButton } from './combined-axis-as-button.js'
 
 /**
  * Game Input System
@@ -322,10 +323,9 @@ class GameInput {
                     }
                     const state = player.state[sectionName][itemName]
 
-                    if (buttonDef instanceof AxisAsButton) {
+                    if (buttonDef instanceof AxisAsButton || buttonDef instanceof CombinedAxisToButton) {
                         state.value = currentGamepad.axes[buttonDef.index]
-                        state.active = (state.value >= buttonDef.threshold && buttonDef.direction === 'positive') ||
-                                        (state.value <= buttonDef.threshold && buttonDef.direction === 'negative')
+                        state.active = buttonDef.test(state.value)
                     } else {
                         state.active = currentGamepad.buttons[buttonDef]?.pressed ?? false
                         state.value = state.active ? 1 : 0
