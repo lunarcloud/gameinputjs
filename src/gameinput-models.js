@@ -181,6 +181,21 @@ const GameInputModels = [
     new GameInputModel(
         GameInputSchema.Plumber,
         'generic',
+        '8BitDo Zero 2 gamepad (Vendor: 2dc8 Product: 9018)',
+        'Windows',
+        StandardPlumberGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            face: new GamepadFaceMapping(3, 0, 1, 4, FaceDirections.rtl),
+            center: new GamepadCenterMapping(11, 10),
+            shoulder: StandardTriggerMapping,
+            trigger: undefined,
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Plumber,
+        'generic',
         '8BitDo Zero 2 gamepad (STANDARD GAMEPAD Vendor: 045e Product: 02e0)',
         'Linux',
         StandardPlumberGamepadMapping.variant({
@@ -222,6 +237,19 @@ const GameInputModels = [
         'generic',
         '8BitDo M30 gamepad (STANDARD GAMEPAD Vendor: 045e Product: 02e0)',
         'Linux',
+        StandardGamepadMapping.variant({
+            dpad: StandardLeftStickMapping,
+            shoulder: new GamepadLRMapping(4, 6),
+            trigger: new GamepadLRMapping(5, 7),
+            leftStick: undefined,
+            rightStick: undefined
+        })
+    ),
+    new GameInputModel(
+        GameInputSchema.Hedgehog,
+        'generic',
+        'HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02e0)',
+        'Windows',
         StandardGamepadMapping.variant({
             dpad: StandardLeftStickMapping,
             shoulder: new GamepadLRMapping(4, 6),
