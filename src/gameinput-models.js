@@ -184,6 +184,20 @@ const GameInputModels = [
         HoriFightStickMiniChromeWindows
     ),
     new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b3-HORI Fighting Stick mini',
+        'Windows',
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
+        GameInputSchema.Ragdoll,
+        'joystick',
+        '0f0d-01b4-HORI Fighting Stick mini',
+        'Windows',
+        HoriFightStickMiniChromeWindows
+    ),
+    new GameInputModel(
         GameInputSchema.Plumber,
         'generic',
         '8BitDo 8BitDo Zero 2 gamepad (Vendor: 2dc8 Product: 9018)',
