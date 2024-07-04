@@ -1,5 +1,10 @@
 [<img src="img/generic.png" width="48" />](img/generic.png) Game-Input JavaScript Library
 =============
+[![npm](https://img.shields.io/npm/v/gameinputjs)](https://www.npmjs.com/package/gameinputjs)
+[![license](https://img.shields.io/npm/l/gameinputjs)](LICENSE)
+![language](https://img.shields.io/badge/lang-JavaScript-orange)
+![environment](https://img.shields.io/badge/env-Browser-green)
+
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
 ## Installation
