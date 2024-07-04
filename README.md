@@ -1,12 +1,12 @@
-Game-Input (JavaScript) Library
+[<img src="img/generic.png" width="48" />](img/generic.png) Game-Input JavaScript Library
 =============
-![](img/generic.png)
-
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
+## Usage
+
 ```js
-import { GameInput, DetectedOS } from './gameinput.js'
-import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './gameinput-schema.js'
+import { GameInput, DetectedOS } from './lib/gameinputjs/src/gameinput.js'
+import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './lib/gameinputjs/src/gameinput-schema.js'
 
 /** @type {GameInput} */
 const gameInput = new GameInput()
@@ -54,4 +54,26 @@ function gameLoop() {
     }
 }
 requestAnimationFrame(() => gameLoop()) // kick off
+```
+
+## Installation
+
+GameinputJS's `src` and `img` folders need to be accessible in the distributed version of your website.
+
+I would recommend setting up a `package.json` script to help update a distributable copy of the library outside node_modules:
+```json
+{
+    "name": "@me/my-client-webapp",
+    "scripts": {
+        "deps2lib": "shx rm -rf lib && shx cp -r node_modules/gameinputjs lib/"
+    }
+    ...
+}
+```
+Which would allow you to run:
+
+```sh
+    npm i --save-dev shx
+    npm i gameinputjs
+    npm run deps2lib
 ```
