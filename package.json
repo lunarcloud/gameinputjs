@@ -4,7 +4,7 @@
     "repository": {
         "url": "https://github.com/lunarcloud/gameinputjs.git"
     },
-    "version": "13.2.5",
+    "version": "13.2.6",
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
     "scripts": {
@@ -49,5 +49,13 @@
             "default"
         ],
         "testLocationInResults": true
-    }
+    },
+    "keywords": [
+        "gamepad",
+        "client",
+        "gaming",
+        "xbox",
+        "dualshock",
+        "joystick"
+    ]
 }
