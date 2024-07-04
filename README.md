@@ -16,7 +16,7 @@ I would recommend setting up a `package.json` script to help update a distributa
 {
     "name": "@me/my-client-webapp",
     "scripts": {
-        "deps2lib": "shx rm -rf lib && shx cp -r node_modules/gameinputjs lib/"
+        "deps2lib": "shx rm -rf lib && shx mkdir lib && shx cp -r node_modules/gameinputjs lib/"
     }
     ...
 }

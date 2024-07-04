@@ -4,7 +4,7 @@
     "repository": {
         "url": "https://github.com/lunarcloud/gameinputjs.git"
     },
-    "version": "13.2.6",
+    "version": "13.2.7",
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
     "scripts": {
