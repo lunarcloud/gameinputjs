@@ -2,7 +2,7 @@
 =============
 [![npm](https://img.shields.io/npm/v/gameinputjs)](https://www.npmjs.com/package/gameinputjs)
 [![license](https://img.shields.io/npm/l/gameinputjs)](LICENSE)
-[![language](https://img.shields.io/badge/lang-JavaScript-orange)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![GitHub top language](https://img.shields.io/github/languages/top/lunarcloud/gameinputjs)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![environment](https://img.shields.io/badge/env-Browser-green)](https://developer.mozilla.org/en-US/docs/Learn/JavaScript)
 
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
