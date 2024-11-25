@@ -5,6 +5,8 @@
 [![GitHub top language](https://img.shields.io/github/languages/top/lunarcloud/gameinputjs)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![environment](https://img.shields.io/badge/env-Browser-green)](https://developer.mozilla.org/en-US/docs/Learn/JavaScript)
 
+![Code Quality](https://github.com/lunarcloud/gameinputjs/actions/workflows/ci.yml/badge.svg)
+
 A client-side JavaScript module one can import to add good gamepad support to web-powered games or other gamepad-powered web applications.
 
 ## Installation
