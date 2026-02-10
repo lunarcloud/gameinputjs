@@ -6,5 +6,5 @@ import fs from 'fs'
 
 fs.cpSync('src', 'dist', {
     recursive: true,
-    filter: (src) => !src.endsWith('.test.js')
+    filter: (src) => !src.includes('.test.js')
 })
