@@ -1,3 +1,6 @@
+/* Test of GameInputModel */
+
+import { describe, it, expect } from '@jest/globals'
 import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 

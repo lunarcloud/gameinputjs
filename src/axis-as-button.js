@@ -51,7 +51,7 @@ class AxisAsButton {
      * @param {number} value Axis value.
      * @returns {boolean}
      */
-    test(value) {
+    test (value) {
         if (this.direction === 'positive')
             return value >= this.threshold
         else if (this.direction === 'negative')

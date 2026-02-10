@@ -12,7 +12,7 @@ import { Vector2 } from './vector2.js'
 import { DetectedOS } from './os-detect.js'
 import { GameInputOptions } from './gameinput-options.js'
 import { GameInputItemState, GameInputState } from './gameinput-state.js'
-import { CombinedAxesAsStick, CombinedAxisToButton } from './combined-axis-as-button.js'
+import { CombinedAxisToButton } from './combined-axis-as-button.js'
 
 /**
  * Game Input System
@@ -48,6 +48,21 @@ class GameInput {
                 GameInputSchema.Hedgehog,
                 'generic',
                 'STANDARD GAMEPAD'
+            )
+        ],
+
+        VendorThemes: [
+            // Nintendo devices (vendor ID 057e) get 'Plumber' theme
+            new GameInputModel(
+                GameInputSchema.Plumber,
+                'generic',
+                '057e-0000-Nintendo Device' // Representative ID for vendor matching
+            ),
+            // Microsoft Xbox devices (vendor ID 045e) get 'Hedgehog' theme
+            new GameInputModel(
+                GameInputSchema.Hedgehog,
+                'xboxone',
+                '045e-0000-Microsoft Device' // Representative ID for vendor matching
             )
         ],
 
@@ -419,6 +434,19 @@ class GameInput {
                                 player.setModel(gamepad)
                                 if (this.debug) {
                                     console.debug('Gamepad of type ' + player.schema.name + ' configured')
+                                }
+                            }
+                        }
+
+                        // Try vendor-based theme matching if still not found
+                        if (typeof (player.model) === 'undefined') {
+                            for (const vendorTheme of GameInput.Models.VendorThemes) {
+                                if (vendorTheme.matchesVendor(this.Connection.Gamepads[i].id)) {
+                                    player.setModel(vendorTheme)
+                                    if (this.debug) {
+                                        console.debug('Gamepad matched vendor theme ' + player.schema.name + ' for vendor ' + vendorTheme.VendorId)
+                                    }
+                                    break
                                 }
                             }
                         }
