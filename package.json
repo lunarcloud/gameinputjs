@@ -11,7 +11,7 @@
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "docs": "node -e \"require('fs').rmSync('./dist/docs', { recursive: true, force: true })\" && npx jsdoc -c jsdoc.conf.json",
-        "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.mkdirSync('dist', { recursive: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.mkdirSync('dist/demo/img', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
+        "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
         "build": "npm run pre-build && node -e \"require('fs').cpSync('src', 'dist', { recursive: true, filter: (src) => !src.endsWith('.test.js') })\"",
         "serve": "npm run build && npx serve dist",
         "build-prod": "npm run build && npm run docs",

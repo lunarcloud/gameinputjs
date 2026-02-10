@@ -112,7 +112,7 @@ The "build" is simple file copying (no transpilation):
 
 ```json
 "scripts": {
-  "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.mkdirSync('dist', { recursive: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.mkdirSync('dist/demo/img', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
+  "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
   "build": "npm run pre-build && node -e \"require('fs').cpSync('src', 'dist', { recursive: true, filter: (src) => !src.endsWith('.test.js') })\"",
   "build-prod": "npm run build && npm run docs"
 }
