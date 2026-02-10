@@ -53,13 +53,13 @@ export class GameInputPlayer {
 
     /**
      * Actions to perform on button down.
-     * @type {Map<string, Array<() => void>>}
+     * @type {Map<string, Array<function()>>}
      */
     buttonDownActions = new Map()
 
     /**
      * Actions to perform on button up.
-     * @type {Map<string, Array<() => void>>}
+     * @type {Map<string, Array<function()>>}
      */
     buttonUpActions = new Map()
 
@@ -162,7 +162,7 @@ export class GameInputPlayer {
      * Add an action to "button down" events.
      * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
      * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
-     * @param {() => void} action Action to add.
+     * @param {function()} action Action to add.
      */
     onButtonDown (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')
@@ -178,7 +178,7 @@ export class GameInputPlayer {
      * Add an action to "button up" events.
      * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
      * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
-     * @param {() => void} action Action to add.
+     * @param {function()} action Action to add.
      */
     onButtonUp (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')
@@ -203,44 +203,48 @@ export class GameInputPlayer {
 
         let state = this.state[`${stick}Stick`].up
         if (state.item instanceof AxisAsButton) {
-            if (state.item.direction === 'negative') {
-                vector.y -= state.value < state.item.deadZone ? state.value : 0
-            } else {
-                vector.y -= state.value > state.item.deadZone ? Math.abs(state.value) : 0
-            }
+            const normalized = this.#normalizeAxisWithDeadzone(
+                state.value,
+                state.item.deadZone,
+                state.item.direction === 'negative' ? -1 : 1
+            )
+            vector.y -= state.item.direction === 'negative' ? normalized : Math.abs(normalized)
         } else {
             vector.y -= 0.7
         }
 
         state = this.state[`${stick}Stick`].down
         if (state.item instanceof AxisAsButton) {
-            if (state.item.direction === 'negative') {
-                vector.y += state.value < state.item.deadZone ? Math.abs(state.value) : 0
-            } else {
-                vector.y += state.value > state.item.deadZone ? Math.abs(state.value) : 0
-            }
+            const normalized = this.#normalizeAxisWithDeadzone(
+                state.value,
+                state.item.deadZone,
+                state.item.direction === 'negative' ? -1 : 1
+            )
+            vector.y += Math.abs(normalized)
         } else {
             vector.y += 0.7
         }
 
         state = this.state[`${stick}Stick`].left
         if (state.item instanceof AxisAsButton) {
-            if (state.item.direction === 'negative') {
-                vector.x -= state.value < state.item.deadZone ? Math.abs(state.value) : 0
-            } else {
-                vector.x -= state.value > state.item.deadZone ? Math.abs(state.value) : 0
-            }
+            const normalized = this.#normalizeAxisWithDeadzone(
+                state.value,
+                state.item.deadZone,
+                state.item.direction === 'negative' ? -1 : 1
+            )
+            vector.x -= Math.abs(normalized)
         } else {
             vector.x -= 0.7
         }
 
         state = this.state[`${stick}Stick`].right
         if (state.item instanceof AxisAsButton) {
-            if (state.item.direction === 'negative') {
-                vector.x += state.value < state.item.deadZone ? Math.abs(state.value) : 0
-            } else {
-                vector.x += state.value > state.item.deadZone ? Math.abs(state.value) : 0
-            }
+            const normalized = this.#normalizeAxisWithDeadzone(
+                state.value,
+                state.item.deadZone,
+                state.item.direction === 'negative' ? -1 : 1
+            )
+            vector.x += Math.abs(normalized)
         } else {
             vector.x += 0.7
         }
@@ -269,7 +273,10 @@ export class GameInputPlayer {
         if (stickInput.magnitude() < radialDeadZone) {
             return new Vector2(0, 0)
         } else {
-            return stickInput.normalize().scale((stickInput.magnitude() - radialDeadZone) / (1 - radialDeadZone))
+            // Normalize to unit vector and scale by deadzone-adjusted magnitude
+            // Formula matches reference: (d - dead) / (1 - dead), clamped to [0, 1]
+            const scaledMagnitude = Math.min((stickInput.magnitude() - radialDeadZone) / (1 - radialDeadZone), 1)
+            return stickInput.normalize().scale(scaledMagnitude)
         }
     }
 
@@ -282,6 +289,33 @@ export class GameInputPlayer {
      */
     #normalize (val, min, max) {
         return (val - min) / (max - min)
+    }
+
+    /**
+     * Normalize an axis value with deadzone.
+     * @param {number} value - The raw axis value
+     * @param {number} deadzone - The signed deadzone threshold
+     * @param {number} max - The maximum value (typically 1.0 or -1.0)
+     * @returns {number} The normalized value with deadzone applied
+     */
+    #normalizeAxisWithDeadzone (value, deadzone, max) {
+        const absValue = Math.abs(value)
+        const absDeadzone = Math.abs(deadzone)
+        const absMax = Math.abs(max)
+
+        // If within deadzone, return 0
+        if (absValue <= absDeadzone) {
+            return 0
+        }
+
+        // Normalize to [0, absMax] range after deadzone
+        // Formula: (value - deadzone) / (max - deadzone)
+        const normalized = (absValue - absDeadzone) / (absMax - absDeadzone)
+
+        // Clamp to [0, 1] to ensure we don't exceed bounds
+        const clamped = Math.min(normalized, 1)
+
+        return value < 0 ? -clamped : clamped
     }
 
     /**
