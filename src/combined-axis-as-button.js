@@ -1,5 +1,5 @@
-import { AxisAsButton } from "./axis-as-button.js"
-import { GamepadAnalogStickMapping } from "./gamepad-mapping.js"
+import { AxisAsButton } from './axis-as-button.js'
+import { GamepadAnalogStickMapping } from './gamepad-mapping.js'
 
 /**
  * Round fraction to places
@@ -7,7 +7,7 @@ import { GamepadAnalogStickMapping } from "./gamepad-mapping.js"
  * @param {number} [places] decimal places to keep
  * @returns rounded fraction
  */
-function roundF(value, places = 5) {
+function roundF (value, places = 5) {
     const factor = Math.pow(10, places)
     return Math.round(value * factor) / factor
 }
@@ -21,7 +21,6 @@ class CombinedAxesAsStick extends GamepadAnalogStickMapping {
      * @type {number}
      */
     index
-
 
     /**
      * Constructor.
@@ -39,7 +38,6 @@ class CombinedAxesAsStick extends GamepadAnalogStickMapping {
 }
 
 class CombinedAxisToButton extends AxisAsButton {
-
     /**
      * Axis direction
      * @type {'up'|'right'|'down'|'left'}
@@ -51,7 +49,7 @@ class CombinedAxisToButton extends AxisAsButton {
      * @param {number} index                            Axis index.
      * @param {'up'|'right'|'down'|'left'} cardinal     Direction.
      */
-    constructor(index, cardinal) {
+    constructor (index, cardinal) {
         super(undefined, index)
 
         this.cardinal = cardinal
@@ -62,19 +60,19 @@ class CombinedAxisToButton extends AxisAsButton {
      * @param {number} value Axis value.
      * @returns {boolean}
      */
-    test(value) {
+    test (value) {
         const input = roundF(value)
         switch (this.cardinal) {
-            case "up":
-                return [roundF(-5/7), -1, 1].includes(input)
-            case "right":
-                return roundF(-5/7) <= input && input <= roundF(-1/7)
-            case "down":
-                return roundF(-1/7) <= input && input <= roundF(3/7)
-            case "left":
-                return roundF(3/7) <= input && input <= roundF(7/7)
-            default:
-                return false;
+        case 'up':
+            return [roundF(-5 / 7), -1, 1].includes(input)
+        case 'right':
+            return roundF(-5 / 7) <= input && input <= roundF(-1 / 7)
+        case 'down':
+            return roundF(-1 / 7) <= input && input <= roundF(3 / 7)
+        case 'left':
+            return roundF(3 / 7) <= input && input <= roundF(7 / 7)
+        default:
+            return false
         }
     }
 }
