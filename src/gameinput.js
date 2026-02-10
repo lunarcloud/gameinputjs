@@ -53,16 +53,18 @@ class GameInput {
 
         VendorThemes: [
             // Nintendo devices (vendor ID 057e) get 'Plumber' theme
+            // Product ID 0000 is a placeholder - only the vendor ID is used for matching
             new GameInputModel(
                 GameInputSchema.Plumber,
                 'generic',
-                '057e-0000-Nintendo Device' // Representative ID for vendor matching
+                '057e-0000-Nintendo Device'
             ),
             // Microsoft Xbox devices (vendor ID 045e) get 'Hedgehog' theme
+            // Product ID 0000 is a placeholder - only the vendor ID is used for matching
             new GameInputModel(
                 GameInputSchema.Hedgehog,
                 'xboxone',
-                '045e-0000-Microsoft Device' // Representative ID for vendor matching
+                '045e-0000-Microsoft Device'
             )
         ],
 
