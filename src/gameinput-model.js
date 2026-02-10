@@ -10,7 +10,7 @@ import { StandardGamepadMapping } from './standard-gamepad-mapping.js'
  * Game Input Model Definition
  */
 class GameInputModel {
-    static GamepadIdInfoRegex = /([0-9a-fA-F]{1,4})-([0-9a-fA-F]{1,4})-(.*)|(.*)\((?:STANDARD GAMEPAD)*\s*Vendor:\s*([0-9a-fA-F]{1,4})\s*Product:\s([0-9a-fA-F]{1,4})\)/
+    static GamepadIdInfoRegex = /([0-9a-fA-F]{1,4})-([0-9a-fA-F]{1,4})-(.*)|(.*)\((STANDARD GAMEPAD)?\s*Vendor:\s*([0-9a-fA-F]{1,4})\s*Product:\s([0-9a-fA-F]{1,4})\)/
 
     /**
      * Define a GameInputModel.
@@ -30,10 +30,34 @@ class GameInputModel {
 
         const idInfo = id?.match(GameInputModel.GamepadIdInfoRegex)
         if (idInfo) {
-            this.VendorId = (idInfo[1] || idInfo[5]).padStart(4, '0')
-            this.ProductId = (idInfo[2] || idInfo[6]).padStart(4, '0')
+            this.VendorId = (idInfo[1] || idInfo[6]).padStart(4, '0')
+            this.ProductId = (idInfo[2] || idInfo[7]).padStart(4, '0')
             this.ProductName = (idInfo[3] || idInfo[4]).trim()
+            this.IsStandardGamepad = !!idInfo[5]
         }
+    }
+
+    /**
+     * Check if this model matches the given gamepad ID.
+     * @param {string} gamepadId The gamepad ID to match against
+     * @returns {boolean} True if this model matches the gamepad ID
+     */
+    matches (gamepadId) {
+        if (!this.id) return false
+        return this.id === gamepadId
+    }
+
+    /**
+     * Check if this model's vendor ID matches the given gamepad ID.
+     * @param {string} gamepadId The gamepad ID to extract vendor from and match
+     * @returns {boolean} True if vendor IDs match
+     */
+    matchesVendor (gamepadId) {
+        if (!this.VendorId) return false
+        const idInfo = gamepadId?.match(GameInputModel.GamepadIdInfoRegex)
+        if (!idInfo) return false
+        const vendorId = (idInfo[1] || idInfo[6]).padStart(4, '0')
+        return this.VendorId.toLowerCase() === vendorId.toLowerCase()
     }
 }
 
