@@ -126,7 +126,7 @@ class GameInput {
     debug = true
 
     /**
-     * Whether are actively updating.
+     * Whether we are actively updating.
      * @type {boolean}
      */
     #updateActive = true
@@ -182,7 +182,9 @@ class GameInput {
             this.connectionWatchLoop()
 
             const gameInput = this
-            // warning, these are very unreliable!
+            // WARNING: gamepadconnected/gamepaddisconnected events are unreliable across browsers
+            // and may not fire consistently. We use polling (connectionWatchLoop) as the primary
+            // detection mechanism, with these events only for informational logging.
             window.addEventListener('gamepadconnected', function (e) {
                 if (gameInput.debug)
                     console.debug('Gamepad connected at index %d: %s. %d buttons, %d axes.',
@@ -307,7 +309,9 @@ class GameInput {
             return
 
         this.update()
-        requestAnimationFrame(() => this.#nextUpdateLoop()) // way too slow!
+        // Note: requestAnimationFrame is throttled to ~60fps which may be slower than
+        // gamepad polling rate. For higher-frequency polling, consider using a custom interval.
+        requestAnimationFrame(() => this.#nextUpdateLoop())
     }
 
     /**

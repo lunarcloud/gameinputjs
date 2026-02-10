@@ -64,7 +64,7 @@ export class GameInputPlayer {
     buttonUpActions = new Map()
 
     /**
-     * Constuctor.
+     * Constructor.
      * @param {import('./gameinput.js').GameInput} gameInput Game Input manager
      * @param {number} number Player number (1-based)
      */

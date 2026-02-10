@@ -49,7 +49,7 @@ class AxisAsButton {
     /**
      * Test whether the axis value matches this "button"'s direction
      * @param {number} value Axis value.
-     * @returns {boolean}
+     * @returns {boolean} True if the axis value matches the configured direction and threshold
      */
     test (value) {
         if (this.direction === 'positive')
