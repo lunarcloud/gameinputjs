@@ -83,9 +83,9 @@ Always run `npm run lint-fix` and `npm test` before committing changes.
 * **Indentation**: 4 spaces (enforced by EditorConfig)
 * **Line Endings**: LF (Unix style)
 * **Quotes**: Single quotes for strings
-* **Semicolons**: Optional (ASI/automatic semicolon insertion is used)
+* **Semicolons**: Not used (enforced by eslint-config-standard)
 * **Max Line Length**: No limit (but keep reasonable)
-* **Braces**: Optional for single-line blocks (curly: 0 rule)
+* **Braces**: Optional for single-line blocks, but prefer consistent style within files
 
 ### JSDoc Requirements
 

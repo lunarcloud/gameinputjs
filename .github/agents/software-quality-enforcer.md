@@ -77,15 +77,15 @@ describe('MyClass', () => {
         })
     })
 
-    describe('methodName', () => {
+    describe('processValue', () => {
         it('should handle normal input', () => {
             const instance = new MyClass()
-            expect(instance.methodName(5)).toBe(10)
+            expect(instance.processValue(5)).toBe(10)
         })
 
         it('should throw on invalid input', () => {
             const instance = new MyClass()
-            expect(() => instance.methodName(-1)).toThrow()
+            expect(() => instance.processValue(-1)).toThrow()
         })
     })
 })
