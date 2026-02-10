@@ -53,13 +53,13 @@ export class GameInputPlayer {
 
     /**
      * Actions to perform on button down.
-     * @type {Map<string, Array<() => void>>}
+     * @type {Map<string, Array<function()>>}
      */
     buttonDownActions = new Map()
 
     /**
      * Actions to perform on button up.
-     * @type {Map<string, Array<() => void>>}
+     * @type {Map<string, Array<function()>>}
      */
     buttonUpActions = new Map()
 
@@ -162,7 +162,7 @@ export class GameInputPlayer {
      * Add an action to "button down" events.
      * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
      * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
-     * @param {() => void} action Action to add.
+     * @param {function()} action Action to add.
      */
     onButtonDown (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')
@@ -178,7 +178,7 @@ export class GameInputPlayer {
      * Add an action to "button up" events.
      * @param {import('./gameinput-schema.js').GameInputSchemaSectionName} sectionName  Name of the section
      * @param {import('./gameinput-schema.js').GameInputSchemaButtonName} buttonName   Name of button
-     * @param {() => void} action Action to add.
+     * @param {function()} action Action to add.
      */
     onButtonUp (sectionName, buttonName, action) {
         if (typeof (action) !== 'function')

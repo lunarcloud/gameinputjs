@@ -162,7 +162,7 @@ class GameInput {
 
     /**
      * Actions to perform after players reshuffled.
-     * @type {Array<() => void>}
+     * @type {Array<function()>}
      */
     reinitializeActions = []
 
@@ -202,7 +202,7 @@ class GameInput {
 
     /**
      * Add action to "reinitialized" events.
-     * @param {() => void} action Action to add.
+     * @param {function()} action Action to add.
      * @returns {GameInput}     self, for chaining statements.
      */
     onReinitialize (action) {
