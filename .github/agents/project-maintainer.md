@@ -44,7 +44,6 @@ Current development dependencies:
 - `jsdoc` - API documentation generator
 - `jsdoc-tsimport-plugin` - TypeScript import support for JSDoc
 - `serve` - Local development server
-- `shx` - Cross-platform shell commands
 
 **Before updating dependencies**:
 1. Check changelogs for breaking changes
@@ -113,8 +112,8 @@ The "build" is simple file copying (no transpilation):
 
 ```json
 "scripts": {
-  "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp -r img dist/demo && shx cp LICENSE dist/ && shx cp README.md dist/",
-  "build": "npm run pre-build && shx cp -r src/* dist/",
+  "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.mkdirSync('dist', { recursive: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.mkdirSync('dist/demo/img', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
+  "build": "npm run pre-build && node -e \"require('fs').cpSync('src', 'dist', { recursive: true, filter: (src) => !src.endsWith('.test.js') })\"",
   "build-prod": "npm run build && npm run docs"
 }
 ```
@@ -123,7 +122,7 @@ The "build" is simple file copying (no transpilation):
 - Must remain simple file operations
 - No transpilation or bundling
 - Source files copied as-is
-- Works cross-platform (uses `shx`)
+- Works cross-platform (uses Node.js built-in fs module)
 
 ### CI/CD Workflows
 

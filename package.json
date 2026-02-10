@@ -10,9 +10,9 @@
     "scripts": {
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
-        "docs": "shx rm -rf ./dist/docs && npx jsdoc -c jsdoc.conf.json",
-        "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp -r img dist/demo && shx cp LICENSE dist/ && shx cp README.md dist/",
-        "build": "npm run pre-build && shx cp -r src/* dist/ ",
+        "docs": "node -e \"require('fs').rmSync('./dist/docs', { recursive: true, force: true })\" && npx jsdoc -c jsdoc.conf.json",
+        "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.mkdirSync('dist', { recursive: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.mkdirSync('dist/demo/img', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
+        "build": "npm run pre-build && node -e \"require('fs').cpSync('src', 'dist', { recursive: true, filter: (src) => !src.endsWith('.test.js') })\"",
         "serve": "npm run build && npx serve dist",
         "build-prod": "npm run build && npm run docs",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
@@ -31,8 +31,7 @@
         "jest-environment-jsdom": "^29.7.0",
         "jsdoc": "^4.0.2",
         "jsdoc-tsimport-plugin": "^1.0.5",
-        "serve": "^14.2.1",
-        "shx": "^0.3.4"
+        "serve": "^14.2.1"
     },
     "license": "MIT",
     "author": "Samuel Sarette",

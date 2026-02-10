@@ -18,7 +18,7 @@ I would recommend setting up a `package.json` script to help update a distributa
 {
     "name": "@me/my-client-webapp",
     "scripts": {
-        "deps2lib": "shx rm -rf lib && shx mkdir lib && shx cp -r node_modules/gameinputjs lib/"
+        "deps2lib": "node -e \"const fs = require('fs'); fs.rmSync('lib', { recursive: true, force: true }); fs.mkdirSync('lib', { recursive: true }); fs.cpSync('node_modules/gameinputjs', 'lib/gameinputjs', { recursive: true });\""
     }
     ...
 }
@@ -26,7 +26,6 @@ I would recommend setting up a `package.json` script to help update a distributa
 Which would allow you to run:
 
 ```sh
-    npm i --save-dev shx
     npm i gameinputjs
     npm run deps2lib
 ```
