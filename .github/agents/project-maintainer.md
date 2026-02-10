@@ -44,7 +44,6 @@ Current development dependencies:
 - `jsdoc` - API documentation generator
 - `jsdoc-tsimport-plugin` - TypeScript import support for JSDoc
 - `serve` - Local development server
-- `shx` - Cross-platform shell commands
 
 **Before updating dependencies**:
 1. Check changelogs for breaking changes
@@ -113,17 +112,22 @@ The "build" is simple file copying (no transpilation):
 
 ```json
 "scripts": {
-  "pre-build": "shx rm -rf dist && shx mkdir dist && shx cp -r demo dist/ && shx cp -r img dist/demo && shx cp LICENSE dist/ && shx cp README.md dist/",
-  "build": "npm run pre-build && shx cp -r src/* dist/",
+  "pre-build": "node scripts/pre-build.mjs",
+  "build": "npm run pre-build && node scripts/copy-src.mjs",
   "build-prod": "npm run build && npm run docs"
 }
 ```
+
+Build scripts are located in `/scripts/` directory:
+- `pre-build.mjs`: Cleans dist and copies demo, images, LICENSE and README
+- `copy-src.mjs`: Copies source files to dist, excluding test files
+- `clean-docs.mjs`: Cleans docs directory before JSDoc generation
 
 **Constraints**:
 - Must remain simple file operations
 - No transpilation or bundling
 - Source files copied as-is
-- Works cross-platform (uses `shx`)
+- Works cross-platform (uses Node.js built-in fs module)
 
 ### CI/CD Workflows
 
