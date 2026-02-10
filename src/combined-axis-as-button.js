@@ -5,7 +5,7 @@ import { GamepadAnalogStickMapping } from './gamepad-mapping.js'
  * Round fraction to places
  * @param {number} value number
  * @param {number} [places] decimal places to keep
- * @returns rounded fraction
+ * @returns {number} rounded fraction
  */
 function roundF (value, places = 5) {
     const factor = Math.pow(10, places)
@@ -58,7 +58,7 @@ class CombinedAxisToButton extends AxisAsButton {
     /**
      * Test whether the axis value matches this "button"'s direction
      * @param {number} value Axis value.
-     * @returns {boolean}
+     * @returns {boolean} True if the axis value matches the configured cardinal direction
      */
     test (value) {
         const input = roundF(value)

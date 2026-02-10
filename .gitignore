@@ -7,3 +7,4 @@ dist
 .vs
 docs
 .directory
+coverage

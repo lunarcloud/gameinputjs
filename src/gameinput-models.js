@@ -2,7 +2,7 @@ import { GameInputModel } from './gameinput-model.js'
 import { GameInputSchema } from './gameinput-schema.js'
 import { FaceDirections, GamepadAnalogStickMapping, GamepadCenterMapping, GamepadDirectionsMapping, GamepadFaceMapping, GamepadLRMapping } from './gamepad-mapping.js'
 import { AxisAsButton } from './axis-as-button.js'
-import { StandardCenterMapping, StandardFaceMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
+import { StandardCenterMapping, StandardGamepadMapping, StandardLeftStickMapping, StandardPlumberFaceMapping, StandardPlumberGamepadMapping, StandardShoulderMapping, StandardTriggerMapping } from './standard-gamepad-mapping.js'
 import { CombinedAxesAsStick } from './combined-axis-as-button.js'
 
 const MagicSProN64AdapterLinuxMapping = StandardPlumberGamepadMapping.variant({
