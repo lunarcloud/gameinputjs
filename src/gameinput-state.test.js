@@ -116,7 +116,7 @@ describe('GameInputFaceState', () => {
             const leftItem = new GameInputItemState({ name: 'left' })
             const upItem = new GameInputItemState({ name: 'up' })
             const state = new GameInputFaceState(upItem, rightItem, downItem, leftItem, FaceDirections.ltr)
-            
+
             // For ltr (Xbox/Hedgehog), ordinal 0 is down (A button)
             expect(state.ordinal(0)).toBe(downItem)
         })
@@ -127,7 +127,7 @@ describe('GameInputFaceState', () => {
             const state = new GameInputFaceState()
             const newUpItem = new GameInputItemState({ name: 'newUp' })
             const variant = state.variant({ up: newUpItem })
-            
+
             expect(variant).toBeInstanceOf(GameInputFaceState)
             expect(variant.up).toBe(newUpItem)
             expect(variant).not.toBe(state) // Should be a new instance
@@ -137,7 +137,7 @@ describe('GameInputFaceState', () => {
             const downItem = new GameInputItemState({ name: 'down' })
             const state = new GameInputFaceState(undefined, undefined, downItem, undefined, FaceDirections.rtl)
             const variant = state.variant({})
-            
+
             expect(variant.down).toBe(downItem)
             expect(variant.direction).toBe(FaceDirections.rtl)
         })
@@ -171,7 +171,7 @@ describe('GameInputState', () => {
             const state = new GameInputState()
             const newDpad = new GameInputDirectionsState()
             const variant = state.variant({ dpad: newDpad })
-            
+
             expect(variant).toBeInstanceOf(GameInputState)
             expect(variant.dpad).toBe(newDpad)
             expect(variant).not.toBe(state) // Should be a new instance
@@ -181,7 +181,7 @@ describe('GameInputState', () => {
             const state = new GameInputState()
             const newUpItem = new GameInputItemState({ name: 'newUp' })
             const variant = state.variant({}, { up: newUpItem })
-            
+
             expect(variant.face.up).toBe(newUpItem)
             expect(variant.face).not.toBe(state.face) // Face should be new instance
         })
@@ -189,7 +189,7 @@ describe('GameInputState', () => {
         it('should handle undefined overrides parameter', () => {
             const state = new GameInputState()
             const variant = state.variant(undefined)
-            
+
             expect(variant).toBeInstanceOf(GameInputState)
             expect(variant).not.toBe(state)
         })
@@ -197,7 +197,7 @@ describe('GameInputState', () => {
         it('should preserve other properties when creating variant', () => {
             const state = new GameInputState()
             const variant = state.variant({ dpad: new GameInputDirectionsState() })
-            
+
             expect(variant.face).toBeInstanceOf(GameInputFaceState)
             expect(variant.center).toBeInstanceOf(GameInputCenterState)
             expect(variant.shoulder).toBeInstanceOf(GameInputLRState)

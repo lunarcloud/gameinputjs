@@ -38,7 +38,7 @@ describe('Vector2', () => {
             const clone = original.clone()
             expect(clone.x).toBe(3)
             expect(clone.y).toBe(4)
-            
+
             clone.x = 10
             expect(original.x).toBe(3) // Original unchanged
         })
