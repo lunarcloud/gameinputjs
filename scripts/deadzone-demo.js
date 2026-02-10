@@ -11,6 +11,9 @@ const DEADZONE = 0.2
 
 /**
  * Old implementation: filters deadzone but doesn't normalize
+ * @param {number} value - Input value
+ * @param {number} deadzone - Deadzone threshold
+ * @returns {number} Filtered value
  */
 function oldDeadzoneFilter (value, deadzone) {
     const absValue = Math.abs(value)
@@ -25,6 +28,10 @@ function oldDeadzoneFilter (value, deadzone) {
 
 /**
  * New implementation: filters and normalizes deadzone
+ * @param {number} value - Input value
+ * @param {number} deadzone - Deadzone threshold
+ * @param {number} max - Maximum value
+ * @returns {number} Normalized value with deadzone applied
  */
 function newDeadzoneNormalize (value, deadzone, max = 1.0) {
     const absValue = Math.abs(value)
