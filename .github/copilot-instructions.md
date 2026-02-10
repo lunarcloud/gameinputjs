@@ -391,6 +391,7 @@ console.log(leftStick.angle)          // Angle in radians
 * **NEVER** add a build step that transforms the source code (no Babel, no TypeScript compilation).
 * **NEVER** remove or modify JSDoc comments - they are the type system.
 * **NEVER** disable linter warnings without proper justification in code review.
+* **NEVER** check in Node.js demos (non-browser-based demos that don't provide utility to developers outside of PR feature evidence) or PR summary documentation files into the codebase.
 * **ALWAYS** maintain backward compatibility with existing API.
 * **ALWAYS** test in multiple browsers when changing core gamepad detection logic.
 * **ASK FIRST** before adding new gamepad models to the database.
