@@ -83,7 +83,7 @@ Always run `npm run lint-fix` and `npm test` before committing changes.
 * **Indentation**: 4 spaces (enforced by EditorConfig)
 * **Line Endings**: LF (Unix style)
 * **Quotes**: Single quotes for strings
-* **Semicolons**: Not required by linter, but commonly used
+* **Semicolons**: Optional (ASI/automatic semicolon insertion is used)
 * **Max Line Length**: No limit (but keep reasonable)
 * **Braces**: Optional for single-line blocks (curly: 0 rule)
 
