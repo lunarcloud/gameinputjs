@@ -112,11 +112,16 @@ The "build" is simple file copying (no transpilation):
 
 ```json
 "scripts": {
-  "pre-build": "node -e \"const fs = require('fs'); fs.rmSync('dist', { recursive: true, force: true }); fs.cpSync('demo', 'dist/demo', { recursive: true }); fs.cpSync('img', 'dist/demo/img', { recursive: true }); fs.copyFileSync('LICENSE', 'dist/LICENSE'); fs.copyFileSync('README.md', 'dist/README.md');\"",
-  "build": "npm run pre-build && node -e \"require('fs').cpSync('src', 'dist', { recursive: true, filter: (src) => !src.endsWith('.test.js') })\"",
+  "pre-build": "node scripts/pre-build.mjs",
+  "build": "npm run pre-build && node scripts/copy-src.mjs",
   "build-prod": "npm run build && npm run docs"
 }
 ```
+
+Build scripts are located in `/scripts/` directory:
+- `pre-build.mjs`: Cleans dist and copies demo, images, LICENSE and README
+- `copy-src.mjs`: Copies source files to dist, excluding test files
+- `clean-docs.mjs`: Cleans docs directory before JSDoc generation
 
 **Constraints**:
 - Must remain simple file operations
