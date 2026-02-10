@@ -60,10 +60,10 @@ class Vector2 {
     /**
      * Dot product of the two vectors.
      * @param {Vector2} vector other vector
-     * @returns {number} resulting vector
+     * @returns {number} resulting dot product
      */
     dot (vector) {
-        return (this.x * vector.x + this.y + vector.y)
+        return (this.x * vector.x + this.y * vector.y)
     }
 
     /**
@@ -141,7 +141,7 @@ class Vector2 {
 
     /**
      * Rotate the vector.
-     * @param {number} alpha amount to rotatae
+     * @param {number} alpha amount to rotate
      * @returns {Vector2}   rotated vector.
      */
     rotate (alpha) {
