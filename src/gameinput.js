@@ -162,7 +162,7 @@ class GameInput {
 
     /**
      * Actions to perform after players reshuffled.
-     * @type {Array<function()>}
+     * @type {Array<Function>}
      */
     reinitializeActions = []
 
@@ -202,7 +202,7 @@ class GameInput {
 
     /**
      * Add action to "reinitialized" events.
-     * @param {function()} action Action to add.
+     * @param {Function} action Action to add.
      * @returns {GameInput}     self, for chaining statements.
      */
     onReinitialize (action) {
@@ -344,11 +344,13 @@ class GameInput {
                     }
                     const state = player.state[sectionName][itemName]
 
-                    if (buttonDef instanceof AxisAsButton || buttonDef instanceof CombinedAxisToButton) {
+                    // Check if buttonDef is an axis-based button (has test method and index property)
+                    if (typeof buttonDef === 'object' && buttonDef !== null && 'test' in buttonDef) {
                         state.value = currentGamepad.axes[buttonDef.index]
                         state.active = buttonDef.test(state.value)
                     } else {
-                        state.active = currentGamepad.buttons[buttonDef]?.pressed ?? false
+                        // buttonDef is a number (button index)
+                        state.active = currentGamepad.buttons[/** @type {number} */ (buttonDef)]?.pressed ?? false
                         state.value = state.active ? 1 : 0
                     }
                 }

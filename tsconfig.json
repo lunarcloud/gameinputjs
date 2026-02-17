@@ -8,10 +8,10 @@
       "checkJs": true,
       "noEmit": true,
       "strict": false,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
       "types": [],
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "skipLibCheck": true
     },
-    "include": ["src"]
+    "include": ["src/**/*.js"],
+    "exclude": ["**/*.test.js", "node_modules"]
   }

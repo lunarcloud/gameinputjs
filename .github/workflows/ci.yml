@@ -18,13 +18,27 @@ jobs:
         node-version: 24
         cache: 'npm'
 
-    - name: Build
-      run: |
-        npm ci
-        npm run build-prod
+    - name: Install Dependencies
+      run: npm ci
 
-    - name: Test
-      run: npm test
+    - name: Lint
+      run: npm run lint
+
+    - name: Type Check
+      run: npm run type-check
+
+    - name: Build
+      run: npm run build-prod
+
+    - name: Test with Coverage
+      run: npm run test:coverage
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./coverage/coverage-final.json
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: false
 
     - name: Package
       uses: actions/upload-artifact@v4
