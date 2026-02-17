@@ -12,7 +12,10 @@
       "alwaysStrict": true,
       "types": [],
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "declaration": true,
+      "emitDeclarationOnly": true,
+      "outDir": "types"
     },
     "include": ["src/**/*.js"],
     "exclude": ["**/*.test.js", "node_modules"]

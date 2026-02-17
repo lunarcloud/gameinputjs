@@ -8,3 +8,4 @@ dist
 docs
 .directory
 coverage
+types

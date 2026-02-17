@@ -7,10 +7,20 @@
     "version": "13.2.7",
     "main": "src/gameinput.js",
     "module": "src/gameinput.js",
+    "types": "types/gameinput.d.ts",
     "exports": {
-        ".": "./src/gameinput.js",
-        "./schema": "./src/gameinput-schema.js",
-        "./models": "./src/gameinput-models.js"
+        ".": {
+            "types": "./types/gameinput.d.ts",
+            "default": "./src/gameinput.js"
+        },
+        "./schema": {
+            "types": "./types/gameinput-schema.d.ts",
+            "default": "./src/gameinput-schema.js"
+        },
+        "./models": {
+            "types": "./types/gameinput-models.d.ts",
+            "default": "./src/gameinput-models.js"
+        }
     },
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
@@ -18,6 +28,7 @@
         "lint": "npx eslint --ignore-path .gitignore --ext .js .",
         "lint-fix": "npx eslint --ignore-path .gitignore --ext .js . --fix",
         "type-check": "npx tsc --noEmit",
+        "build:types": "npx tsc --project tsconfig.types.json",
         "docs": "node scripts/clean-docs.mjs && npx jsdoc -c jsdoc.conf.json",
         "pre-build": "node scripts/pre-build.mjs",
         "build": "npm run pre-build && node scripts/copy-src.mjs",
