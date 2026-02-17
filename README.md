@@ -43,6 +43,39 @@ import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './lib/g
 const gameInput = new GameInput()
 ```
 
+### Configuration Options
+
+You can configure GameInput by passing options to the constructor:
+
+```js
+const gameInput = new GameInput({
+    debugStatements: false,  // Enable debug console logs (default: false)
+    maxPlayers: 8            // Maximum number of players/gamepads (default: 4)
+})
+```
+
+#### maxPlayers
+
+By default, GameInput supports up to 4 players/gamepads. Modern browsers can support more gamepads via `navigator.getGamepads()`, and you can increase this limit using the `maxPlayers` option.
+
+**Use cases:**
+- Party games with 8+ players
+- Arcade cabinets with multiple controllers
+- Esports setups with many simultaneous gamepads
+- Testing/development with multiple virtual gamepads
+
+**Example:**
+```js
+// Support up to 8 players
+const gameInput = new GameInput({ maxPlayers: 8 })
+
+// All 8 players are accessible
+for (let i = 0; i < 8; i++) {
+    const player = gameInput.getPlayer(i)
+    console.log(`Player ${i + 1}:`, player)
+}
+```
+
 ### Event-Driven Style
 ```js
 gameInput
