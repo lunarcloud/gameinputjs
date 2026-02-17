@@ -5,6 +5,13 @@
         "url": "https://github.com/lunarcloud/gameinputjs.git"
     },
     "version": "13.2.7",
+    "main": "src/gameinput.js",
+    "module": "src/gameinput.js",
+    "exports": {
+        ".": "./src/gameinput.js",
+        "./schema": "./src/gameinput-schema.js",
+        "./models": "./src/gameinput-models.js"
+    },
     "description": "Browser library to upgrade the Gamepad API experience",
     "private": false,
     "scripts": {
