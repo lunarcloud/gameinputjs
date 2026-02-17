@@ -419,7 +419,7 @@ export class GameInputSchema {
     constructor (name, direction, overrides) {
         this.name = name
         this.direction = direction
-        Object.assign(this, Object.assign(GameInputSchema.Defaults, overrides))
+        Object.assign(this, { ...GameInputSchema.Defaults }, overrides)
     }
 
     /**
