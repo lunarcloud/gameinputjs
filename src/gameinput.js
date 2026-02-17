@@ -346,7 +346,7 @@ class GameInput {
                     // Check if buttonDef is an axis-based button (AxisAsButton or CombinedAxisToButton)
                     // We use duck typing (checking for 'test' method) instead of instanceof because
                     // it's more robust and avoids TypeScript type checking issues with the class hierarchy
-                    if (typeof buttonDef === 'object' && buttonDef !== null && 'test' in buttonDef) {
+                    if (typeof buttonDef === 'object' && buttonDef !== null && typeof buttonDef.test === 'function') {
                         state.value = currentGamepad.axes[buttonDef.index]
                         state.active = buttonDef.test(state.value)
                     } else {

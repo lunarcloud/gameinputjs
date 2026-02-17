@@ -8,6 +8,8 @@
       "checkJs": true,
       "noEmit": true,
       "strict": false,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
       "types": [],
       "esModuleInterop": true,
       "skipLibCheck": true
