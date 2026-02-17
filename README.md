@@ -50,29 +50,37 @@ You can configure GameInput by passing options to the constructor:
 ```js
 const gameInput = new GameInput({
     debugStatements: false,  // Enable debug console logs (default: false)
-    maxPlayers: 8            // Maximum number of players/gamepads (default: 4)
+    maxPlayers: 8            // Minimum number of player slots (default: 4, auto-expands as needed)
 })
 ```
 
 #### maxPlayers
 
-By default, GameInput supports up to 4 players/gamepads. Modern browsers can support more gamepads via `navigator.getGamepads()`, and you can increase this limit using the `maxPlayers` option.
+GameInput **automatically detects and expands** to support the number of gamepads your browser can handle via `navigator.getGamepads()`. The `maxPlayers` option sets the **minimum** number of player slots to allocate initially (default: 4).
 
-**Use cases:**
-- Party games with 8+ players
-- Arcade cabinets with multiple controllers
-- Esports setups with many simultaneous gamepads
-- Testing/development with multiple virtual gamepads
+**How it works:**
+- On initialization, GameInput checks `navigator.getGamepads().length` and uses the larger of that value or `maxPlayers` (minimum 4)
+- When new gamepads connect, the system **automatically expands** to accommodate them
+- No manual configuration needed for most use cases - just plug in your gamepads!
+
+**Use cases for setting maxPlayers:**
+- Pre-allocate slots for expected players to avoid reallocation
+- Set a higher minimum for party games, arcade cabinets, or esports setups
+- Testing/development where you know you'll have multiple gamepads
 
 **Example:**
 ```js
-// Support up to 8 players
+// Auto-detect (recommended) - automatically expands as gamepads connect
+const gameInput = new GameInput()
+
+// Or pre-allocate for 8+ player games
 const gameInput = new GameInput({ maxPlayers: 8 })
 
-// All 8 players are accessible
-for (let i = 0; i < 8; i++) {
-    const player = gameInput.getPlayer(i)
-    console.log(`Player ${i + 1}:`, player)
+// Access all detected players
+for (const player of gameInput.Players) {
+    if (player.model) {
+        console.log(`Player ${player.number} connected`)
+    }
 }
 ```
 
