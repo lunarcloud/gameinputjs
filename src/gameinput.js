@@ -71,6 +71,12 @@ class GameInput {
     }
 
     /**
+     * Maximum number of players/gamepads to support.
+     * @type {number}
+     */
+    #maxPlayers = 4
+
+    /**
      * Get just ASCII text.
      * @param {string} text input text
      * @returns {string} input minus non-ASCII
@@ -91,12 +97,7 @@ class GameInput {
      * The players.
      * @type {Array<GameInputPlayer>}
      */
-    Players = [
-        new GameInputPlayer(this, 1),
-        new GameInputPlayer(this, 2),
-        new GameInputPlayer(this, 3),
-        new GameInputPlayer(this, 4)
-    ]
+    Players = []
 
     /**
      * Connection info
@@ -105,17 +106,12 @@ class GameInput {
         /**
          * Mapping of player to gamepad index
          */
-        GamePadMapping: {
-            0: 0,
-            1: 1,
-            2: 2,
-            3: 3
-        },
+        GamePadMapping: {},
         /**
          * Cache of actual gamepads.
          * @type {Array<Gamepad>}
          */
-        Gamepads: [undefined, undefined, undefined, undefined]
+        Gamepads: []
     }
 
     /**
@@ -158,7 +154,7 @@ class GameInput {
      * Whether we've received the first button press.
      * @type {Array<boolean>}
      */
-    #firstPress = [undefined, undefined, undefined, undefined]
+    #firstPress = []
 
     /**
      * Callback providing player index and button name.
@@ -194,7 +190,20 @@ class GameInput {
      * @param {GameInputOptions} options    constructor options
      */
     constructor (options = undefined) {
+        this.#maxPlayers = options?.maxPlayers ?? 4
         this.debug = options?.debugStatements || false
+
+        // Initialize dynamic arrays based on maxPlayers
+        this.Players = Array.from(
+            { length: this.#maxPlayers },
+            (_, i) => new GameInputPlayer(this, i + 1)
+        )
+        this.#firstPress = Array(this.#maxPlayers).fill(false)
+        this.Connection.Gamepads = Array(this.#maxPlayers).fill(undefined)
+        // Initialize GamePadMapping
+        for (let i = 0; i < this.#maxPlayers; i++) {
+            this.Connection.GamePadMapping[i] = i
+        }
 
         this.startUpdateLoop()
 
@@ -304,8 +313,8 @@ class GameInput {
      * @returns {GameInputPlayer} Player
      */
     getPlayer (index) {
-        if (index < 0 || index > 3)
-            throw new Error('Index out of the 0-3 range!')
+        if (index < 0 || index >= this.#maxPlayers)
+            throw new Error(`Index out of the 0-${this.#maxPlayers - 1} range!`)
         return this.Players[this.Connection.GamePadMapping[index]]
     }
 
@@ -315,8 +324,8 @@ class GameInput {
      * @returns {Gamepad} Player's gamepad
      */
     getGamepad (player) {
-        if (player < 0 || player > 3)
-            throw new Error('Index out of the 0-3 range!')
+        if (player < 0 || player >= this.#maxPlayers)
+            throw new Error(`Index out of the 0-${this.#maxPlayers - 1} range!`)
         return this.Connection.Gamepads[this.Connection.GamePadMapping[player]]
     }
 
@@ -376,7 +385,7 @@ class GameInput {
         }
 
         // Clear connection references
-        this.Connection.Gamepads = [undefined, undefined, undefined, undefined]
+        this.Connection.Gamepads = Array(this.#maxPlayers).fill(undefined)
     }
 
     /**
