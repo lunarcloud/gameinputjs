@@ -92,3 +92,54 @@ function gameLoop() {
 }
 requestAnimationFrame(() => gameLoop()) // kick off
 ```
+
+### Lifecycle Management
+
+GameInputJS provides proper cleanup APIs to prevent memory leaks in Single Page Applications (SPAs).
+
+#### Unsubscribing from Events
+
+Event listener methods (`onButtonDown`, `onButtonUp`, `onReinitialize`) return an unsubscribe function:
+
+```js
+// Subscribe to an event
+const unsubscribe = gameInput.onButtonDown((playerIndex, sectionName, buttonName) => {
+    console.debug(`Button ${buttonName} pressed`)
+})
+
+// Later: unsubscribe when no longer needed
+unsubscribe()
+```
+
+#### Destroying the GameInput Instance
+
+When you're done with a GameInput instance (e.g., navigating away from a game page), call `destroy()` to clean up all resources:
+
+```js
+// Clean up everything
+gameInput.destroy()
+```
+
+This will:
+- Stop the update loop and connection watch loop
+- Remove all event listeners (both custom and window events)
+- Clear all gamepad and player references
+
+**Example: Cleanup in a SPA**
+```js
+// In your route setup
+function initGame() {
+    const gameInput = new GameInput()
+    
+    gameInput.onButtonDown((player, section, button) => {
+        // Handle input
+    })
+    
+    return gameInput
+}
+
+// When navigating away
+function cleanupGame(gameInput) {
+    gameInput.destroy()
+}
+```
