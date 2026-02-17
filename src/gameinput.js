@@ -463,9 +463,9 @@ class GameInput {
                         if (this.Connection.Gamepads[i] instanceof Gamepad && typeof (player.model) === 'undefined') {
                             if (this.debug) {
                                 if (this.Connection.Gamepads[i].mapping === 'standard') {
-                                    console.debug('Gamepad not detected, detected "stardard" mapping: "' + this.Connection.Gamepads[i].id + '"')
+                                    console.debug('Gamepad not detected, detected "standard" mapping: "' + this.Connection.Gamepads[i].id + '"')
                                 } else {
-                                    console.debug('Gamepad not detected, forcing "stardard" mapping: "' + this.Connection.Gamepads[i].id + '"')
+                                    console.debug('Gamepad not detected, forcing "standard" mapping: "' + this.Connection.Gamepads[i].id + '"')
                                 }
                             }
 
