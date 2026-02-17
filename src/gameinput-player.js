@@ -128,7 +128,7 @@ export class GameInputPlayer {
      * @returns {Promise<string>} result promise
      */
     rumble (gamepadEffectParameters = {}) {
-        Object.assign({ startDelay: 0, duration: 300, strongMagnitude: 0.5, weakMagnitude: 0.5 }, gamepadEffectParameters)
+        gamepadEffectParameters = Object.assign({ startDelay: 0, duration: 300, strongMagnitude: 0.5, weakMagnitude: 0.5 }, gamepadEffectParameters)
         const vibrator = this.getGamepad()?.vibrationActuator
         // @ts-ignore
         return vibrator?.playEffect(vibrator?.type ?? 'dual-rumble', gamepadEffectParameters)
