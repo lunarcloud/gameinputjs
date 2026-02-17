@@ -27,6 +27,9 @@ jobs:
     - name: Type Check
       run: npm run type-check
 
+    - name: Generate Type Declarations
+      run: npm run build:types
+
     - name: Build
       run: npm run build-prod
 
