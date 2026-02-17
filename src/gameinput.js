@@ -131,6 +131,30 @@ class GameInput {
     #updateActive = true
 
     /**
+     * Request animation frame ID for update loop.
+     * @type {number|undefined}
+     */
+    #updateLoopFrameId = undefined
+
+    /**
+     * Request animation frame ID for connection watch loop.
+     * @type {number|undefined}
+     */
+    #connectionWatchLoopFrameId = undefined
+
+    /**
+     * Gamepad connected event handler.
+     * @type {Function|undefined}
+     */
+    #gamepadConnectedHandler = undefined
+
+    /**
+     * Gamepad disconnected event handler.
+     * @type {Function|undefined}
+     */
+    #gamepadDisconnectedHandler = undefined
+
+    /**
      * Whether we've received the first button press.
      * @type {Array<boolean>}
      */
@@ -184,55 +208,66 @@ class GameInput {
             // WARNING: gamepadconnected/gamepaddisconnected events are unreliable across browsers
             // and may not fire consistently. We use polling (connectionWatchLoop) as the primary
             // detection mechanism, with these events only for informational logging.
-            window.addEventListener('gamepadconnected', function (e) {
+            this.#gamepadConnectedHandler = function (e) {
                 if (gameInput.debug)
                     console.debug('Gamepad connected at index %d: %s. %d buttons, %d axes.',
                         e.gamepad.index, e.gamepad.id,
                         e.gamepad.buttons.length, e.gamepad.axes.length)
-            }, false)
+            }
+            window.addEventListener('gamepadconnected', this.#gamepadConnectedHandler, false)
 
-            window.addEventListener('gamepaddisconnected', function (e) {
+            this.#gamepadDisconnectedHandler = function (e) {
                 if (gameInput.debug)
                     console.debug('Gamepad disconnected from index %d: %s',
                         e.gamepad.index, e.gamepad.id)
-            }, false)
+            }
+            window.addEventListener('gamepaddisconnected', this.#gamepadDisconnectedHandler, false)
         }
     }
 
     /**
      * Add action to "reinitialized" events.
      * @param {Function} action Action to add.
-     * @returns {GameInput}     self, for chaining statements.
+     * @returns {Function}      Unsubscribe function to remove this action.
      */
     onReinitialize (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.reinitializeActions.push(action)
-        return this
+        return () => {
+            const idx = this.reinitializeActions.indexOf(action)
+            if (idx !== -1) this.reinitializeActions.splice(idx, 1)
+        }
     }
 
     /**
      * Add an action to "button down" events.
      * @param {ButtonActionFunc} action Action to add.
-     * @returns {GameInput}     self, for chaining statements.
+     * @returns {Function}      Unsubscribe function to remove this action.
      */
     onButtonDown (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonDownActions.push(action)
-        return this
+        return () => {
+            const idx = this.buttonDownActions.indexOf(action)
+            if (idx !== -1) this.buttonDownActions.splice(idx, 1)
+        }
     }
 
     /**
      * Add an action to "button down" events.
      * @param {ButtonActionFunc} action Action to add.
-     * @returns {GameInput}     self, for chaining statements.
+     * @returns {Function}      Unsubscribe function to remove this action.
      */
     onButtonUp (action) {
         if (typeof (action) !== 'function')
             throw new Error('Action must be a function')
         this.buttonUpActions.push(action)
-        return this
+        return () => {
+            const idx = this.buttonUpActions.indexOf(action)
+            if (idx !== -1) this.buttonUpActions.splice(idx, 1)
+        }
     }
 
     /**
@@ -298,7 +333,51 @@ class GameInput {
      */
     stopUpdateLoop () {
         this.#updateActive = false
+        if (this.#updateLoopFrameId !== undefined) {
+            cancelAnimationFrame(this.#updateLoopFrameId)
+            this.#updateLoopFrameId = undefined
+        }
     };
+
+    /**
+     * Clean up and destroy this GameInput instance.
+     * Stops all loops, removes all event listeners, and clears all references.
+     * This should be called when the GameInput instance is no longer needed to prevent memory leaks.
+     * @returns {void}
+     */
+    destroy () {
+        // Stop the update loop
+        this.stopUpdateLoop()
+
+        // Stop the connection watch loop
+        if (this.#connectionWatchLoopFrameId !== undefined) {
+            cancelAnimationFrame(this.#connectionWatchLoopFrameId)
+            this.#connectionWatchLoopFrameId = undefined
+        }
+
+        // Remove window event listeners
+        if (this.#gamepadConnectedHandler) {
+            window.removeEventListener('gamepadconnected', this.#gamepadConnectedHandler, false)
+            this.#gamepadConnectedHandler = undefined
+        }
+        if (this.#gamepadDisconnectedHandler) {
+            window.removeEventListener('gamepaddisconnected', this.#gamepadDisconnectedHandler, false)
+            this.#gamepadDisconnectedHandler = undefined
+        }
+
+        // Clear all event listener arrays
+        this.buttonDownActions = []
+        this.buttonUpActions = []
+        this.reinitializeActions = []
+
+        // Clear player references
+        for (const player of this.Players) {
+            player.setModel(undefined)
+        }
+
+        // Clear connection references
+        this.Connection.Gamepads = [undefined, undefined, undefined, undefined]
+    }
 
     /**
      * Perform the next update and loop.
@@ -310,7 +389,7 @@ class GameInput {
         this.update()
         // Note: requestAnimationFrame is throttled to ~60fps which may be slower than
         // gamepad polling rate. For higher-frequency polling, consider using a custom interval.
-        requestAnimationFrame(() => this.#nextUpdateLoop())
+        this.#updateLoopFrameId = requestAnimationFrame(() => this.#nextUpdateLoop())
     }
 
     /**
@@ -403,7 +482,7 @@ class GameInput {
             this.reinitialize()
         }
 
-        requestAnimationFrame(() => this.connectionWatchLoop())
+        this.#connectionWatchLoopFrameId = requestAnimationFrame(() => this.connectionWatchLoop())
     }
 
     /**
