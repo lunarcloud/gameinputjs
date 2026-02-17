@@ -144,13 +144,13 @@ class GameInput {
 
     /**
      * Gamepad connected event handler.
-     * @type {Function|undefined}
+     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
      */
     #gamepadConnectedHandler = undefined
 
     /**
      * Gamepad disconnected event handler.
-     * @type {Function|undefined}
+     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
      */
     #gamepadDisconnectedHandler = undefined
 
