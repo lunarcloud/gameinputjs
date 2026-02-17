@@ -7,7 +7,7 @@ import { FaceDirections } from './gamepad-mapping.js'
 describe('GameInputSchema', () => {
     describe('constructor', () => {
         it('should not mutate static Defaults object', () => {
-            // Store original defaults
+            // Store original defaults - shallow copy is sufficient since values are primitives
             const originalDefaults = {
                 dpad: { ...GameInputSchema.Defaults.dpad },
                 center: { ...GameInputSchema.Defaults.center },
