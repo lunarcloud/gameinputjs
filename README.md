@@ -43,6 +43,37 @@ import { GameInputSchemaSectionNames, GameInputSchemaButtonNames } from './lib/g
 const gameInput = new GameInput()
 ```
 
+### Configuration Options
+
+You can configure GameInput by passing options to the constructor:
+
+```js
+const gameInput = new GameInput({
+    debugStatements: false,  // Enable debug console logs (default: false)
+    maxPlayers: 8            // Force max players (normally auto-detected, 4-8 on supported browsers)
+})
+```
+
+#### maxPlayers
+
+GameInput supports at least 4 players, up to 8 when detected on supported browsers. The `maxPlayers` option forces a specific maximum, overriding auto-detection.
+
+**Example:**
+```js
+// Auto-detect (recommended)
+const gameInput = new GameInput()
+
+// Force a specific maximum
+const gameInput = new GameInput({ maxPlayers: 16 })
+
+// Access all detected players
+for (const player of gameInput.Players) {
+    if (player.model) {
+        console.log(`Player ${player.number} connected`)
+    }
+}
+```
+
 ### Event-Driven Style
 ```js
 gameInput

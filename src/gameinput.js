@@ -71,6 +71,12 @@ class GameInput {
     }
 
     /**
+     * Maximum number of players/gamepads to support.
+     * @type {number}
+     */
+    #maxPlayers = 4
+
+    /**
      * Get just ASCII text.
      * @param {string} text input text
      * @returns {string} input minus non-ASCII
@@ -91,12 +97,7 @@ class GameInput {
      * The players.
      * @type {Array<GameInputPlayer>}
      */
-    Players = [
-        new GameInputPlayer(this, 1),
-        new GameInputPlayer(this, 2),
-        new GameInputPlayer(this, 3),
-        new GameInputPlayer(this, 4)
-    ]
+    Players = []
 
     /**
      * Connection info
@@ -105,17 +106,12 @@ class GameInput {
         /**
          * Mapping of player to gamepad index
          */
-        GamePadMapping: {
-            0: 0,
-            1: 1,
-            2: 2,
-            3: 3
-        },
+        GamePadMapping: {},
         /**
          * Cache of actual gamepads.
          * @type {Array<Gamepad>}
          */
-        Gamepads: [undefined, undefined, undefined, undefined]
+        Gamepads: []
     }
 
     /**
@@ -144,13 +140,13 @@ class GameInput {
 
     /**
      * Gamepad connected event handler.
-     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
+     * @type {GamepadEventHandler|undefined}
      */
     #gamepadConnectedHandler = undefined
 
     /**
      * Gamepad disconnected event handler.
-     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
+     * @type {GamepadEventHandler|undefined}
      */
     #gamepadDisconnectedHandler = undefined
 
@@ -158,7 +154,12 @@ class GameInput {
      * Whether we've received the first button press.
      * @type {Array<boolean>}
      */
-    #firstPress = [undefined, undefined, undefined, undefined]
+    #firstPress = []
+
+    /**
+     * Gamepad event handler function type.
+     * @typedef {function(GamepadEvent):any} GamepadEventHandler
+     */
 
     /**
      * Callback providing player index and button name.
@@ -196,6 +197,13 @@ class GameInput {
     constructor (options = undefined) {
         this.debug = options?.debugStatements || false
 
+        // Auto-detect max players from browser's gamepad API, with fallback to configured value or 4
+        const detectedMax = GameInput.canUseGamepadAPI() ? navigator.getGamepads().length : 0
+        this.#maxPlayers = Math.max(options?.maxPlayers ?? 4, detectedMax, 4)
+
+        // Initialize dynamic arrays based on maxPlayers
+        this.#initializePlayerArrays(this.#maxPlayers)
+
         this.startUpdateLoop()
 
         // Start watching for gamepads joining and leaving
@@ -222,6 +230,36 @@ class GameInput {
                         e.gamepad.index, e.gamepad.id)
             }
             window.addEventListener('gamepaddisconnected', this.#gamepadDisconnectedHandler, false)
+        }
+    }
+
+    /**
+     * Initialize or expand player arrays to support a given number of players.
+     * @param {number} count - Number of players to support
+     */
+    #initializePlayerArrays (count) {
+        const currentLength = this.Players.length
+
+        if (count > currentLength) {
+            // Expand arrays to support more players
+            for (let i = currentLength; i < count; i++) {
+                this.Players.push(new GameInputPlayer(this, i + 1))
+                this.#firstPress.push(false)
+                this.Connection.Gamepads.push(undefined)
+                this.Connection.GamePadMapping[i] = i
+            }
+            this.#maxPlayers = count
+        } else if (currentLength === 0) {
+            // Initial setup
+            this.Players = Array.from(
+                { length: count },
+                (_, i) => new GameInputPlayer(this, i + 1)
+            )
+            this.#firstPress = Array(count).fill(false)
+            this.Connection.Gamepads = Array(count).fill(undefined)
+            for (let i = 0; i < count; i++) {
+                this.Connection.GamePadMapping[i] = i
+            }
         }
     }
 
@@ -304,8 +342,8 @@ class GameInput {
      * @returns {GameInputPlayer} Player
      */
     getPlayer (index) {
-        if (index < 0 || index > 3)
-            throw new Error('Index out of the 0-3 range!')
+        if (index < 0 || index >= this.#maxPlayers)
+            throw new Error(`Index out of the 0-${this.#maxPlayers - 1} range!`)
         return this.Players[this.Connection.GamePadMapping[index]]
     }
 
@@ -315,8 +353,8 @@ class GameInput {
      * @returns {Gamepad} Player's gamepad
      */
     getGamepad (player) {
-        if (player < 0 || player > 3)
-            throw new Error('Index out of the 0-3 range!')
+        if (player < 0 || player >= this.#maxPlayers)
+            throw new Error(`Index out of the 0-${this.#maxPlayers - 1} range!`)
         return this.Connection.Gamepads[this.Connection.GamePadMapping[player]]
     }
 
@@ -376,7 +414,7 @@ class GameInput {
         }
 
         // Clear connection references
-        this.Connection.Gamepads = [undefined, undefined, undefined, undefined]
+        this.Connection.Gamepads = Array(this.#maxPlayers).fill(undefined)
     }
 
     /**
@@ -489,13 +527,22 @@ class GameInput {
      * Setup gamepads info.
      */
     reinitialize () {
+        if (GameInput.canUseGamepadAPI()) {
+            const gamepads = navigator.getGamepads()
+
+            // Dynamically expand player arrays if more gamepads are detected
+            if (gamepads.length > this.#maxPlayers) {
+                this.#initializePlayerArrays(gamepads.length)
+            }
+
+            this.Connection.Gamepads = gamepads
+        }
+
         // clear gamepad information
         for (const player of this.Players)
             player.setModel(undefined)
 
         if (GameInput.canUseGamepadAPI()) {
-            this.Connection.Gamepads = navigator.getGamepads()
-
             for (let i = 0; i < this.Players.length; i++)
                 if (this.Connection.Gamepads.filter(Boolean).length === 0)
                     this.#firstPress[i] = false
