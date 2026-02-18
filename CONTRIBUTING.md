@@ -20,20 +20,11 @@ This guide will help you contribute effectively, especially if you want to add s
 ### Prerequisites
 - **Node.js**: >= 24.13.0
 - **npm**: >= 11.0.0
-- A gamepad for testing (if adding new mappings)
+- One or more gamepads
 
 ### Fork and Clone
 
-1. Fork the repository on GitHub
-2. Clone your fork locally:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/gameinputjs.git
-   cd gameinputjs
-   ```
-3. Add the upstream repository:
-   ```bash
-   git remote add upstream https://github.com/lunarcloud/gameinputjs.git
-   ```
+Fork the repository on GitHub and clone it locally.
 
 ### Install Dependencies
 
@@ -60,19 +51,6 @@ npm run serve
 If everything passes, you're ready to start developing!
 
 ## Development Workflow
-
-### Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm run lint` | Run ESLint on all JavaScript files |
-| `npm run lint-fix` | Auto-fix ESLint errors where possible |
-| `npm test` | Run all Jest tests |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run build` | Build distributable version to `/dist/` |
-| `npm run serve` | Build and serve demo locally at http://localhost:3000 |
-| `npm run docs` | Generate JSDoc API documentation |
-| `npm run type-check` | Check JSDoc types with TypeScript |
 
 ### Typical Workflow
 
@@ -145,48 +123,7 @@ ID: "057e-2009-Nintendo Switch Pro Controller"
 
 ### Step 2: Map the Buttons and Axes
 
-Create a simple HTML test file to identify each button and axis:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Gamepad Mapper</title>
-</head>
-<body>
-    <h1>Gamepad Button/Axis Tester</h1>
-    <div id="output"></div>
-    <script>
-        function update() {
-            const gamepad = navigator.getGamepads()[0]
-            if (!gamepad) {
-                document.getElementById('output').innerHTML = 'No gamepad connected'
-                requestAnimationFrame(update)
-                return
-            }
-            
-            let html = '<h2>Buttons:</h2>'
-            gamepad.buttons.forEach((button, i) => {
-                if (button.pressed) {
-                    html += `<div><strong>Button ${i}: PRESSED (value: ${button.value})</strong></div>`
-                }
-            })
-            
-            html += '<h2>Axes:</h2>'
-            gamepad.axes.forEach((axis, i) => {
-                if (Math.abs(axis) > 0.1) {
-                    html += `<div><strong>Axis ${i}: ${axis.toFixed(2)}</strong></div>`
-                }
-            })
-            
-            document.getElementById('output').innerHTML = html
-            requestAnimationFrame(update)
-        }
-        update()
-    </script>
-</body>
-</html>
-```
+Use one of the many online gamepad testers (such as [Gamepad Tester](https://gamepad-tester.com/) or [HTML5 Gamepad Tester](https://html5gamepad.com/)) to identify each button and axis.
 
 **Test each input and record:**
 - Face buttons (A/B/X/Y or Cross/Circle/Square/Triangle)
@@ -260,7 +197,7 @@ Check the `/img/` directory for existing icons:
 - `snes.png`, `n64.png`, `joycons.png` - Nintendo controllers
 - And more...
 
-If you have a unique icon for your gamepad, you can add it to `/img/` and reference it in your `GameInputModel`.
+If you have a unique icon for your gamepad, you can add it to `/img/` and reference it in your `GameInputModel`. **Icons must be human-created and never AI-generated.**
 
 ### Step 6: Test Your Mapping
 
