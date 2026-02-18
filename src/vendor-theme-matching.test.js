@@ -25,6 +25,18 @@ test('VendorThemes should match Microsoft devices to Hedgehog theme', () => {
     expect(microsoftModel.matchesVendor('Xbox One Controller (Vendor: 045e Product: 0b13)')).toBeTruthy()
 })
 
+test('VendorThemes should match Sony devices to Ragdoll theme', () => {
+    const sonyModel = GameInput.Models.VendorThemes.find(m => m.VendorId === '054c')
+    expect(sonyModel).toBeDefined()
+    expect(sonyModel.schema.name).toBe('Ragdoll')
+
+    // Test different Sony device formats
+    expect(sonyModel.matchesVendor('054c-0ce6-DualSense Wireless Controller')).toBeTruthy()
+    expect(sonyModel.matchesVendor('054c-05c4-Wireless Controller')).toBeTruthy()
+    expect(sonyModel.matchesVendor('DualSense Wireless Controller (Vendor: 054c Product: 0ce6)')).toBeTruthy()
+    expect(sonyModel.matchesVendor('DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)')).toBeTruthy()
+})
+
 test('VendorThemes should not match devices from different vendors', () => {
     const nintendoModel = GameInput.Models.VendorThemes.find(m => m.VendorId === '057e')
 
