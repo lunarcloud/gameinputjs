@@ -2,13 +2,21 @@
 ---
 version: 2
 updates:
-  # Maintain dependencies for NuGet
+  # Maintain dependencies for npm
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "thursday"
     open-pull-requests-limit: 10
+    ignore:
+      # Ignore major version updates for ESLint and plugins to avoid breaking changes
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-plugin-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-*"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-dependencies:
         patterns:
