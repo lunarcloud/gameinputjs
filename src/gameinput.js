@@ -231,7 +231,6 @@ class GameInput {
     /**
      * Initialize or expand player arrays to support a given number of players.
      * @param {number} count - Number of players to support
-     * @private
      */
     #initializePlayerArrays (count) {
         const currentLength = this.Players.length
