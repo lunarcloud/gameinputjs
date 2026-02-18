@@ -140,13 +140,13 @@ class GameInput {
 
     /**
      * Gamepad connected event handler.
-     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
+     * @type {GamepadEventHandler|undefined}
      */
     #gamepadConnectedHandler = undefined
 
     /**
      * Gamepad disconnected event handler.
-     * @type {((this: Window, ev: GamepadEvent) => any)|undefined}
+     * @type {GamepadEventHandler|undefined}
      */
     #gamepadDisconnectedHandler = undefined
 
@@ -155,6 +155,11 @@ class GameInput {
      * @type {Array<boolean>}
      */
     #firstPress = []
+
+    /**
+     * Gamepad event handler function type.
+     * @typedef {function(GamepadEvent):any} GamepadEventHandler
+     */
 
     /**
      * Callback providing player index and button name.
