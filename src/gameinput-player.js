@@ -64,6 +64,19 @@ export class GameInputPlayer {
     buttonUpActions = new Map()
 
     /**
+     * Runtime deadzone overrides per axis.
+     * Keys are in format: 'leftStick.x', 'leftStick.y', 'rightStick.x', 'rightStick.y', 'trigger.left', 'trigger.right'
+     * @type {Map<string, number>}
+     */
+    #deadzoneOverrides = new Map()
+
+    /**
+     * Default deadzone for all axes (if no specific override is set).
+     * @type {number|undefined}
+     */
+    #defaultDeadzone = undefined
+
+    /**
      * Constructor.
      * @param {import('./gameinput.js').GameInput} gameInput Game Input manager
      * @param {number} number Player number (1-based)
@@ -203,9 +216,14 @@ export class GameInputPlayer {
 
         let state = this.state[`${stick}Stick`].up
         if (state.item instanceof AxisAsButton) {
+            const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'y')
+            // Runtime deadzones are unsigned, so apply the sign from the direction
+            const effectiveDeadzone = runtimeDeadzone !== undefined
+                ? (state.item.direction === 'negative' ? -1 : 1) * runtimeDeadzone
+                : state.item.deadZone
             const normalized = this.#normalizeAxisWithDeadzone(
                 state.value,
-                state.item.deadZone,
+                effectiveDeadzone,
                 state.item.direction === 'negative' ? -1 : 1
             )
             vector.y -= state.item.direction === 'negative' ? normalized : Math.abs(normalized)
@@ -215,9 +233,13 @@ export class GameInputPlayer {
 
         state = this.state[`${stick}Stick`].down
         if (state.item instanceof AxisAsButton) {
+            const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'y')
+            const effectiveDeadzone = runtimeDeadzone !== undefined
+                ? (state.item.direction === 'negative' ? -1 : 1) * runtimeDeadzone
+                : state.item.deadZone
             const normalized = this.#normalizeAxisWithDeadzone(
                 state.value,
-                state.item.deadZone,
+                effectiveDeadzone,
                 state.item.direction === 'negative' ? -1 : 1
             )
             vector.y += Math.abs(normalized)
@@ -227,9 +249,13 @@ export class GameInputPlayer {
 
         state = this.state[`${stick}Stick`].left
         if (state.item instanceof AxisAsButton) {
+            const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'x')
+            const effectiveDeadzone = runtimeDeadzone !== undefined
+                ? (state.item.direction === 'negative' ? -1 : 1) * runtimeDeadzone
+                : state.item.deadZone
             const normalized = this.#normalizeAxisWithDeadzone(
                 state.value,
-                state.item.deadZone,
+                effectiveDeadzone,
                 state.item.direction === 'negative' ? -1 : 1
             )
             vector.x -= Math.abs(normalized)
@@ -239,9 +265,13 @@ export class GameInputPlayer {
 
         state = this.state[`${stick}Stick`].right
         if (state.item instanceof AxisAsButton) {
+            const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'x')
+            const effectiveDeadzone = runtimeDeadzone !== undefined
+                ? (state.item.direction === 'negative' ? -1 : 1) * runtimeDeadzone
+                : state.item.deadZone
             const normalized = this.#normalizeAxisWithDeadzone(
                 state.value,
-                state.item.deadZone,
+                effectiveDeadzone,
                 state.item.direction === 'negative' ? -1 : 1
             )
             vector.x += Math.abs(normalized)
@@ -264,8 +294,24 @@ export class GameInputPlayer {
         for (const direction in this.mapping[`${stick}Stick`]) {
             const item = this.mapping[`${stick}Stick`][direction]
             if (item instanceof AxisAsButton) {
-                if (item.deadZone > radialDeadZone) {
-                    radialDeadZone = item.deadZone
+                // Get runtime deadzone if available
+                let effectiveDeadzone = Math.abs(item.deadZone)
+
+                // Check for runtime override based on direction
+                if (direction === 'up' || direction === 'down') {
+                    const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'y')
+                    if (runtimeDeadzone !== undefined) {
+                        effectiveDeadzone = runtimeDeadzone
+                    }
+                } else if (direction === 'left' || direction === 'right') {
+                    const runtimeDeadzone = this.#getRuntimeDeadzone(stick, 'x')
+                    if (runtimeDeadzone !== undefined) {
+                        effectiveDeadzone = runtimeDeadzone
+                    }
+                }
+
+                if (effectiveDeadzone > radialDeadZone) {
+                    radialDeadZone = effectiveDeadzone
                 }
             }
         }
@@ -331,12 +377,17 @@ export class GameInputPlayer {
 
         if (typeof (item.value) === 'number')
             return item.active ? 1 : 0
-        else if (item.item instanceof AxisAsButton)
+        else if (item.item instanceof AxisAsButton) {
+            // Get runtime deadzone if available
+            const runtimeDeadzone = this.#deadzoneOverrides.get(`trigger.${trigger}`) ?? this.#defaultDeadzone
+            const effectiveDeadzone = runtimeDeadzone ?? item.item.deadZone
+
             return this.#normalize(
                 item.value,
-                item.item.deadZone,
+                effectiveDeadzone,
                 1
             )
+        }
         throw new Error('item type issue')
     }
 
@@ -371,5 +422,113 @@ export class GameInputPlayer {
         default:
             return text
         }
+    }
+
+    /**
+     * Set deadzone for an axis or stick.
+     * @param {string} path - Path to axis (e.g., 'leftStick', 'leftStick.x', 'leftStick.y', 'rightStick', 'rightStick.x', 'rightStick.y', 'trigger.left', 'trigger.right')
+     * @param {number} value - Deadzone value (0.0 to 1.0)
+     * @throws {Error} If path is invalid or value is out of range
+     */
+    setDeadzone (path, value) {
+        if (typeof value !== 'number' || value < 0 || value > 1) {
+            throw new Error('Deadzone value must be a number between 0 and 1')
+        }
+
+        // Parse the path
+        const parts = path.split('.')
+
+        if (parts.length === 1) {
+            // Setting deadzone for entire stick (e.g., 'leftStick' or 'rightStick')
+            if (parts[0] === 'leftStick' || parts[0] === 'rightStick') {
+                // Set for all 4 directions (x, y, up, down, left, right)
+                this.#deadzoneOverrides.set(`${parts[0]}.x`, value)
+                this.#deadzoneOverrides.set(`${parts[0]}.y`, value)
+            } else if (parts[0] === 'trigger') {
+                // Setting for both triggers
+                this.#deadzoneOverrides.set('trigger.left', value)
+                this.#deadzoneOverrides.set('trigger.right', value)
+            } else {
+                throw new Error(`Invalid path: ${path}. Expected 'leftStick', 'rightStick', or 'trigger'`)
+            }
+        } else if (parts.length === 2) {
+            // Setting deadzone for specific axis (e.g., 'leftStick.x', 'trigger.left')
+            const [section, axis] = parts
+
+            if ((section === 'leftStick' || section === 'rightStick') && (axis === 'x' || axis === 'y')) {
+                this.#deadzoneOverrides.set(path, value)
+            } else if (section === 'trigger' && (axis === 'left' || axis === 'right')) {
+                this.#deadzoneOverrides.set(path, value)
+            } else {
+                throw new Error(`Invalid path: ${path}. Expected format like 'leftStick.x', 'leftStick.y', 'rightStick.x', 'rightStick.y', 'trigger.left', or 'trigger.right'`)
+            }
+        } else {
+            throw new Error(`Invalid path: ${path}`)
+        }
+    }
+
+    /**
+     * Get the current deadzone for an axis or stick.
+     * @param {string} path - Path to axis (e.g., 'leftStick', 'leftStick.x', 'rightStick.y', 'trigger.left')
+     * @returns {number|undefined} Current deadzone value, or undefined if not set
+     */
+    getDeadzone (path) {
+        const parts = path.split('.')
+
+        if (parts.length === 1) {
+            // Getting deadzone for entire stick
+            if (parts[0] === 'leftStick' || parts[0] === 'rightStick') {
+                // Return x-axis deadzone as representative (they should be the same if set at stick level)
+                return this.#deadzoneOverrides.get(`${parts[0]}.x`) ?? this.#defaultDeadzone
+            } else if (parts[0] === 'trigger') {
+                // Return left trigger deadzone as representative
+                return this.#deadzoneOverrides.get('trigger.left') ?? this.#defaultDeadzone
+            }
+        } else if (parts.length === 2) {
+            // Getting deadzone for specific axis
+            return this.#deadzoneOverrides.get(path) ?? this.#defaultDeadzone
+        }
+
+        return undefined
+    }
+
+    /**
+     * Reset deadzone overrides for an axis or stick.
+     * @param {string} [path] - Path to axis. If not provided, resets all overrides.
+     */
+    resetDeadzone (path) {
+        if (!path) {
+            // Reset all overrides
+            this.#deadzoneOverrides.clear()
+            this.#defaultDeadzone = undefined
+            return
+        }
+
+        const parts = path.split('.')
+
+        if (parts.length === 1) {
+            // Reset entire stick
+            if (parts[0] === 'leftStick' || parts[0] === 'rightStick') {
+                this.#deadzoneOverrides.delete(`${parts[0]}.x`)
+                this.#deadzoneOverrides.delete(`${parts[0]}.y`)
+            } else if (parts[0] === 'trigger') {
+                this.#deadzoneOverrides.delete('trigger.left')
+                this.#deadzoneOverrides.delete('trigger.right')
+            }
+        } else if (parts.length === 2) {
+            // Reset specific axis
+            this.#deadzoneOverrides.delete(path)
+        }
+    }
+
+    /**
+     * Get runtime deadzone for a specific axis button item.
+     * @param {'left'|'right'} stick - Stick side
+     * @param {'x'|'y'} axis - Axis name
+     * @returns {number|undefined} Runtime deadzone override, or undefined if not set
+     */
+    #getRuntimeDeadzone (stick, axis) {
+        const path = `${stick}Stick.${axis}`
+        return this.#deadzoneOverrides.get(path) ?? this.#defaultDeadzone
     }
 };
