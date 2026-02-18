@@ -50,31 +50,21 @@ You can configure GameInput by passing options to the constructor:
 ```js
 const gameInput = new GameInput({
     debugStatements: false,  // Enable debug console logs (default: false)
-    maxPlayers: 8            // Minimum number of player slots (default: 4, auto-expands as needed)
+    maxPlayers: 8            // Force max players (normally auto-detected, 4-8 on supported browsers)
 })
 ```
 
 #### maxPlayers
 
-GameInput **automatically detects and expands** to support the number of gamepads your browser can handle via `navigator.getGamepads()`. The `maxPlayers` option sets the **minimum** number of player slots to allocate initially (default: 4).
-
-**How it works:**
-- On initialization, GameInput checks `navigator.getGamepads().length` and uses the larger of that value or `maxPlayers` (minimum 4)
-- When new gamepads connect, the system **automatically expands** to accommodate them
-- No manual configuration needed for most use cases - just plug in your gamepads!
-
-**Use cases for setting maxPlayers:**
-- Pre-allocate slots for expected players to avoid reallocation
-- Set a higher minimum for party games, arcade cabinets, or esports setups
-- Testing/development where you know you'll have multiple gamepads
+GameInput supports at least 4 players, up to 8 when detected on supported browsers. The `maxPlayers` option forces a specific maximum, overriding auto-detection.
 
 **Example:**
 ```js
-// Auto-detect (recommended) - automatically expands as gamepads connect
+// Auto-detect (recommended)
 const gameInput = new GameInput()
 
-// Or pre-allocate for 8+ player games
-const gameInput = new GameInput({ maxPlayers: 8 })
+// Force a specific maximum
+const gameInput = new GameInput({ maxPlayers: 16 })
 
 // Access all detected players
 for (const player of gameInput.Players) {
