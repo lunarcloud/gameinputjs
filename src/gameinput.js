@@ -64,6 +64,15 @@ class GameInput {
                 GameInputSchema.Hedgehog,
                 'xboxone',
                 '045e-0000-Microsoft Device'
+            ),
+            // Sony PlayStation devices (vendor ID 054c) get 'Ragdoll' theme
+            // Product ID 0000 is a placeholder - only the vendor ID is used for matching
+            // Note: Using Ragdoll (newer) instead of RagdollOld. DualShock 4 and DualSense use Ragdoll
+            // while DualShock 3 uses RagdollOld, but the newer schema is more appropriate as default
+            new GameInputModel(
+                GameInputSchema.Ragdoll,
+                'generic',
+                '054c-0000-Sony Device'
             )
         ],
 
