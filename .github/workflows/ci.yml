@@ -44,7 +44,7 @@ jobs:
         fail_ci_if_error: false
 
     - name: Package
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: release
         path: dist/*
