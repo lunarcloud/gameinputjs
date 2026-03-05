@@ -61,8 +61,8 @@
     "license": "MIT",
     "author": "Samuel Sarette",
     "engines": {
-        "node": ">=24.13.0",
-        "npm": ">=11.0.0"
+        "node": ">=20.19.4",
+        "npm": ">=9.2.0"
     },
     "jest": {
         "testEnvironment": "jsdom",
