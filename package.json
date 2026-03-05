@@ -35,7 +35,10 @@
         "serve": "npm run build && npx serve dist",
         "build-prod": "npm run build && npm run docs",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
-        "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
+        "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+        "outdated": "npx npm-check-updates",
+        "outdated:minor": "npx npm-check-updates --target minor",
+        "outdated:patch": "npx npm-check-updates --target patch"
     },
     "devDependencies": {
         "@types/jest": "^30.0.0",
@@ -44,14 +47,15 @@
         "eslint-config-standard": "^17.1.0",
         "eslint-plugin-editorconfig": "^4.0.3",
         "eslint-plugin-import": "^2.32.0",
-        "eslint-plugin-jsdoc": "^62.6.0",
+        "eslint-plugin-jsdoc": "^62.7.1",
         "eslint-plugin-n": "^16.6.2",
         "eslint-plugin-promise": "^6.6.0",
         "jest": "^30.2.0",
+        "npm-check-updates": "^19.6.3",
         "jest-environment-jsdom": "^30.2.0",
         "jsdoc": "^4.0.5",
         "jsdoc-tsimport-plugin": "^1.0.5",
-        "serve": "^14.2.5",
+        "serve": "^14.2.6",
         "typescript": "^5.9.3"
     },
     "license": "MIT",
