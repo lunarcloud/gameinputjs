@@ -36,13 +36,6 @@ jobs:
     - name: Test with Coverage
       run: npm run test:coverage
 
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        files: ./coverage/coverage-final.json
-        token: ${{ secrets.CODECOV_TOKEN }}
-        fail_ci_if_error: false
-
     - name: Package
       uses: actions/upload-artifact@v7
       with:
