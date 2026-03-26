@@ -56,7 +56,7 @@
         "jsdoc": "^4.0.5",
         "jsdoc-tsimport-plugin": "^1.0.5",
         "serve": "^14.2.6",
-        "typescript": "^5.9.3"
+        "typescript": "^6.0.2"
     },
     "license": "MIT",
     "author": "Samuel Sarette",
