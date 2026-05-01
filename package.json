@@ -51,7 +51,7 @@
         "eslint-plugin-n": "^16.6.2",
         "eslint-plugin-promise": "^6.6.0",
         "jest": "^30.3.0",
-        "npm-check-updates": "^21.0.2",
+        "npm-check-updates": "^22.0.1",
         "jest-environment-jsdom": "^30.3.0",
         "jsdoc": "^4.0.5",
         "jsdoc-tsimport-plugin": "^1.0.5",
