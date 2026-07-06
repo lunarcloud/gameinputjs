@@ -9,12 +9,11 @@ updates:
       interval: "monthly"
     open-pull-requests-limit: 10
     ignore:
-      # Ignore major version updates for ESLint and plugins to avoid breaking changes
+      # neostandard currently peers on ESLint 9, so keep ESLint 10+ on hold.
       - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-plugin-*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-config-*"
+      # npm-check-updates 21+ requires npm 10+, while this repo still allows npm 9.
+      - dependency-name: "npm-check-updates"
         update-types: ["version-update:semver-major"]
 
       - dependency-name: "typescript"
