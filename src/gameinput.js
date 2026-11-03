@@ -446,9 +446,18 @@ class GameInput {
         if (!GameInput.canUseGamepadAPI())
             return
 
-        this.Connection.Gamepads = navigator.getGamepads()
+        const gamepads = navigator.getGamepads()
 
-        for (let i = 0; i < this.Connection.Gamepads.length; i++) {
+        // Keep player count in sync with the browser's reported gamepad slots,
+        // in case this races ahead of the next connectionWatchLoop/reinitialize pass.
+        // Only grows, never shrinks: unplugged gamepads leave their slot as null rather
+        // than shortening the array, and those null slots are safely skipped below.
+        if (gamepads.length > this.Players.length)
+            this.#initializePlayerArrays(gamepads.length)
+
+        this.Connection.Gamepads = gamepads
+
+        for (let i = 0; i < this.Players.length; i++) {
             const player = this.Players[i]
             const currentGamepad = this.Connection.Gamepads[this.Connection.GamePadMapping[i]]
 

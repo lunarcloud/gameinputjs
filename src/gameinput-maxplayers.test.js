@@ -226,6 +226,21 @@ describe('GameInput MaxPlayers Configuration', () => {
             expect(gameInput.Connection.Gamepads.length).toBe(8)
         })
 
+        it('should expand players when update() sees more gamepad slots before reinitialize runs', () => {
+            // Start with 4 slots
+            global.navigator.getGamepads = jest.fn(() => new Array(4))
+            const gameInput = new GameInput({ debugStatements: false, maxPlayers: 4 })
+            expect(gameInput.Players.length).toBe(4)
+
+            // Simulate the browser reporting 8 slots before connectionWatchLoop's
+            // next reinitialize() pass has a chance to run
+            global.navigator.getGamepads = jest.fn(() => new Array(8))
+
+            expect(() => gameInput.update()).not.toThrow()
+            expect(gameInput.Players.length).toBe(8)
+            expect(gameInput.Connection.Gamepads.length).toBe(8)
+        })
+
         it('should allow access to newly expanded player slots', () => {
             // Start with 4 slots
             global.navigator.getGamepads = jest.fn(() => new Array(4))
