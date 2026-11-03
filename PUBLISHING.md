@@ -25,19 +25,27 @@ type-checks, builds, and tests on pull requests.
    git push origin vX.Y.Z
    ```
 
-3. **Publish to npm:**
+3. **Generate type declarations** (required — `types/` is gitignored and not
+   checked in, but `package.json`'s `types`/`exports.types` fields point to
+   `types/*.d.ts`):
+   ```bash
+   npm run build:types
+   ```
+   No other build step is needed: `main`/`module`/`exports` point straight at
+   `src/` (no bundling), and `dist/` (from `npm run build`) is excluded by
+   `.npmignore` anyway.
+
+4. **Publish to npm:**
    ```bash
    npm publish
    ```
-   There's no `prepublishOnly`/build step — the package ships `src/` directly
-   (no bundling), so this just publishes what's in git at the tagged commit.
 
-4. **Create the matching GitHub Release:**
+5. **Create the matching GitHub Release:**
    ```bash
    gh release create vX.Y.Z --title "vX.Y.Z" --generate-notes
    ```
 
-5. **Bump to the next in-development version** so the working tree no longer
+6. **Bump to the next in-development version** so the working tree no longer
    matches a published tag:
    * Edit `"version"` in `package.json` to the next planned version (e.g. `X.Y.(Z+1)`).
    * Commit and push:
