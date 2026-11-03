@@ -74,35 +74,39 @@ for (const player of gameInput.Players) {
 ```
 
 ### Event-Driven Style
+
+`onReinitialize`, `onButtonDown`, and `onButtonUp` each return an unsubscribe function (see [Unsubscribing from Events](#unsubscribing-from-events)), so they are not chainable; call them separately on `gameInput`.
+
 ```js
-gameInput
-    .onReinitialize(() => {
-        console.debug("Players updated")
-        const firstPlayer = gameInput.getPlayer(0)
-        if (!firstPlayer?.model) {
-            noPlayers()
-            return
-        }
-        displayButtons(firstPlayer)
-        document.querySelector('img.gamepad').src = `img/${firstPlayer?.model?.iconName ?? 'generic'}.png`
-    })
-    .onButtonDown((playerIndex, sectionName, buttonName) => {
-        const player = gameInput.getPlayer(playerIndex)
-        console.debug(`Player ${player} pushed ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
-    })
-    .onButtonUp((playerIndex, sectionName, buttonName) => {
-        const player = gameInput.getPlayer(playerIndex)
-        console.debug(`Player ${player} released ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
+gameInput.onReinitialize(() => {
+    console.debug("Players updated")
+    const firstPlayer = gameInput.getPlayer(0)
+    if (!firstPlayer?.model) {
+        noPlayers()
+        return
+    }
+    displayButtons(firstPlayer)
+    document.querySelector('img.gamepad').src = `img/${firstPlayer?.model?.iconName ?? 'generic'}.png`
+})
 
-        if (sectionName === 'center' && buttonName === 'menu') {
-            console.debug('menu requested')
-            return
-        }
+gameInput.onButtonDown((playerIndex, sectionName, buttonName) => {
+    const player = gameInput.getPlayer(playerIndex)
+    console.debug(`Player ${player} pushed ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
+})
 
-        if (sectionName === 'face' && buttonName === player.schema.ordinalButton(0)) {
-            console.debug('Jump / Confirm pushed')
-        }
-    })
+gameInput.onButtonUp((playerIndex, sectionName, buttonName) => {
+    const player = gameInput.getPlayer(playerIndex)
+    console.debug(`Player ${player} released ${player.getButtonText(sectionName, buttonName)} (${buttonName})`)
+
+    if (sectionName === 'center' && buttonName === 'menu') {
+        console.debug('menu requested')
+        return
+    }
+
+    if (sectionName === 'face' && buttonName === player.schema.ordinalButton(0)) {
+        console.debug('Jump / Confirm pushed')
+    }
+})
 ```
 
 ### Game-Loop Style
